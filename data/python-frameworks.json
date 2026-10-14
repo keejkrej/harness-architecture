@@ -1,0 +1,426 @@
+{
+  "records": [
+    {
+      "slug": "pydantic-ai",
+      "name": "Pydantic AI core",
+      "doc_path": "harnesses/python-frameworks.md",
+      "category": "agent-framework",
+      "vendor": "Pydantic",
+      "language": "Python",
+      "license": "MIT",
+      "version": "VCS-derived; numeric release not resolved from pin",
+      "repo_url": "https://github.com/pydantic/pydantic-ai",
+      "pinned_commit": "b82f0f258f4d6aa3d53355583735584f47068c2d",
+      "scores": {
+        "flexibility": 5,
+        "integration": 3,
+        "embeddability": 5,
+        "durability": 4,
+        "safety": 3,
+        "extensibility": 4,
+        "multi_agent": 3,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 3
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "unknown",
+        "skills": "unknown",
+        "hooks": "yes",
+        "plugins": "partial",
+        "subagents": "partial",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "unknown",
+        "durable_resume": "partial",
+        "compaction": "unknown",
+        "os_sandbox": "unknown",
+        "approvals": "yes",
+        "plan_mode": "unknown",
+        "worktrees": "unknown",
+        "otel": "partial",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "unknown"
+      },
+      "features_notes": {
+        "durable_resume": "Optional durable integrations/capabilities; an ordinary in-process Agent is not automatically durable.",
+        "plugins": "Capability and toolset composition, not necessarily a product extension marketplace.",
+        "subagents": "Agents can be called as tools; Coder self-delegation is separately recorded under Harness.",
+        "otel": "Instrumentation integrations exist; backend/export configuration was not runtime-tested."
+      },
+      "dims": {
+        "loop": "Typed graph transitions around model request, tool handling, validation and suspended state.",
+        "providers": "Provider adapters normalize model requests/results; retry data survives optional durable boundaries.",
+        "tools": "Typed tools/toolsets, MCP and approval-required wrappers.",
+        "context": "Messages and capabilities compose context policy; coding defaults belong to the separate Harness package.",
+        "state": "Optional Temporal/Durable capability integrations; application must select storage/worker architecture.",
+        "safety": "Tool approval/retry/validation contracts; core typing alone does not isolate effects.",
+        "extensibility": "Capabilities, model adapters, toolsets and typed dependencies.",
+        "multi_agent": "Agent-as-tool composition; Harness adds a specific delegate workflow.",
+        "surfaces": "In-process Python API and integration packages.",
+        "observability": "Structured events/instrumentation; no live backend tested."
+      },
+      "one_liner": "A typed agent framework with explicit durable integrations and a separately packaged coding harness.",
+      "builds_on": [
+        "Pydantic",
+        "pydantic-graph",
+        "Optional Temporal integration"
+      ],
+      "used_by": [
+        "Pydantic AI Harness"
+      ],
+      "key_insights": [
+        "Typed model/tool graph execution is separate from the newer coding Harness package.",
+        "Durable integrations require explicit capability and backend selection; ordinary Agent runs remain in-process."
+      ],
+      "repo": "pydantic/pydantic-ai"
+    },
+    {
+      "slug": "pydantic-ai-harness",
+      "name": "Pydantic AI Harness",
+      "doc_path": "harnesses/python-frameworks.md",
+      "category": "harness-library",
+      "vendor": "Pydantic",
+      "language": "Python",
+      "license": "MIT",
+      "version": "0.x VCS-derived; alpha package",
+      "repo_url": "https://github.com/pydantic/pydantic-ai",
+      "pinned_commit": "b82f0f258f4d6aa3d53355583735584f47068c2d",
+      "scores": {
+        "flexibility": 5,
+        "integration": 4,
+        "embeddability": 5,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 4,
+        "provider_neutrality": 5,
+        "maturity": 2,
+        "minimalism": 2
+      },
+      "features": {
+        "mcp_client": "partial",
+        "mcp_server": "unknown",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "unknown",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "partial",
+        "plan_mode": "unknown",
+        "worktrees": "unknown",
+        "otel": "unknown",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "yes"
+      },
+      "features_notes": {
+        "durable_resume": "StepPersistence records events/effects and settled snapshots, defaulting to an in-memory store; started effects may become unknown_after_crash.",
+        "os_sandbox": "Optional BubblewrapSandbox wraps the workspace with network denial; plain LocalWorkspace is not isolated.",
+        "compaction": "Coder defaults to clearing old tool results; exported summarizers are optional capabilities.",
+        "mcp_client": "Available through the underlying Pydantic AI toolset layer.",
+        "approvals": "Inherited approval mechanism; Coder shell configuration does not itself imply approval gating.",
+        "skills": "Capability surface exported; not every capability is enabled by Coder."
+      },
+      "dims": {
+        "loop": "Coder capability configures an ordinary Pydantic Agent; graph/model loop remains core-owned.",
+        "providers": "Underlying Pydantic provider abstraction and model capability composition.",
+        "tools": "Workspace-bound files/grep/shell, bounded tool results, repaired arguments and delegate tools.",
+        "context": "Instruction/repository context plus default old-result clearing; optional summarizing capabilities.",
+        "state": "Opt-in event/effect ledger and settled-step snapshots; unresolved effects require recovery decisions.",
+        "safety": "Optional bubblewrap workspace; default shell permits commands and may outlive the agent run.",
+        "extensibility": "Explicit capability bundle with interchangeable workspace, persistence, context and tool policy.",
+        "multi_agent": "Coder can spawn fresh instances of its bound agent with inherited capabilities.",
+        "surfaces": "Python package for embeddable coding agents; convenience coder agent factory.",
+        "observability": "Core instrumentation plus explicit persistence records; alpha contracts require migration tolerance."
+      },
+      "one_liner": "A real composable coding harness layered over Pydantic AI, with optional persistence and workspace isolation.",
+      "builds_on": [
+        "Pydantic AI core",
+        "Bubblewrap (optional workspace sandbox)"
+      ],
+      "used_by": [],
+      "key_insights": [
+        "Coder assembles capabilities onto an ordinary Pydantic Agent rather than introducing another model loop.",
+        "StepPersistence defaults to memory and preserves unresolved-effect ambiguity after crashes.",
+        "Workspace isolation and richer summarizers are optional capabilities, not universal Coder defaults."
+      ],
+      "repo": "pydantic/pydantic-ai"
+    },
+    {
+      "slug": "smolagents",
+      "name": "smolagents",
+      "doc_path": "harnesses/python-frameworks.md",
+      "category": "harness-library",
+      "vendor": "Hugging Face",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "version": "1.27.0.dev0",
+      "repo_url": "https://github.com/huggingface/smolagents",
+      "pinned_commit": "96f33faaf028479119ec8d34507b47694cf14e34",
+      "scores": {
+        "flexibility": 4,
+        "integration": 2,
+        "embeddability": 5,
+        "durability": 1,
+        "safety": 3,
+        "extensibility": 3,
+        "multi_agent": 3,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 4
+      },
+      "features": {
+        "mcp_client": "partial",
+        "mcp_server": "unknown",
+        "skills": "unknown",
+        "hooks": "yes",
+        "plugins": "unknown",
+        "subagents": "yes",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "unknown",
+        "durable_resume": "no",
+        "compaction": "unknown",
+        "os_sandbox": "partial",
+        "approvals": "unknown",
+        "plan_mode": "unknown",
+        "worktrees": "unknown",
+        "otel": "unknown",
+        "web_ui": "partial",
+        "ide": "unknown",
+        "agents_md": "unknown"
+      },
+      "features_notes": {
+        "durable_resume": "Inspected save() exports agent code/config/UI; it is not a running-step checkpoint or effect journal.",
+        "os_sandbox": "Local Python evaluator is explicitly not a security sandbox; optional remote executors provide distinct boundaries.",
+        "subagents": "Managed agents exist, but the inspected remote CodeAgent executor path rejects them.",
+        "mcp_client": "Optional MCP tool conversion is documented by the first-party repository.",
+        "hooks": "Step callbacks rather than an unrestricted product plugin system.",
+        "web_ui": "Optional/exported demo UI; not a complete host platform."
+      },
+      "dims": {
+        "loop": "MultiStepAgent loop with optional planning, bounded steps and final-answer validation; code and tool-call variants.",
+        "providers": "Provider adapters and optional integrations documented by the repository.",
+        "tools": "Python code execution or structured tools; thread-pool execution for eligible tool-call batches.",
+        "context": "Step memory and planning prompts; general durable compaction not established in inspected paths.",
+        "state": "In-process run state; export save() serializes agent definition, not a live execution checkpoint.",
+        "safety": "Restricted local evaluator is not a sandbox; Docker/E2B/Modal/Blaxel alternatives require selection.",
+        "extensibility": "Tools, executor subclasses, model wrappers and step callbacks.",
+        "multi_agent": "Managed-agent calls; remote CodeAgent execution currently rejects managed agents.",
+        "surfaces": "Python SDK, CLI/example and optional Gradio-style UI surfaces.",
+        "observability": "Step logs/memory/callbacks; runtime failure recovery not independently tested."
+      },
+      "one_liner": "A compact code/tool agent library; remote isolation and managed-agent composition have concrete compatibility limits.",
+      "builds_on": [
+        "Optional remote executors",
+        "Optional MCP/LangChain tool adapters"
+      ],
+      "used_by": [],
+      "key_insights": [
+        "CodeAgent and structured-tool agents share a compact step loop with replaceable executors.",
+        "The local Python evaluator is explicitly not a security sandbox; inspected remote execution rejects managed agents.",
+        "save() exports an agent definition, not a checkpoint of running work."
+      ],
+      "repo": "huggingface/smolagents"
+    },
+    {
+      "slug": "microsoft-agent-framework",
+      "name": "Microsoft Agent Framework",
+      "doc_path": "harnesses/python-frameworks.md",
+      "category": "agent-framework",
+      "vendor": "Microsoft",
+      "language": "Python; C# (Python internals reviewed)",
+      "license": "MIT",
+      "version": "Python core 1.21.0; .NET version not assessed",
+      "repo_url": "https://github.com/microsoft/agent-framework",
+      "pinned_commit": "95511ff025d81cc546c44e653d4be65de5bd7f35",
+      "scores": {
+        "flexibility": 5,
+        "integration": 4,
+        "embeddability": 5,
+        "durability": 4,
+        "safety": 3,
+        "extensibility": 5,
+        "multi_agent": 5,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 2
+      },
+      "features": {
+        "mcp_client": "unknown",
+        "mcp_server": "unknown",
+        "skills": "partial",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "unknown",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "unknown",
+        "approvals": "yes",
+        "plan_mode": "partial",
+        "worktrees": "unknown",
+        "otel": "unknown",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "partial"
+      },
+      "features_notes": {
+        "durable_resume": "Workflow checkpoints include topology, executor/edge state and pending input; ordinary harness defaults differ.",
+        "approvals": "Requires AgentSession for persistence; standing rules are not bound to tool implementation identity.",
+        "subagents": "Agent-as-tool cannot propagate child approvals; approval-capable delegation should use Workflow.",
+        "skills": "Harness skill capability is opt-in.",
+        "os_sandbox": "File-access controls are not proof of an OS isolation backend.",
+        "plan_mode": "Harness mode capability, not asserted as a fully identical product plan mode.",
+        "agents_md": "Repository instructions are configurable; exact file-discovery parity not established."
+      },
+      "dims": {
+        "loop": "Model agent loop plus separate repeat-until/judge harness loop and Pregel-style workflow supersteps.",
+        "providers": "Provider-neutral framework interfaces; this chapter does not assert Python/.NET feature parity.",
+        "tools": "Tools, optional file access, skills and background/delegate capabilities.",
+        "context": "History, per-request or post-run compaction, todo/mode and scoped file-memory capabilities.",
+        "state": "Workflow checkpoints persist topology, committed state, fan-in and pending input; commit/discard boundary explicit.",
+        "safety": "Opt-in approvals with standing rules and session storage; no general OS sandbox proved here.",
+        "extensibility": "Factory assembles capabilities; workflows/executors/edges provide separate orchestration extension layer.",
+        "multi_agent": "Workflow graphs with fan-in and checkpoints; direct child-tool approval propagation has a documented limit.",
+        "surfaces": "Python embedding and workflow libraries; broader C# project exists but not deeply audited.",
+        "observability": "Event/checkpoint records; no backend export or failover runtime experiment performed."
+      },
+      "one_liner": "A broad framework with a concrete coding harness and checkpointed workflow layer; capability selection changes guarantees.",
+      "builds_on": [
+        "Framework provider integrations"
+      ],
+      "used_by": [],
+      "key_insights": [
+        "Coding harness assembly, the model/tool loop and checkpointed workflows are distinct layers.",
+        "Workflow checkpoints preserve committed executor state and pending input across supersteps.",
+        "Direct agent-as-tool delegation cannot propagate child approvals; workflows supply the richer coordination boundary."
+      ],
+      "repo": "microsoft/agent-framework"
+    },
+    {
+      "slug": "letta-code",
+      "name": "Letta Code",
+      "doc_path": "harnesses/python-frameworks.md",
+      "category": "integrated-product",
+      "vendor": "Letta",
+      "language": "TypeScript",
+      "license": "Apache-2.0",
+      "version": "0.34.14",
+      "repo_url": "https://github.com/letta-ai/letta-code",
+      "pinned_commit": "5333d2060f0719882d622d0f05b1c9feffc987b8",
+      "scores": {
+        "flexibility": 4,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 4,
+        "safety": 3,
+        "extensibility": 5,
+        "multi_agent": 4,
+        "provider_neutrality": 5,
+        "maturity": 3,
+        "minimalism": 1
+      },
+      "features": {
+        "mcp_client": "partial",
+        "mcp_server": "unknown",
+        "skills": "partial",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "unknown",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "unknown",
+        "worktrees": "partial",
+        "otel": "unknown",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "unknown"
+      },
+      "features_notes": {
+        "durable_resume": "Local transcripts plus owned execution/recovery checkpoints; effects and checkpoint writes are not one atomic transaction.",
+        "os_sandbox": "Optional bwrap/Seatbelt backend; wrapper can return no backend, so verify host policy before relying on isolation.",
+        "worktrees": "Inspected worktrees isolate memory-worker changes; not a claim that every coding delegate gets a worktree.",
+        "in_process_sdk": "Reusable internal components and separate SDK surface; no independent stability guarantee established.",
+        "subagents": "Local headless subprocess or remote dispatch; new child sessions do not inherit memory semantics universally.",
+        "skills": "Bundled skills included in the inspected package; discovery/compatibility semantics not deeply audited.",
+        "mcp_client": "Product integration present; server interoperability not tested."
+      },
+      "dims": {
+        "loop": "ProviderTurnExecutor normalizes model streaming and approval stops; headless host dispatches permitted tools.",
+        "providers": "Local PiStreamAdapter uses pi-ai; this is not evidence of pi-agent-core or pi-durable lineage.",
+        "tools": "Host tool execution with permission classification, approval requests and before/after evidence checkpoints.",
+        "context": "Sliding-window compaction plus committed Git-backed memory compiled separately into prompts.",
+        "state": "Pi-session-entry JSONL transcripts and claimed execution/recovery ownership; ambiguous external effects remain possible.",
+        "safety": "Permissions and optional OS backend; missing backend and broad-read policy require attention.",
+        "extensibility": "Mods expose tools/providers/commands/UI/events/permissions; hooks can participate in checks.",
+        "multi_agent": "Headless local children or remote jobs; memory workers use private Git worktrees with conflict retention.",
+        "surfaces": "Integrated CLI/headless product with internal executors and remote recovery surfaces.",
+        "observability": "Transcripts, execution checkpoints and recovery evidence; no independent crash/security test performed."
+      },
+      "one_liner": "A current local/provider coding runtime with Git-backed memory, mods and recovery machinery built partly on pi-ai.",
+      "builds_on": [
+        "pi-ai ^0.99.1",
+        "Optional bwrap/Seatbelt"
+      ],
+      "used_by": [],
+      "source_repos": [
+        {
+          "repo_url": "https://github.com/letta-ai/letta-code",
+          "pinned_commit": "5333d2060f0719882d622d0f05b1c9feffc987b8"
+        },
+        {
+          "repo_url": "https://github.com/letta-ai/letta",
+          "pinned_commit": "5bcdd177d70fa2b31a754cfcd801e77b2e1ab16a",
+          "scope": "12-file landing repository; server implementation not assessable from this snapshot"
+        }
+      ],
+      "key_insights": [
+        "The current TypeScript product uses pi-ai provider streaming; this does not establish pi-agent-core or pi-durable lineage.",
+        "Git-backed memory and sliding-window conversation compaction are separate mechanisms.",
+        "Recovery evidence tracks tool boundaries, while optional sandbox backends and memory-worker worktrees have limited scopes."
+      ],
+      "repo": "letta-ai/letta-code"
+    }
+  ],
+  "verification": {
+    "method": "static-source-review",
+    "checked_at": "2026-10-14",
+    "status": "researcher-checked",
+    "source_executed": false,
+    "independent_adversarial_review": false,
+    "checks": [
+      "Pydantic core graph separated from new alpha Harness package",
+      "Coder enabled defaults checked against exported optional capabilities",
+      "StepPersistence in-memory default and unknown-after-crash frontier inspected",
+      "Temporal migration and opt-in bubblewrap path inspected",
+      "smolagents local evaluator warning and remote managed-agent rejection inspected",
+      "smolagents save export distinguished from checkpoints",
+      "Microsoft outer loop, checkpoint schema and superstep commit behavior inspected",
+      "Microsoft standing-rule identity and child-approval limitations inspected",
+      "Letta old landing repository distinguished from current Apache-licensed Letta Code",
+      "Letta pi-ai dependency, local execution, memory worktrees and recovery evidence inspected"
+    ],
+    "limits": "No source code executed, installed or imported; no live providers, crash-injection or adversarial security tests. C#/.NET and unavailable historical Letta server internals are not inferred from Python or client code."
+  }
+}

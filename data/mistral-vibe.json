@@ -1,0 +1,101 @@
+{
+  "records": [
+    {
+      "slug": "mistral-vibe",
+      "name": "Mistral Vibe",
+      "vendor": "Mistral AI",
+      "repo": "https://github.com/mistralai/mistral-vibe",
+      "license": "Apache-2.0 root; Rust TUI crate declares Proprietary",
+      "language": "Python and Rust",
+      "version": "2.26.1; unpublished harness crate 0.1.0 @ 4ae5c5955da8",
+      "category": "integrated-product",
+      "one_liner": "Coding-agent product whose default Unified Harness separates a deterministic Rust state machine from Python effect execution with write-ahead recovery; legacy Python loop remains selectable.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "no",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "partial",
+        "worktrees": "yes",
+        "otel": "partial",
+        "web_ui": "no",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "Default Rust step/apply/checkpoint state machine driven by Python runtime; legacy AgentLoop remains behind --legacy-harness. Effects and observations are explicit protocol objects.",
+        "providers": "Mistral-first model services with OpenAI Chat/Responses, Anthropic and Vertex protocol adapters; connectors, registry and some product services remain vendor-coupled.",
+        "tools": "Filesystem/process and custom Python tools, MCP client, plus run_typescript code mode. Executor types determine recovery policy and sandbox reach.",
+        "context": "Project/user instructions, skills, configurable context budget, result clipping and compaction; unified versus legacy behavior must be distinguished.",
+        "state": "Write-ahead input, action intent and result journal plus checkpoints and replay. Recovery policies reconnect-or-fail, reconcile, idempotent-retry or fail by effect kind; no universal exactly-once external effects.",
+        "safety": "Trust-gated project configuration, permissions and approval policy; optional caller-provided sandbox adapter covers selected tools, while other host operations remain outside it.",
+        "extensibility": "Agent-plugin manifests, hooks, skills, custom tools and MCP; internal middleware is a closed set, not a configurable plugin middleware pipeline.",
+        "multi_agent": "Unified named asynchronous child sessions with message/wait/interrupt/close; default limits eight children, four concurrent turns, depth one. Session worktrees, not per-child isolation.",
+        "surfaces": "Python/Rust TUIs, headless exports, app-server protocol and ACP IDE integration; unpublished/internal harness APIs are importable but lack a stable independent SDK promise.",
+        "observability": "Optional OTel GenAI tracing and unified effect/recovery metrics, usage limits and exports; default OTel endpoint is Mistral unless configured otherwise."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 4,
+        "embeddability": 3,
+        "durability": 5,
+        "safety": 3,
+        "extensibility": 4,
+        "multi_agent": 4,
+        "provider_neutrality": 3,
+        "maturity": 3,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "Rust local-harness state machine and Python effect runtime",
+        "Mistral and other provider protocol adapters",
+        "ACP and MCP client SDKs"
+      ],
+      "used_by": [
+        "First-party Vibe CLI/TUI and ACP integrations"
+      ],
+      "key_insights": [
+        "The Unified Harness is the default at this pin; a stale ADR must not override the actual runtime selector.",
+        "Durability comes from recorded protocol inputs/effects and explicit recovery policies, not merely transcript persistence.",
+        "Root Apache licensing and the Rust TUI Proprietary manifest conflict should be resolved before reusing that crate."
+      ],
+      "doc_path": "harnesses/mistral-vibe.md",
+      "features_notes": {
+        "in_process_sdk": "Importable internal/unpublished APIs; no stable separately published harness SDK established.",
+        "os_sandbox": "External host-supplied adapter; no built-in default confinement.",
+        "plan_mode": "Legacy profile exists; hidden from the unified mode picker at this pin.",
+        "otel": "Opt-in, telemetry-gated; configurable exporter endpoint.",
+        "http_server": "The app-server protocol is not evidence of a generic HTTP agent server."
+      }
+    }
+  ],
+  "verification": {
+    "method": "source review",
+    "reviewed_at": "2026-10-14",
+    "source_pins": {
+      "mistralai/mistral-vibe": "4ae5c5955da8e761318916bdb1a7f46f0b50c7d0"
+    },
+    "checked_claims": [
+      "Unconditional default unified runtime selection",
+      "Write-ahead action/result ordering and effect-specific recovery",
+      "External sandbox adapter scope",
+      "Legacy/unified plan-mode distinction",
+      "Licensing conflict and public-package status"
+    ],
+    "limitations": [
+      "Static inspection only, no recovery or isolation tests.",
+      "Inherited detailed chapter received targeted claim review and all citation-path/range validation.",
+      "Runtime, TUI and product versions denote separate boundaries."
+    ]
+  }
+}

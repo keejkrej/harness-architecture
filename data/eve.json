@@ -1,0 +1,106 @@
+{
+  "records": [
+    {
+      "slug": "eve",
+      "name": "Eve",
+      "category": "agent-framework",
+      "vendor": "Vercel",
+      "language": "TypeScript",
+      "license": "Apache-2.0",
+      "version": "0.79.0 (beta)",
+      "one_liner": "A server-shaped durable agent framework: Workflow owns sessions and Eve drives an outer loop around single AI SDK steps.",
+      "builds_on": [
+        "AI SDK 7 ToolLoopAgent (one-step calls)",
+        "Vercel Workflow SDK",
+        "Nitro",
+        "Sandbox provider adapters"
+      ],
+      "used_by": [],
+      "repo_url": "https://github.com/vercel/eve",
+      "pinned_commit": "2e45423acff29b02a705a64e6d3b2dff10c1fd4d",
+      "doc_path": "harnesses/eve.md",
+      "scores": {
+        "flexibility": 4,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 5,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 4,
+        "provider_neutrality": 4,
+        "maturity": 2,
+        "minimalism": 1
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "yes",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "no",
+        "worktrees": "no",
+        "otel": "yes",
+        "web_ui": "yes",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "features_notes": {
+        "in_process_sdk": "Authoring framework and HTTP clients; no public in-process session runner.",
+        "os_sandbox": "Provider-dependent microVM/container; just-bash fallback has no OS isolation and authored tools run in app runtime.",
+        "ide": "ACP integration.",
+        "durable_resume": "Workflow World owns scheduling/persistence; interrupted steps may repeat inline effects."
+      },
+      "dims": {
+        "loop": "Session/turn loops in Workflow; a durable step calls one-step ToolLoopAgent (batching is optional).",
+        "providers": "AI SDK model interface, direct providers and Gateway defaults.",
+        "tools": "File-discovered authored tools, workflow tools, MCP/OpenAPI and sandbox proxies.",
+        "context": "Instruction/skill directories, dynamic prompt/tool resolution and compaction.",
+        "state": "Workflow replay/checkpoints, parked waits and deployment handoff; repeated interrupted steps can repeat effects.",
+        "safety": "Ingress auth and identity-aware approvals; authored Node tools are trusted and bypass sandbox.",
+        "extensibility": "Npm extensions, directory conventions, registry, hooks, custom channels and providers.",
+        "multi_agent": "Durable local/remote/declarative tasks and workflow orchestration; no control-transfer handoffs.",
+        "surfaces": "Nitro server, HTTP clients, TUI/web/ACP/channels; not a standalone in-process harness API.",
+        "observability": "OTel, Agent Runs traces and integrated eval surfaces."
+      },
+      "key_insights": [
+        "A server-shaped durable agent framework: Workflow owns sessions and Eve drives an outer loop around single AI SDK steps.",
+        "Workflow replay/checkpoints, parked waits and deployment handoff; repeated interrupted steps can repeat effects.",
+        "Ingress auth and identity-aware approvals; authored Node tools are trusted and bypass sandbox."
+      ],
+      "repo": "vercel/eve"
+    }
+  ],
+  "verification": {
+    "claims_checked": 7,
+    "checked_claims": [
+      "Manifest version",
+      "ToolLoopAgent construction is capped at one step",
+      "Inline tools execute in app runtime",
+      "Workflow documentation states interrupted steps rerun",
+      "Batching enlarges replay unit",
+      "Sandbox/app-runtime separation and credential location",
+      "Approvals are authorization, not external-effect deduplication"
+    ],
+    "corrections": [
+      "Removed most-complete durable-server superlative",
+      "Clarified approval does not prevent duplicate effects on crash replay",
+      "Fixed server index citation range"
+    ],
+    "unresolved": [
+      "Workflow World crash behavior is inherited and was not runtime-tested.",
+      "Dynamic beta launch/release statistics were not independently rechecked."
+    ],
+    "method": "source spot-check",
+    "review_date": "2026-10-14",
+    "scope": "Static inspection of selected high-impact claims. Not an exhaustive claim audit; no cloned code executed. Manifest/loop/recovery/safety boundaries prioritized."
+  }
+}

@@ -1,0 +1,175 @@
+{
+  "records": [
+    {
+      "slug": "openclaw-ai",
+      "name": "OpenClaw AI",
+      "vendor": "OpenClaw contributors",
+      "repo": "https://github.com/openclaw/openclaw",
+      "license": "MIT",
+      "language": "TypeScript",
+      "version": "@openclaw/ai 2026.10.3 @ f13a8d0ac04d",
+      "category": "llm-library",
+      "one_liner": "Reusable model and streaming primitives extracted from the OpenClaw ecosystem, with isolated explicit provider registries and application-owned policy.",
+      "features": {
+        "mcp_client": "no",
+        "mcp_server": "no",
+        "skills": "no",
+        "hooks": "partial",
+        "plugins": "partial",
+        "subagents": "no",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "no",
+        "durable_resume": "no",
+        "compaction": "no",
+        "os_sandbox": "no",
+        "approvals": "no",
+        "plan_mode": "no",
+        "worktrees": "no",
+        "otel": "no",
+        "web_ui": "no",
+        "ide": "no",
+        "agents_md": "no"
+      },
+      "dims": {
+        "loop": "Inference/stream primitives, not a complete agent loop; caller controls tool execution and repeated requests.",
+        "providers": "Common model contracts and explicit isolated provider registry; importing does not globally register built-ins.",
+        "tools": "Tool-call model representation and streaming, while execution policy and actual host tools are application responsibilities.",
+        "context": "Common request/message representation; no product AGENTS.md loading, skills or context-engine policy included.",
+        "state": "No session persistence or recovery runtime in the inference layer.",
+        "safety": "Inert host-policy defaults and caller-controlled transport; no tool approval or OS sandbox runtime.",
+        "extensibility": "Provider registration and host/transport hooks; internal subpaths lack semver guarantees.",
+        "multi_agent": "No child-session or routed-agent orchestrator in this layer.",
+        "surfaces": "Directly importable public package; product gateway and private agent-core are separate.",
+        "observability": "Streaming events enable caller instrumentation; no turnkey product diagnostic service in this layer."
+      },
+      "scores": {
+        "flexibility": 5,
+        "integration": 1,
+        "embeddability": 5,
+        "durability": 1,
+        "safety": 1,
+        "extensibility": 3,
+        "multi_agent": 1,
+        "provider_neutrality": 5,
+        "maturity": 3,
+        "minimalism": 3
+      },
+      "builds_on": [
+        "Provider SDKs/protocol implementations",
+        "Pi-derived incorporated-code lineage"
+      ],
+      "used_by": [
+        "OpenClaw private agent-core and gateway product"
+      ],
+      "key_insights": [
+        "A useful reusable layer exists, but it is an inference library rather than the complete product harness.",
+        "Credential, catalogue, retry/failover and host-policy decisions remain with the application."
+      ],
+      "doc_path": "harnesses/openclaw.md",
+      "features_notes": {
+        "hooks": "Provider/transport/host hooks only, not full agent lifecycle hooks.",
+        "plugins": "Provider registration rather than the product plugin catalogue."
+      }
+    },
+    {
+      "slug": "openclaw",
+      "name": "OpenClaw",
+      "vendor": "OpenClaw contributors",
+      "repo": "https://github.com/openclaw/openclaw",
+      "license": "MIT",
+      "language": "TypeScript with native application surfaces",
+      "version": "Manifest 2026.10.3; latest release v2026.10.5-beta.3 @ f13a8d0ac04d",
+      "category": "integrated-product",
+      "one_liner": "Gateway-centric personal-agent platform with replaceable harness and context engine, extensive channel/tool plugins and selective turn/delivery recovery.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "yes",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "unknown",
+        "worktrees": "yes",
+        "otel": "partial",
+        "web_ui": "yes",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "Embedded agent-core loop plus gateway-owned attempt preparation, steering, tool scheduling, transcript custody and final delivery; plugins can replace the harness.",
+        "providers": "OpenClaw AI inference primitives plus product authentication, catalogue, retry/failover and route-specific native harness selection.",
+        "tools": "Coding, process, memory, channel, search and plugin tools; host versus sandbox implementations selected during construction; scoped authenticated loopback MCP server.",
+        "context": "Workspace AGENTS/SOUL/IDENTITY/USER/MEMORY conventions and skills; context-engine assembly, compaction, bootstrap and maintenance are replaceable plugin contracts.",
+        "state": "SQLite session/transcript storage, admitted-turn recovery custody and delivery recovery with caller reauthorization and narrow replay-safe-tool rules. Incognito state is intentionally ephemeral.",
+        "safety": "Optional Docker confinement with network/capability/security/resource controls; main-session tools execute on host by default. Child workspace restrictions propagate.",
+        "extensibility": "Public hooks, tools, channels, providers, context engines, compaction providers and complete alternate harness registration; private runtime packages are a different boundary.",
+        "multi_agent": "Configured routed identities, child sessions, worktree requests and native external harnesses, with inherited workspace and caller constraints.",
+        "surfaces": "Gateway WebSocket/HTTP, CLI, channels, Control UI, native clients, ACP and MCP; use plugins or gateway clients rather than treating private agent-core as a supported library.",
+        "observability": "Diagnostic/lifecycle hooks and optional diagnostics-otel service plugin; not proof all model content is traced by default."
+      },
+      "scores": {
+        "flexibility": 5,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 5,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "@openclaw/ai reusable provider library",
+        "Incorporated Pi-derived code (third-party notices), not current pi-agent-core package",
+        "@mariozechner/pi-tui 1.0.3 direct dependency",
+        "SQLite storage and optional Docker execution"
+      ],
+      "used_by": [
+        "First-party gateway, Control UI, CLI, native clients and channels"
+      ],
+      "key_insights": [
+        "At this pin Pi ancestry is incorporated-code lineage; the remaining direct Pi dependency is pi-tui.",
+        "Harness replacement and context replacement are independent public extension seams within the product.",
+        "Private @openclaw/agent-core and @openclaw/sdk exports do not establish independently supported public SDKs."
+      ],
+      "doc_path": "harnesses/openclaw.md",
+      "features_notes": {
+        "in_process_sdk": "Plugin embedding is supported; agent-core/gateway SDK workspace packages are private.",
+        "os_sandbox": "Optional Docker configuration; main-session host execution is the documented default.",
+        "durable_resume": "Selective authorized restart continuation and delivery recovery; not arbitrary effect replay.",
+        "otel": "Optional diagnostics plugin.",
+        "plan_mode": "Not established in the reviewed source."
+      }
+    }
+  ],
+  "verification": {
+    "method": "source review",
+    "reviewed_at": "2026-10-14",
+    "source_pins": {
+      "openclaw/openclaw": "f13a8d0ac04d3b0284ada075978ad19677cf67a2"
+    },
+    "checked_claims": [
+      "Private versus public package manifests",
+      "Pi notices and direct dependency graph",
+      "Harness/context-engine registration",
+      "Restart recovery constraints and sandbox defaults",
+      "Public AI package responsibility boundary"
+    ],
+    "limitations": [
+      "Static source and first-party documentation review only.",
+      "No runtime, gateway exposure, crash-injection or network-isolation tests.",
+      "Manifest version and latest release tag differ and are reported separately."
+    ]
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "records": [
+    {
+      "slug": "openai-agents-sdk",
+      "name": "OpenAI Agents SDK (Python + JS)",
+      "vendor": "OpenAI",
+      "repo": "openai/openai-agents-python @ 24ebf1cb0f4b; openai/openai-agents-js @ 89a9ddf1e241",
+      "license": "MIT",
+      "language": "Python, TypeScript",
+      "version": "Python 0.23.1 / JS 0.20.0",
+      "category": "agent-framework",
+      "one_liner": "In-process Python/TypeScript framework with tools, handoffs, guardrails, pluggable sessions and serialized approval state; optional SandboxAgent capabilities add workspace execution. External workflow engines provide durable execution.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "partial",
+        "hooks": "yes",
+        "plugins": "partial",
+        "subagents": "yes",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "no",
+        "durable_resume": "partial",
+        "compaction": "partial",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "no",
+        "worktrees": "no",
+        "otel": "partial",
+        "web_ui": "no",
+        "ide": "no",
+        "agents_md": "partial"
+      },
+      "dims": {
+        "loop": "Runner.run delegates to AgentRunner._run_impl, a while loop inside a ≈1,880-line method; streaming is a separate ~1,400-line path. Each turn resolves tools and prompt, calls the model with opt-in retries, builds a ProcessedResponse, runs tool categories concurrently and returns NextStep FinalOutput, Handoff, RunAgain or Interruption. max_turns defaults to 10. Supports cancel(immediate|after_turn); no mid-run steering.",
+        "providers": "Responses item types are the internal ABI. Python aliases openai SDK types; JS defines its own zod protocol with providerData. Adapters: OpenAIProvider (Responses over HTTP/WebSocket, Chat Completions), MultiProvider litellm/ and any-llm/ prefixes (Python), Vercel AI SDK adapter (JS). Reasoning items are replayed and one prompt_cache_key is kept per run. Tokens are tracked; there is no cost accounting.",
+        "tools": "@function_tool (Pydantic + griffe → strict JSON schema) and JS tool() (zod/Standard Schema). Hosted OpenAI tools: web/file search, code interpreter, image generation, hosted MCP, tool search, Programmatic Tool Calling, hosted shell. Native Computer/Shell/ApplyPatch/Custom tools. Sandbox tools: exec_command, write_stdin, apply_patch, view_image, load_skill. Per-tool approvals, guardrails and timeouts; function tools run concurrently.",
+        "context": "Instructions (string or callable) plus server prompt templates; call_model_input_filter hook. Compaction is OpenAI server-side only: ResponsesCompactionSession (responses.compact at ≥10 items) and the sandbox Compaction capability (context_management at 90% of the window). Handoff history nesting and filters. Sandbox Memory: two-phase rollout extraction then consolidation. AGENTS.md appears in prompts but is never loaded.",
+        "state": "4-method Session protocol. Python backends: SQLite, async SQLite, Advanced SQLite (branching), SQLAlchemy, Redis, Mongo, Dapr, Encrypted, OpenAI Conversations; JS has only in-memory and OpenAI. RunState JSON snapshot, schema 1.21 (Python) / 1.22 (JS), resumes after approvals or add_input. Sandbox snapshots and reattach. No event log; durable execution via Temporal, DBOS, Restate or Dapr.",
+        "safety": "Approval interruptions (needs_approval, MCP require_approval, sticky per-agent decisions). Guardrails: input (parallel or blocking), output, tool input/output. Sandboxes: UnixLocal (unconfined on Linux; macOS sandbox-exec filesystem-only; unconfined in JS), Docker network_mode=none, 7 hosted providers. Hosted-shell domain allowlists and mount-credential policy. Computer safety checks fail open; tracing uploads sensitive data by default.",
+        "extensibility": "Observer lifecycle hooks (RunHooks/AgentHooks; EventEmitter in JS). MCP client over stdio/SSE/StreamableHTTP plus hosted MCP, with filters and approvals. Capability plugin interface for sandboxes. SKILL.md skills with lazy load_skill. Pluggable Model, Session, TracingProcessor and SandboxClient. No MCP server, no veto-capable hooks, no plugin distribution.",
+        "multi_agent": "Handoffs are transfer_to_<agent> tool calls that swap the single active agent (first handoff wins). Agents-as-tools run a nested Runner, concurrently, with approval propagation. Code orchestration via gather. Experimental OpenAI hosted multi-agent model and a Codex tool that wraps `codex exec`. No worktrees or workflow engine.",
+        "surfaces": "In-process library only: Python, and TypeScript for Node/Deno/Bun with experimental Workers support. Realtime agents over WebSocket/SIP (WebRTC, Twilio and Cloudflare too in JS). Python VoicePipeline, AI SDK UI stream adapters, Python REPL helper. No CLI, TUI, HTTP server, ACP or IDE. Embedded by Mastra (@mastra/openai) and the ChatKit server.",
+        "observability": "Tracing is on by default: TraceProvider → BatchTraceProcessor → OpenAI traces ingest, with 13 span types. Processors can be added or replaced; tracing can be disabled via env or RunConfig; sensitive-data flag. No native OTel (30+ third-party processors). No eval harness; ScriptedModel, sandbox and realtime test doubles; test LOC is over 2× source."
+      },
+      "scores": {
+        "flexibility": 4,
+        "integration": 3,
+        "embeddability": 5,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 4,
+        "multi_agent": 4,
+        "provider_neutrality": 4,
+        "maturity": 4,
+        "minimalism": 2
+      },
+      "builds_on": [
+        "openai Python/Node SDKs (Python uses Responses API types directly as internal item model)",
+        "pydantic + griffe (Python function-tool schemas)",
+        "zod / Standard Schema (JS tool and protocol schemas)",
+        "MCP SDK (mcp>=1.19,<3 in Python; @modelcontextprotocol/client in JS)",
+        "LiteLLM and any-llm (optional Python provider bridges via MultiProvider prefixes)",
+        "Vercel AI SDK (JS model adapter via @ai-sdk/provider LanguageModelV2/V3; ai-sdk-ui stream adapters)",
+        "Codex CLI / @openai/codex-sdk (experimental codex_tool spawning `codex exec --experimental-json`)",
+        "Docker, E2B, Modal, Daytona, Blaxel, Cloudflare, Runloop, Vercel Sandbox (sandbox backends)"
+      ],
+      "used_by": [
+        "Mastra (@mastra/openai OpenAISDKAgent wraps @openai/agents as a Mastra agent)",
+        "Temporal (temporalio.contrib.openai_agents durable execution; core has workflow.patched replay gate)",
+        "Dapr, Restate and DBOS durable-execution integrations",
+        "OpenAI ChatKit Python server (openai-chatkit depends on openai-agents)",
+        "@cloudflare/sandbox (optional peer dependency on @openai/agents)"
+      ],
+      "key_insights": [
+        "The 'lightweight' framing holds only for concepts. The runner is ~32 kLOC (Python) / ~35 kLOC (JS); AgentRunner._run_impl alone is ≈1,880 lines and streaming is a second ~1,400-line implementation. Much of the reviewed complexity concerns approval-state serialization and session-write reconciliation across resume boundaries, alongside parallel guardrails. RunState's 22 schema-version summaries read as a log of these edge cases.",
+        "The languages diverge architecturally. Python's internal item model is the openai SDK's Responses types, and hosted tools live in core. JS defines an SDK-owned zod protocol with providerData, keeps hosted tools in @openai/agents-openai, and lets the umbrella @openai/agents package register the OpenAI provider and trace exporter as import side effects.",
+        "Sandbox Agents (Python v0.14, 2026-04-15; JS 0.9.0, 2026-05-05) embed a Codex-derived harness directly in the core Runner. It has a Codex-derived Python prompt, exec_command/write_stdin with yield times, apply_patch, two-phase rollout memory and server compaction keyed to a hard-coded GPT context-window table, all packaged as Capability objects over pluggable sandbox clients.",
+        "AGENTS.md support is prompt-only. The Python sandbox prompt claims root AGENTS.md 'is included with the developer message', but no code in either SDK reads AGENTS.md. The JS prompt (independently written) correctly tells the model to look for it. Press claims of AGENTS.md support describe the prompt contract.",
+        "All automatic compaction is OpenAI server-side. OpenAIResponsesCompactionSession calls responses.compact when there are ≥10 non-user items (an item count, not tokens). The sandbox Compaction capability injects context_management compact_threshold. LiteLLM or AI-SDK models get no summarization beyond input filters and ToolOutputTrimmer.",
+        "Local isolation is weak. UnixLocal is unconfined on Linux and in JS, and macOS sandbox-exec restricts only the filesystem. Real isolation needs Docker network_mode='none' or a hosted provider. Computer-use safety checks proceed with only a warning when no handler is set, and tracing uploads sensitive data to OpenAI by default.",
+        "Durability is snapshot-based, not event-sourced. RunState resumes require a reconstructable unambiguous live agent graph and stable MCP server ordering; duplicate names are supported through identity keys, with unique names recommended. Python (1.21) and JS (1.22) number their schemas independently, so snapshots are not cross-language portable. The core explicitly gates behaviour with temporalio workflow.patched so Temporal replays stay deterministic.",
+        "Parity is high but not total. Python-only: database sessions (SQLite/SQLAlchemy/Redis/Mongo/Dapr/encrypted, branching), LiteLLM/any-llm, VoicePipeline, macOS sandbox-exec. JS-only: Vercel AI SDK model adapter, WebRTC realtime, Deno/Bun/edge runtimes."
+      ],
+      "doc_path": "harnesses/openai-agents-sdk.md",
+      "features_notes": {
+        "os_sandbox": "Backend-dependent; local JS/Linux execution is not OS-confined.",
+        "durable_resume": "Explicit RunState serialization and session history; crash replay requires a separate durable engine.",
+        "skills": "SandboxAgent capability, not automatic behavior of every Agent."
+      }
+    }
+  ],
+  "verification": {
+    "method": "Independent targeted static source review plus repository-wide mechanical citation validation; no runtime tests",
+    "checked_claims": [
+      "Python manifest version 0.23.1",
+      "RunState and Session are different persistence boundaries",
+      "Sandbox resume interface allows backend-dependent replacement",
+      "Temporal replay behavior is delegated and version gated",
+      "JS local file protection does not confine shell commands",
+      "Docker network isolation is optional"
+    ],
+    "claims_checked": 6,
+    "corrections": [
+      "Tracing is default-on, not always-on",
+      "Removed language lockstep implication",
+      "Qualified backend-dependent sandbox restoration"
+    ],
+    "unresolved": [
+      "Secondary release chronology, approximate LOC totals and every individual feature were not independently re-derived in this review; source links and the study limitations remain authoritative."
+    ],
+    "independent_final_review": {
+      "date": "2026-10-14",
+      "scope": "Targeted source and cross-document consistency review, not exhaustive",
+      "corrections": [
+        "Corrected duplicate agent name support through stable identities; removed near-exactly-once persistence label."
+      ]
+    }
+  }
+}

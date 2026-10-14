@@ -1,0 +1,112 @@
+{
+  "records": [
+    {
+      "slug": "strands",
+      "name": "Strands SDK + harness",
+      "category": "harness-library",
+      "vendor": "AWS",
+      "language": "Python; TypeScript",
+      "license": "Apache-2.0",
+      "version": "Python version tag-derived; TS manifests 0.0.1-development (release context: SDK 1.60/1.20, harness 0.2)",
+      "one_liner": "Parallel Python/TypeScript SDKs with hooks, policy interventions and a harness factory; persistence is snapshot-based.",
+      "builds_on": [
+        "Own Python/TypeScript model-driven loops",
+        "Bedrock SDK defaults",
+        "Optional provider and sandbox adapters"
+      ],
+      "used_by": [
+        "Strands harness factory",
+        "Strands CLI"
+      ],
+      "repo_url": "https://github.com/strands-agents/harness-sdk",
+      "pinned_commit": "12170cf02e4ee45dabf5c3e13fbb6663a1d44a28",
+      "doc_path": "harnesses/strands.md",
+      "scores": {
+        "flexibility": 4,
+        "integration": 4,
+        "embeddability": 5,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 5,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 2
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "partial",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "partial",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "no",
+        "worktrees": "no",
+        "otel": "yes",
+        "web_ui": "no",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "features_notes": {
+        "mcp_server": "Separate strands-mcp package.",
+        "http_server": "A2A integration rather than a general full application server.",
+        "durable_resume": "Snapshot/interrupt resume and cycle markers; no journal/scheduler for in-flight work.",
+        "os_sandbox": "Docker/SSH routing and separate Strands Box integration; default host environment has no isolation.",
+        "approvals": "Opt-in interventions in library; CLI supplies policy/prompt defaults.",
+        "ide": "ACP integration."
+      },
+      "dims": {
+        "loop": "Model-driven SDK loop; harness factory wires defaults onto ordinary Agent instances.",
+        "providers": "Bedrock default plus native providers/LiteLLM and TS AI SDK model adapter.",
+        "tools": "Decorated tools, executors, MCP, sandbox routing and code-mode capability.",
+        "context": "Context managers, offload/stash, memory and Agent Skills.",
+        "state": "Snapshots per invocation/message and interrupt state; checkpoint marker alone contains no conversation state.",
+        "safety": "Cedar/HITL interventions; default NotASandboxLocalEnvironment executes on host, Docker/SSH relocate effects.",
+        "extensibility": "Hook bus, middleware, plugin classes, interventions and skill/tool discovery.",
+        "multi_agent": "Agent-as-tool, Graph/Swarm and background delegates; unfinished background work is process-local.",
+        "surfaces": "Python/TS in-process libraries, browser build and CLI TUI/ACP.",
+        "observability": "OpenTelemetry hooks and metrics; tracing exporters require configuration."
+      },
+      "key_insights": [
+        "Parallel Python/TypeScript SDKs with hooks, policy interventions and a harness factory; persistence is snapshot-based.",
+        "Snapshots per invocation/message and interrupt state; checkpoint marker alone contains no conversation state.",
+        "Cedar/HITL interventions; default NotASandboxLocalEnvironment executes on host, Docker/SSH relocate effects."
+      ],
+      "repo": "strands-agents/harness-sdk"
+    }
+  ],
+  "verification": {
+    "claims_checked": 8,
+    "checked_claims": [
+      "Python Apache license and Production/Stable classifier",
+      "Python package version is dynamic from tags",
+      "TS SDK/harness manifests are development placeholders",
+      "Harness constructs per-message SnapshotSessionManager",
+      "Snapshot immutable history trigger semantics",
+      "Python/TS guardrail redaction difference documented",
+      "Cycle checkpoint explicitly contains no conversation state",
+      "Default host environment explicitly has no isolation"
+    ],
+    "corrections": [
+      "Distinguished release-label context from literal manifest versions",
+      "Added TypeScript trigger-mode redaction caveat",
+      "Removed inaccurate single-language comparison with Deep Agents",
+      "Fixed directory blob citation to tree"
+    ],
+    "unresolved": [
+      "Historical release tag dates were not re-fetched in this source review.",
+      "No runtime parity or crash-recovery testing performed."
+    ],
+    "method": "source spot-check",
+    "review_date": "2026-10-14",
+    "scope": "Static inspection of selected high-impact claims. Not an exhaustive claim audit; no cloned code executed. Manifest/loop/recovery/safety boundaries prioritized."
+  }
+}

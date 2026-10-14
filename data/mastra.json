@@ -1,0 +1,112 @@
+{
+  "records": [
+    {
+      "slug": "mastra",
+      "name": "Mastra",
+      "category": "agent-framework",
+      "vendor": "Mastra / Kepler Software",
+      "language": "TypeScript",
+      "license": "Apache-2.0; ee directories separately licensed",
+      "version": "core 1.78.0-alpha.2 at pin",
+      "one_liner": "A broad framework whose agent loop is a workflow; durable recovery is an explicit persistence configuration, not implied by durable:true alone.",
+      "builds_on": [
+        "AI SDK provider specifications; bundled SDK v4–v7",
+        "Own workflow/agent loop runtime",
+        "pi-tui (Mastra Code only)"
+      ],
+      "used_by": [
+        "Mastra Code"
+      ],
+      "repo_url": "https://github.com/mastra-ai/mastra",
+      "pinned_commit": "a68b1a4950334fbfb08ede44237150970dac271b",
+      "doc_path": "harnesses/mastra.md",
+      "scores": {
+        "flexibility": 4,
+        "integration": 5,
+        "embeddability": 5,
+        "durability": 5,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 5,
+        "provider_neutrality": 5,
+        "maturity": 5,
+        "minimalism": 1
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "yes",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "yes",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "no",
+        "otel": "yes",
+        "web_ui": "yes",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "features_notes": {
+        "durable_resume": "Requires durable agent, persistent store and running-snapshot recovery policy; ordinary Agent is suspend/resume only.",
+        "os_sandbox": "Core offers opt-in seatbelt/bwrap; default none, and Mastra Code does not enable isolation.",
+        "plan_mode": "Mastra Code product surface.",
+        "ide": "ACP and integrations, not a native IDE extension.",
+        "plugins": "Framework programmatic extensions plus Mastra Code plugin surface."
+      },
+      "dims": {
+        "loop": "Own AgenticLoopBuilder composes a workflow iteration around provider doStream calls.",
+        "providers": "AI SDK provider specs V2/V3/V4, model router and gateway/fallback adapters.",
+        "tools": "Tools, processor stages, tool approval/suspension and delegated agent tools.",
+        "context": "Memory processors, observational memory, skills and coding-product instructions.",
+        "state": "Workflow snapshots; DurableAgent persists running state only with recovery/custom policy or shutdown; remote effects can repeat.",
+        "safety": "Approvals, guardrails and opt-in native/remote sandboxes; Mastra Code shell runs unconfined after approval.",
+        "extensibility": "Processors, hooks, storage/workspace adapters, MCP client/server and product plugins.",
+        "multi_agent": "Workflow parallel/branch/loops, agent networks, delegated tools and protocol wrappers.",
+        "surfaces": "In-process framework, Studio/server/deployers and separate Mastra Code SDK/TUI/ACP/Factory.",
+        "observability": "Tracing/OTel, scorers, datasets and eval/experiment tooling."
+      },
+      "key_insights": [
+        "A broad framework whose agent loop is a workflow; durable recovery is an explicit persistence configuration, not implied by durable:true alone.",
+        "Workflow snapshots; DurableAgent persists running state only with recovery/custom policy or shutdown; remote effects can repeat.",
+        "Approvals, guardrails and opt-in native/remote sandboxes; Mastra Code shell runs unconfined after approval."
+      ],
+      "repo": "mastra-ai/mastra"
+    }
+  ],
+  "verification": {
+    "claims_checked": 10,
+    "checked_claims": [
+      "Core manifest pinned alpha version",
+      "License has ee directory exceptions",
+      "Ordinary loop persists only pending/paused/suspended",
+      "DurableAgent recovery-aware running snapshot policy",
+      "Recovery config default durableAgents off",
+      "Storage generation fence versus lease-only fallback",
+      "Default LocalSandbox isolation none",
+      "Isolated native sandbox network default false",
+      "Mastra Code constructs LocalSandbox without isolation",
+      "Recovery explicitly reruns model/tool work"
+    ],
+    "corrections": [
+      "Corrected claim that DurableAgent always writes running snapshots",
+      "Added recovery policy and graceful-shutdown distinction",
+      "Clarified durable:true alone does not guarantee hard-crash recovery",
+      "Fixed LocalSandbox default citation location"
+    ],
+    "unresolved": [
+      "Fencing guarantees depend on selected storage adapter and were not tested under concurrent workers.",
+      "Enterprise license implications are reported from repository text, not legal advice."
+    ],
+    "method": "source spot-check",
+    "review_date": "2026-10-14",
+    "scope": "Static inspection of selected high-impact claims. Not an exhaustive claim audit; no cloned code executed. Manifest/loop/recovery/safety boundaries prioritized."
+  }
+}

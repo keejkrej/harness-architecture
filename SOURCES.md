@@ -52,4 +52,18 @@ Clones were taken on **2026-10-14**. To reproduce one: `git clone https://github
 | `fx` | [vercel-labs/fx](https://github.com/vercel-labs/fx) | [`b877f4dcc57d`](https://github.com/vercel-labs/fx/tree/b877f4dcc57dfb2c0654d5bb18012215c0fdf1b3) | 2026-10-14 | 1,170 |
 | `agentos` | [rivet-dev/agentos](https://github.com/rivet-dev/agentos) | [`4d48628304c1`](https://github.com/rivet-dev/agentos/tree/4d48628304c1ddedafc9d55f60752093fcf6f3d2) | 2026-10-12 | 2,797 |
 
+| `langgraph` | [langchain-ai/langgraph](https://github.com/langchain-ai/langgraph) | [`36bf3887f074`](https://github.com/langchain-ai/langgraph/tree/36bf3887f074f2b05f42409c8a67e3a33ed1d1ba) | 2026-10-14 | 692 |
+| `crewai` | [crewAIInc/crewAI](https://github.com/crewAIInc/crewAI) | [`aaaa312cbac8`](https://github.com/crewAIInc/crewAI/tree/aaaa312cbac806dcd8142040af15324576b01468) | 2026-10-14 | 35,755 |
+| `agno` | [agno-agi/agno](https://github.com/agno-agi/agno) | [`160d246d6e95`](https://github.com/agno-agi/agno/tree/160d246d6e95386ef60f995be6ceed108ca62057) | 2026-10-14 | 6,172 |
+| `llama-index` | [run-llama/llama_index](https://github.com/run-llama/llama_index) | [`619d74664e84`](https://github.com/run-llama/llama_index/tree/619d74664e8404612038bc15a1a40c686037277c) | 2026-10-14 | 9,799 |
+| `haystack` | [deepset-ai/haystack](https://github.com/deepset-ai/haystack) | [`122a617bd661`](https://github.com/deepset-ai/haystack/tree/122a617bd661de20cbf882f00010627b0ed7278f) | 2026-10-14 | 12,745 |
+| `dspy` | [stanfordnlp/dspy](https://github.com/stanfordnlp/dspy) | [`1af633fecbb2`](https://github.com/stanfordnlp/dspy/tree/1af633fecbb2b8acec7e3ed9acd6db1cde6d341c) | 2026-10-14 | 736 |
+| `autogen` | [microsoft/autogen](https://github.com/microsoft/autogen) | [`027ecf0a379b`](https://github.com/microsoft/autogen/tree/027ecf0a379bcc1d09956d46d12d44a3ad9cee14) | 2026-04-06 | 1,838 |
+| `semantic-kernel` | [microsoft/semantic-kernel](https://github.com/microsoft/semantic-kernel) | [`5b4a3269a680`](https://github.com/microsoft/semantic-kernel/tree/5b4a3269a6803f7832568e66313c31d714a1f009) | 2026-10-13 | 4,844 |
+| `letta-code` | [letta-ai/letta-code](https://github.com/letta-ai/letta-code) | [`5333d2060f07`](https://github.com/letta-ai/letta-code/tree/5333d2060f0719882d622d0f05b1c9feffc987b8) | 2026-10-14 | 2,598 |
+
+| `langchain` | [langchain-ai/langchain](https://github.com/langchain-ai/langchain) | [`84ba23c414ec`](https://github.com/langchain-ai/langchain/tree/84ba23c414eca6bf6f6ebd1394a3006378113540) | 2026-10-14 | 3,190 |
+
 `claude-code-leak` is the user's fork of a public mirror of the Claude Code TypeScript source that was exposed in March 2026. It is analysed only at the architecture level (structure, control flow, file paths). No source text from it is reproduced in this repository.
+
+Commit dates are repository metadata in the commit timezone, not the study timezone. A date one day ahead (for example Kimi Code) can reflect timezone differences. A pin identifies the inspected checkout; it need not be a published release. Supplemental repositories added during the completeness pass were cloned on the same study date.

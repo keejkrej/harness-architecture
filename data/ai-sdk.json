@@ -1,0 +1,111 @@
+{
+  "records": [
+    {
+      "slug": "ai-sdk",
+      "name": "Vercel AI SDK core",
+      "category": "llm-library",
+      "vendor": "Vercel",
+      "language": "TypeScript",
+      "license": "Apache-2.0",
+      "version": "ai 7.0.140; provider 4.0.27",
+      "one_liner": "Provider-neutral generation/tool-loop primitives and UI streams; applications supply sessions, compaction and runtime ownership.",
+      "builds_on": [
+        "AI SDK provider specification and provider adapters"
+      ],
+      "used_by": [
+        "Eve (ToolLoopAgent single-step)",
+        "Mastra (provider specification and bundled SDK generations)",
+        "OpenCode/Kilo",
+        "Cline"
+      ],
+      "repo_url": "https://github.com/vercel/ai",
+      "pinned_commit": "3f0c878c4f74db15df89d1df126cc9e3a83bda0e",
+      "doc_path": "harnesses/ai-sdk.md",
+      "scores": {
+        "flexibility": 5,
+        "integration": 2,
+        "embeddability": 5,
+        "durability": 1,
+        "safety": 3,
+        "extensibility": 4,
+        "multi_agent": 2,
+        "provider_neutrality": 5,
+        "maturity": 5,
+        "minimalism": 3
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "no",
+        "hooks": "yes",
+        "plugins": "no",
+        "subagents": "partial",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "no",
+        "durable_resume": "partial",
+        "compaction": "no",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "no",
+        "worktrees": "no",
+        "otel": "yes",
+        "web_ui": "partial",
+        "ide": "no",
+        "agents_md": "no"
+      },
+      "features_notes": {
+        "mcp_client": "Separate first-party MCP package.",
+        "subagents": "Agent-as-tool recipe; wrapped runtimes may provide native delegation.",
+        "durable_resume": "Optional WorkflowAgent on external Workflow DevKit; core has no persistence and durability score is 1.",
+        "os_sandbox": "Optional external sandbox providers; core does not isolate host tools.",
+        "web_ui": "UI protocols and useChat bindings, not a finished application."
+      },
+      "dims": {
+        "loop": "generateText/streamText own tool loops; ToolLoopAgent is a settings wrapper defaulting to 20 steps.",
+        "providers": "Versioned LanguageModelV4 with V2/V3 compatibility and provider registry.",
+        "tools": "Typed tools, parallel execution, repair and call-level approvals; no default coding tools.",
+        "context": "prepareStep and pruning hooks; no built-in summary compaction or project-instruction loader.",
+        "state": "Core has no store; optional WorkflowAgent supports generate/stream with external workflow replay.",
+        "safety": "Approval validation and optional HMAC signatures; external isolation must be selected and configured.",
+        "extensibility": "Model middleware, callbacks, MCP and custom Agent implementations; no application plugin marketplace.",
+        "multi_agent": "Agent-as-tool composition; HarnessAgent delegates native features to wrapped runtimes.",
+        "surfaces": "In-process SDK, web UI bindings and handler helpers; no standalone HTTP server.",
+        "observability": "Telemetry interfaces and OTel integration package; cost generally comes from provider/Gateway metadata."
+      },
+      "key_insights": [
+        "Provider-neutral generation/tool-loop primitives and UI streams; applications supply sessions, compaction and runtime ownership.",
+        "Core has no store; optional WorkflowAgent supports generate/stream with external workflow replay.",
+        "Approval validation and optional HMAC signatures; external isolation must be selected and configured."
+      ],
+      "repo": "vercel/ai"
+    }
+  ],
+  "verification": {
+    "claims_checked": 9,
+    "checked_claims": [
+      "ai package version 7.0.140 and Apache license",
+      "Core provider dependencies",
+      "ToolLoopAgent default stop condition is 20",
+      "WorkflowAgent.generate implementation exists",
+      "Generate and stream share execute path",
+      "Workflow generate defaults to 20 and streaming has no implicit cap",
+      "Phase 1 note contradicts implemented generate path",
+      "Workflow execute comment documents use-step boundary",
+      "Approval replay validates HMAC when configured and current policy/schema"
+    ],
+    "corrections": [
+      "Corrected false unimplemented WorkflowAgent.generate assertion",
+      "Corrected WorkflowAgent generate vs stream step limits",
+      "Marked stale Phase 1 design note explicitly",
+      "Changed baseline durability score 3 to 1 and separated optional external Workflow integration"
+    ],
+    "unresolved": [
+      "External Workflow replay was not executed; step boundaries alone do not prove exactly-once remote effects."
+    ],
+    "method": "source spot-check",
+    "review_date": "2026-10-14",
+    "scope": "Static inspection of selected high-impact claims. Not an exhaustive claim audit; no cloned code executed. Manifest/loop/recovery/safety boundaries prioritized."
+  }
+}

@@ -9,6 +9,18 @@
 
 Nothing from the cloned repos was executed or installed. All reading was static.
 
+## Scope and evidence limits
+
+This is a source snapshot dated **2026-10-14**, not an exhaustive market census, adoption ranking, benchmark, or security audit. Selection began with the user's named systems, expanded to prominent public frameworks and coding agents, and followed implementation dependencies and successors. No usage or market-share estimates determine the scores.
+
+The main chapters are deep dives; `harnesses/adjacent-frameworks.md` is an explicitly shallower breadth pass over general orchestration, retrieval and optimization frameworks. Grouped chapters separate their systems and use distinct matrix records where their behavior differs. A library, its product shell and a subprocess client are not interchangeable units. Read the record name and chapter scope before comparing scores.
+
+The study focuses on open-source implementations. **Crush's FSL release, the proprietary historical Claude Code mirror, and the Claude SDK's closed runtime are labeled exceptions**, not open-source building blocks. The Claude snapshot is included at the user's request and is analyzed in prose with file citations; its source and prompts are not reproduced. A public repository or a permissive client wrapper alone does not make its runtime open source.
+
+Source code outranks READMEs, design notes and familiar descriptions of earlier releases. A manifest's development version is not a published release; a feature behind a flag is not a default. Hosted services, external workflow engines and container providers are dependencies whose internal guarantees were not audited here. An absence claim means no implementation was identified in the reviewed scope, not proof about every downstream extension.
+
+Static inspection cannot establish runtime correctness, throughput, token efficiency, security against attacks, real crash behavior, or API compatibility in a deployed application. Approximate LOC figures exclude files using each chapter's stated boundaries; some include inline tests, generated code or bundled schemas. They are orientation aids, not normalized complexity measurements. Release histories and popularity counts in inherited deep dives were not all independently re-collected during the continuation review.
+
 ## What counts as a "harness"
 
 An **agent harness** is everything around the model that turns it into an agent: the loop, tool execution, context and memory management, state and persistence, safety controls, orchestration, and the extension and host surfaces. The systems studied fall along a spectrum:
@@ -16,10 +28,11 @@ An **agent harness** is everything around the model that turns it into an agent:
 | Category | Meaning | Examples |
 |---|---|---|
 | `llm-library` | Provider abstraction plus a primitive tool loop. You build the harness yourself. | AI SDK core, pi-ai |
-| `harness-library` | An embeddable, opinionated harness (tools, compaction, sessions) with no product UI required | pi-agent-core, Deep Agents, Flue, Strands |
+| `harness-library` | An embeddable loop or harness with no product UI required; the amount of context/state machinery varies | pi-agent-core, Pi Durable, Deep Agents, Strands |
 | `agent-framework` | Builds and deploys agents, usually with workflows, memory and deployment targets | Eve, Mastra, OpenAI Agents SDK, ADK |
-| `integrated-product` | A complete end-user agent (CLI/TUI/IDE/app) whose harness is tightly coupled to the product | Codex, OpenCode, Grok Build, Kimi Code, Claude Code |
-| `hybrid` | A product deliberately split into a reusable harness and a product shell | Pi coding agent, DeepSeek Harness, Goose |
+| `integrated-product` | A complete end-user agent (CLI/TUI/IDE/app) whose harness is tightly coupled to the product | Codex, Grok Build, Kimi Code, historical Claude Code |
+| `hybrid` | A product deliberately split into a reusable harness and a product shell | Pi coding agent, OpenCode V2, OpenHands, Goose |
+| `execution-runtime` | An execution/sandbox substrate with no model loop; included as adjacent infrastructure, not a harness candidate | Rivet AgentOS |
 
 Integration and flexibility both count as merits. The scorecard rates them separately.
 
@@ -50,15 +63,28 @@ Integration and flexibility both count as merits. The scorecard rates them separ
 | **Extensibility**: plugins, hooks, skills, MCP | None | MCP and custom tools | Rich extension API, hooks, skills and plugin distribution |
 | **Multi-agent** | None | Subagent tool | Parallel orchestration, handoffs, worktrees, workflows |
 | **Provider neutrality** | Single vendor | A few providers or OpenAI-compatible | Broad unified provider abstraction |
-| **Maturity** | Preview or RC | Active 0.x with real users | Stable 1.x+ with a versioned API and large user base |
+| **Maturity** | Preview or RC | Active releases and documented use | Stable versioned API, established releases and compatibility practices |
 | **Minimalism**: a small, legible core | Very large or complex | Moderate | A core you can read in an afternoon |
 
-Scores are relative judgments made from the code, not benchmarks. Each harness doc justifies its scores, and an adversarial verifier re-checked them against the source.
+Scores are relative judgments made from the code, not benchmarks. Each chapter gives its rationale. A source-review pass challenged load-bearing claims; it did not prove every sentence. `null` / `?` means unassessable, not absent. Integration, minimalism and flexibility intentionally trade off; the matrix does not add them into a misleading overall ranking. Safety rates available controls, not demonstrated resistance to attacks. Embeddability rates the harness execution boundary, not merely the existence of a package called SDK.
+
+Feature cells are `yes`, `partial`, `no` or `unknown`: confirmed in the stated scope; qualified/optional/host-dependent; not provided in that scope; or not established. The legacy data key `durable_resume` deliberately remains a coarse discovery field. It does **not** mean durable execution: use the [durability analysis](comparison/durability.md) and state summaries to distinguish transcript loading, turn recovery, checkpoint replay and external side effects. Similarly, approval rules, a git worktree, a language interpreter and an OS sandbox are separate mechanisms.
 
 ## Process
 
 1. Clone every repo at a pinned commit (see `SOURCES.md`).
-2. Have one researcher agent per harness read the code and write `harnesses/<slug>.md` from [`harnesses/_TEMPLATE.md`](harnesses/_TEMPLATE.md).
-3. Have one adversarial verifier per doc resolve every citation, try to refute the main claims against the code, and fix errors in place.
-4. Run cross-cutting synthesis per dimension (`comparison/`) and build the matrix and scorecard.
-5. Run a completeness critique, then close the gaps it found.
+2. Write the deep dives from [`harnesses/_TEMPLATE.md`](harnesses/_TEMPLATE.md), and identify additional systems for a bounded breadth pass.
+3. Challenge load-bearing claims against source: loop ownership, embedding, recovery, side effects, permissions, licensing and dependency edges. Record actual sampled checks and unresolved questions in `data/*.json`; do not claim exhaustive semantic verification.
+4. Mechanically validate every recognized GitHub blob/tree permalink against the manifest, tracked paths and line bounds in the pinned clones. Modified worktree paths are checked through the committed git blob. Validate local links, record fields and unique slugs separately. These checks establish referential integrity, not that a citation proves the adjacent claim.
+5. Write cross-cutting synthesis in `comparison/`, generate the matrix, check completeness and run an independent final review. The [verification report](comparison/verification.md) records the completed checks and limitations.
+
+## Reproduction
+
+Clone repositories at the SHAs in [`SOURCES.md`](SOURCES.md) into a sibling `harness-sources/` directory, then run:
+
+```text
+python scripts/validate_research.py
+python scripts/build_matrix.py --check
+```
+
+Without source clones, `python scripts/validate_research.py --skip-source-files` checks records, local links and pin consistency only. CI uses this lighter check plus matrix freshness; the full path/line validation is a local research check. Generate the matrix with `python scripts/build_matrix.py` after editing records.

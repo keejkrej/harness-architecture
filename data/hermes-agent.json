@@ -1,0 +1,107 @@
+{
+  "records": [
+    {
+      "slug": "hermes-agent",
+      "name": "Hermes Agent",
+      "vendor": "Nous Research",
+      "repo": "https://github.com/NousResearch/hermes-agent",
+      "license": "MIT",
+      "language": "Python, with TypeScript/Rust application surfaces",
+      "version": "v0.22.0 release; install-stamped version, manifest 0.0.0 @ 311155fade43",
+      "category": "integrated-product",
+      "one_liner": "Persistent personal-agent platform combining a coding loop, memory, skills, delegation and a multi-channel gateway; source-level Python embedding is possible but not a supported wheel API.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "yes",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "unknown",
+        "worktrees": "yes",
+        "otel": "partial",
+        "web_ui": "yes",
+        "ide": "yes",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "AIAgent coordinates provider calls, bounded tool dispatch, steering, interruption and context-pressure recovery; max turns is unlimited by default unless configured.",
+        "providers": "Multiple provider adapters and compatible endpoints, with explicit provider-specific authentication, message conversion, caching and retry handling.",
+        "tools": "Built-in coding, process, search, memory, delegation and integration tools; registry/toolsets, MCP ingestion and result filtering.",
+        "context": "Stable prompt prefix, project instructions, persistent memory and skills; replaceable context-engine lifecycle with compression and oversized-result handling.",
+        "state": "SQLite WAL sessions, incremental tool-result persistence, ownership leases and gateway/delivery recovery; not deterministic replay of arbitrary in-flight tool effects.",
+        "safety": "Approvals and child policy propagation; optional Docker/remote execution, egress controls and credential proxy. Default local execution is host execution.",
+        "extensibility": "Plugins, hooks, skills, tools, providers and context engines; broad product extension seams, with API stability distinct from product releases.",
+        "multi_agent": "Parallel delegation, named background work, opt-in child worktrees, routed profiles, kanban handoffs, mixture-of-agents and A2A capabilities.",
+        "surfaces": "CLI/TUI, headless, gateway HTTP and messaging channels, web/desktop, ACP and MCP servers; Python imports require a source checkout.",
+        "observability": "Trajectories, session search, usage and service monitoring. Optional OTLP exporter carries redacted gateway health events; turn tracing is a separate Langfuse plugin."
+      },
+      "scores": {
+        "flexibility": 4,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 5,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "Python provider SDKs and compatible APIs",
+        "SQLite WAL session storage",
+        "Optional Docker, remote execution and MCP integrations"
+      ],
+      "used_by": [
+        "First-party Hermes CLI, gateway and web/desktop surfaces"
+      ],
+      "key_insights": [
+        "Distinguish the supported product from source-checkout AIAgent embedding.",
+        "Recovery and delivery custody are stronger than saved chat history, but arbitrary effects are not journal-replayed.",
+        "Skills can be learned at configured intervals after eligible turns, rather than necessarily after every turn."
+      ],
+      "doc_path": "harnesses/hermes-agent.md",
+      "features_notes": {
+        "in_process_sdk": "Documented source-checkout Python use; no supported installable wheel contract.",
+        "os_sandbox": "Optional configured backend; local execution defaults to the host.",
+        "otel": "Gateway health/diagnostic OTLP events, not built-in GenAI turn/tool spans.",
+        "plan_mode": "Not established in the reviewed source."
+      }
+    }
+  ],
+  "verification": {
+    "method": "source review",
+    "reviewed_at": "2026-10-14",
+    "source_pins": {
+      "NousResearch/hermes-agent": "311155fade43d1993ea968909a2ad36762345bbc"
+    },
+    "checked_claims": [
+      "Source-level embedding guidance",
+      "Default iteration and delegation limits",
+      "Context-engine replacement seam",
+      "Incremental persistence and optional confinement",
+      "OTLP exporter scope"
+    ],
+    "limitations": [
+      "Static review only; no runtime or crash tests.",
+      "Inherited detailed chapter received targeted claim review and all citation-path/range validation; not every statement was independently rerun.",
+      "Release metadata checked via first-party GitHub API; popularity is not scored."
+    ],
+    "independent_final_review": {
+      "date": "2026-10-14",
+      "scope": "Source samples of scheduling, package and persistence boundaries",
+      "corrections": [
+        "Qualified recurring cron occurrence deduplication versus finite one-shot dispatch budgets and unlimited one-shots."
+      ]
+    }
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "records": [
+    {
+      "slug": "pi-coding-agent",
+      "name": "Pi coding agent",
+      "category": "hybrid",
+      "vendor": "Earendil Works",
+      "language": "TypeScript",
+      "license": "MIT",
+      "version": "1.2.0",
+      "one_liner": "An extensible terminal coding product with an in-process SDK, built on the small Pi loop and JSONL sessions.",
+      "builds_on": [
+        "pi-ai",
+        "pi-agent-core",
+        "pi-tui",
+        "pi-mcp",
+        "pi-codemode"
+      ],
+      "used_by": [
+        "AI SDK Pi harness adapter",
+        "OpenClaw (historical coding-agent embedding; current direct dependency is pi-tui only)"
+      ],
+      "repo_url": "https://github.com/earendil-works/pi",
+      "pinned_commit": "b45e0ebcc5ae2fc42a6f2f23104d10e656e6bedb",
+      "doc_path": "harnesses/pi-coding-agent.md",
+      "scores": {
+        "flexibility": 4,
+        "integration": 4,
+        "embeddability": 4,
+        "durability": 3,
+        "safety": 2,
+        "extensibility": 5,
+        "multi_agent": 2,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 3
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "partial",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "no",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "no",
+        "approvals": "partial",
+        "plan_mode": "partial",
+        "worktrees": "no",
+        "otel": "no",
+        "web_ui": "no",
+        "ide": "no",
+        "agents_md": "yes"
+      },
+      "features_notes": {
+        "subagents": "Example extensions and host orchestration, not a built-in scheduler.",
+        "durable_resume": "JSONL session resume, not mid-tool durable execution.",
+        "approvals": "Project trust and gating hooks; approval extension examples, no built-in permission system.",
+        "plan_mode": "Example extension."
+      },
+      "dims": {
+        "loop": "AgentSession wraps pi-agent-core; product extensions add context, tools and UI.",
+        "providers": "pi-ai provider abstraction; provider and virtual-model extension APIs.",
+        "tools": "Four default tools: read, bash, edit, write; replaceable operations and extra tools.",
+        "context": "AGENTS.md, skills, prompt sections, session-tree context and compaction.",
+        "state": "Append-only JSONL trees support resume/fork; unfinished generation/tool work is not durably replayed.",
+        "safety": "Project trust and tool hooks; no built-in OS isolation or full approval policy.",
+        "extensibility": "Rich hook/UI/tool APIs, npm/git packages, replaceable MCP/codemode built-ins.",
+        "multi_agent": "Subagent and plan examples; external orchestration through SDK/RPC.",
+        "surfaces": "TUI, CLI, JSONL RPC and first-class TypeScript SDK.",
+        "observability": "Events, usage/cost and HTML session export; host supplies tracing."
+      },
+      "key_insights": [
+        "An extensible terminal coding product with an in-process SDK, built on the small Pi loop and JSONL sessions.",
+        "Append-only JSONL trees support resume/fork; unfinished generation/tool work is not durably replayed.",
+        "Project trust and tool hooks; no built-in OS isolation or full approval policy."
+      ],
+      "repo": "earendil-works/pi"
+    }
+  ],
+  "verification": {
+    "claims_checked": 8,
+    "checked_claims": [
+      "Manifest version and MIT license",
+      "Explicit dependencies on pi-ai/core/tui/mcp/codemode and no durable",
+      "SDK export and CLI/RPC entrypoints",
+      "Four default coding tool definitions",
+      "JSONL append persistence in SessionManager",
+      "README explicitly omits built-in subagents/plan mode",
+      "pi-ai API union disproves two-dozen-wire-APIs assertion",
+      "OpenClaw attribution/dependency distinction"
+    ],
+    "corrections": [
+      "Corrected provider claim to 42 IDs and 10 chat wire APIs",
+      "Removed unsupported most-reused pi-tui claim",
+      "Replaced inferred OpenClaw derivation with explicit third-party notice"
+    ],
+    "unresolved": [
+      "Release/star/LOC counts are inherited from the initial research, not recomputed in this semantic review."
+    ],
+    "method": "source spot-check",
+    "review_date": "2026-10-14",
+    "scope": "Static inspection of selected high-impact claims. Not an exhaustive claim audit; no cloned code executed. Manifest/loop/recovery/safety boundaries prioritized."
+  }
+}

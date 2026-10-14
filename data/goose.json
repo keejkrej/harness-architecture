@@ -1,0 +1,114 @@
+{
+  "records": [
+    {
+      "slug": "goose",
+      "name": "Goose",
+      "vendor": "AAIF (Agentic AI Foundation, Linux Foundation); originally Block",
+      "repo": "aaif-goose/goose @ 9686d674000a5fbb8139214863289e4820714771",
+      "license": "Apache-2.0",
+      "language": "Rust (agent, CLI, server); TypeScript/Electron (desktop)",
+      "version": "1.55.0 (workspace bump at pin; latest GitHub release v1.54.0, 2026-10-08); GDK crates 0.1.0-alpha.12",
+      "category": "hybrid",
+      "one_liner": "MCP-native Rust agent (CLI, Electron desktop, ACP HTTP/WS server) whose loop was just rewritten as a re-entrant, persistence-first state machine (goose-agent GDK crate) of 18 first-match Operations plus Inference over a SQLite-persisted conversation, with ~85 provider ids including other agents wrapped over ACP.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "partial",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "no",
+        "approvals": "yes",
+        "plan_mode": "partial",
+        "worktrees": "no",
+        "otel": "yes",
+        "web_ui": "no",
+        "ide": "yes",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "goose-agent StateMachine walks Vec<Step> first-match. Goose's pipeline is SlashCommand → ToolApproval → Skill → Recipe → ToolExecution → RemainingToolCalls → Subagent → Steer → BangShell → [Compaction] → ToolPairCompaction → Doctor → Project → Retry → EmptyResponse → StopHook → ExitOnError → MaxTurns(1000) → Inference. The session is reloaded every step; effects are persisted; tool calls in one message run concurrently via select_all.",
+        "providers": "A single Provider::stream trait backs ~36 native providers, 49 declarative JSON OpenAI-compatible endpoints, runtime custom providers, llama.cpp/MLX local inference and a toolshim for non-tool models. ACP/CLI wrappers turn Claude Agent, codex-acp, pi-acp, Amp, Copilot and Cursor into providers. Prompt-cache semantics are declared per provider/model and tested by prefix invariance; usage goes to a ledger with cost.",
+        "tools": "Every tool is an MCP Tool behind McpClientTrait, including in-process platform extensions (developer: write/edit/shell/tree/read_image; analyze; summon; skills; todo; code_execution via pctx/V8). Names are prefixed ext__tool unless first-class. A per-inference ExtensionLease pins the catalog. Shell output is capped at 2000 lines/50KB; responses over 200k chars spill to temp files.",
+        "context": "Short, cache-stable system.md (hour-truncated time, sorted extensions, Unicode-tag sanitizing). .goosehints and AGENTS.md load global plus git-root-to-cwd, lazily in subdirectories. A per-turn agent-only MOIM message carries time/cwd/budget. Auto-compaction at min(0.8, 225k/limit), plus reactive on context errors, hides originals from the agent (still user-visible). Opt-in tool-pair summarization.",
+        "state": "SQLite sessions.db (WAL, schema v17) holds sessions/messages/usage_ledger tables; SessionType includes User/SubAgent/Scheduled/Acp. Effects are committed per step and operation notes live in message metadata. Approvals resume after restart via ACP session/load. Supports fork (copy+truncate), export JSON/MD/HTML, and import of Claude Code/Codex/Pi jsonl. No file checkpoints/undo or crash re-drive.",
+        "safety": "GooseMode Auto (default)/Approve/SmartApprove (LLM judge, readOnlyHint)/Chat, with per-tool permission.yaml. Overriding inspectors: regex+ML prompt-injection scanner (off by default), log-only egress, opt-in fail-open LLM adversary. Also blocking PreToolUse hooks, an OSV MAL-* check for npx/uvx, and an env-var denylist. No OS sandbox; --container docker-execs only MCP extensions.",
+        "extensibility": "MCP extensions: platform, builtin (in-memory duplex), stdio, streamable_http with OAuth/UDS; SSE removed, no sampling. 12 hook events in hooks.json (Open Plugins spec). Git-installed plugins in Open Plugins or Gemini-extension format. SKILL.md discovery includes .agents/.claude/.goose. YAML recipes with params, sub-recipes, JSON-schema output and retry checks; custom providers.",
+        "multi_agent": "summon.delegate creates persisted SubAgent sessions (per-delegate provider/model/extensions/max_turns, default 25). SubagentOperation runs them in parallel on a JoinSet and forwards approvals to the parent. Depth-1 only (subagents cannot delegate); no handoffs or worktree isolation. Cron scheduler runs recipes; goose roam drives peer agents over iroh; goosetown is external.",
+        "surfaces": "CLI (session/run with json/stream-json, in-process Agent). goose acp (stdio) and goose serve (ACP HTTP/WS /acp, TLS, token auth, 83 _goose/unstable requests). The Electron desktop spawns goose serve. Also Telegram gateway, iroh roaming, goose mcp bundled servers, Zed via ACP with client fs/terminal routing, and a UniFFI Python/Kotlin SDK (providers+compaction only).",
+        "observability": "tracing spans with GenAI semconv (invoke_agent, chat, execute_tool, cache tokens; content only via OTEL_INSTRUMENTATION_GENAI_CAPTURE_MESSAGE_CONTENT). OTLP export via the otel feature, a Langfuse layer, and opt-in PostHog. ACP propagates trace context. The SDK has ObservabilityHook. Eval: in-repo harbor Terminal-Bench-2 runner (vendor-reported 57.3% code-mode vs OpenCode 52.8%, Pi 47.2%)."
+      },
+      "scores": {
+        "flexibility": 4,
+        "integration": 5,
+        "embeddability": 4,
+        "durability": 4,
+        "safety": 3,
+        "extensibility": 5,
+        "multi_agent": 3,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 2
+      },
+      "builds_on": [
+        "rmcp (official MCP Rust SDK) — tool model, client/server transports; even in-process tools speak MCP",
+        "agent-client-protocol / agent-client-protocol-http crates — ACP server and ACP-client providers",
+        "Pi (pi-ai/pi coding agent) — wrapped as provider via pi-acp adapter; Pi .jsonl sessions importable",
+        "Claude Code — wrapped via claude-agent-acp (claude-acp) and legacy claude CLI provider; .jsonl import; ~/.claude/skills discovery",
+        "Codex — wrapped via codex-acp and codex CLI; chatgpt_codex OAuth provider; Codex .jsonl import",
+        "Gemini CLI — gemini-cli provider and Gemini extension (gemini-extension.json) plugin format",
+        "Kimi Code — kimi_code subscription API provider (api.kimi.com/coding)",
+        "OpenCode — opencode_zen/opencode_go declarative providers; harbor eval comparison",
+        "Open Plugins spec — hooks.json and plugin manifest format",
+        "AGENTS.md (AAIF sibling project) — default context file",
+        "pctx_code_mode (V8) — code-mode extension",
+        "llama-cpp-2 / MLX — local inference",
+        "tokio-cron-scheduler — scheduler; iroh — roaming transport"
+      ],
+      "used_by": [
+        "Zed and other ACP clients — via goose acp / goose serve",
+        "Goose Desktop (Electron) and @aaif/goose-acp-client — consume goose serve over ACP",
+        "aaif-goose/vscode-goose — VS Code extension (separate repo)",
+        "aaif-goose/goosetown — parallel multi-agent orchestration on goose (separate repo)",
+        "harbor / Terminal-Bench — ships a vanilla Goose harness (per evals/harbor README)"
+      ],
+      "key_insights": [
+        "The classic agent loop was deleted days before the pin (#12760, GDK 0.1.0-alpha.12, 2026-10-13). Agent::reply now drives goose-agent's StateMachine, which reloads the session from SQLite before every step and persists each step's effects. A test runner rebuilds the whole machine after every applied step to prove no progress hides in locals.",
+        "State that operations must remember lives on persisted messages as 'operation notes' (MessageMetadata.operations), e.g. retry attempts on the kickoff message, advertised tools, stop-hook denials and delivered subagents. Approvals therefore yield instead of blocking and resume after restart via ACP session/load. The notes keys have become a compatibility surface.",
+        "Goose is both an ACP server and an ACP client. It wraps Claude Agent, codex-acp, pi-acp, Amp, Copilot and Cursor as Providers with manages_own_context, which disables Goose's own compaction and local stdio/HTTP extensions and passes MCP servers through instead. It also imports Claude Code/Codex/Pi .jsonl sessions, so it can act as a UI and orchestration shell over competitors' harnesses.",
+        "goosed is gone: the Electron desktop spawns `goose serve` and speaks ACP over HTTP/WS with 83 `_goose/unstable/*` extension requests. The CLI still embeds the Agent in-process, so two integration paths remain. The April 2026 TS TUI is deprecated, and the announced Tauri desktop is not in the pin (still Electron 43).",
+        "Cache-first context engineering: the system prompt is stable (hour-granular timestamp, sorted extensions), volatile per-turn data goes into a persisted agent-only turn-context message reused byte-for-byte, and CacheSemantics breakpoints are declared per provider/model with a prefix-invariance test. Compaction is non-destructive, flipping originals to agent_visible=false.",
+        "Safety defaults are permissive. GooseMode::Auto is the default, the prompt-injection scanner is off, the egress inspector only logs, the adversary LLM reviewer is opt-in and fails open, and there is no OS sandbox. --container docker-execs MCP extensions, but the in-process developer shell (a platform extension) has no container reference, so it likely runs on the host.",
+        "Everything is MCP even in-process: platform extensions implement McpClientTrait, and bundled servers run over tokio duplex pipes. A per-inference ExtensionLease pins the tool catalog so advertised and dispatched tools match. SSE transport and MCP sampling were removed, and stdio packages are checked against OSV MAL-* advisories before spawn.",
+        "Subagents are persisted SubAgent sessions created by summon.delegate and run in parallel on a JoinSet with approval forwarding. They are capped at depth 1 (delegates cannot delegate), and background subagents were removed."
+      ],
+      "doc_path": "harnesses/goose.md",
+      "features_notes": {
+        "in_process_sdk": "Rust GDK is alpha; Python/Kotlin bindings cover providers and compaction, not the full loop.",
+        "durable_resume": "Persistent approval continuation; not general mid-tool crash replay."
+      }
+    }
+  ],
+  "verification": {
+    "method": "Independent targeted static source review plus repository-wide mechanical citation validation; no runtime tests",
+    "checked_claims": [
+      "Restart continuation recognizes persisted approval requests or answers",
+      "No pending approval means resume_state_machine_turn returns None",
+      "Developer shell uses local process spawning",
+      "MCP container transport and in-process developer tools have distinct execution boundaries"
+    ],
+    "claims_checked": 4,
+    "corrections": [
+      "Replaced grep-only shell isolation inference with direct local spawn citation"
+    ],
+    "unresolved": [
+      "Secondary release chronology, approximate LOC totals and every individual feature were not independently re-derived in this review; source links and the study limitations remain authoritative."
+    ]
+  }
+}

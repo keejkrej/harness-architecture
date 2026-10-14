@@ -10,7 +10,7 @@
 | Size | tracked files / approx LOC of the harness core |
 | Version at pin | |
 | Release history | first public release → key milestones |
-| Category | `llm-library` \| `harness-library` \| `agent-framework` \| `integrated-product` \| `hybrid` |
+| Category | `llm-library` \| `harness-library` \| `agent-framework` \| `integrated-product` \| `hybrid` \| `execution-runtime` |
 
 ## 1. Layering & package map
 A diagram (mermaid or ASCII) of the packages/crates/modules and how they depend on each other. Say what each layer owns.

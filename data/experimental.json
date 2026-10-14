@@ -1,0 +1,258 @@
+{
+  "records": [
+    {
+      "slug": "fx",
+      "name": "FX / libfx",
+      "doc_path": "harnesses/experimental.md",
+      "category": "hybrid",
+      "vendor": "Vercel Labs",
+      "language": "Zig; JavaScript",
+      "license": "Apache-2.0",
+      "version": "0.0.0 manifest placeholder; experimental snapshot",
+      "repo_url": "https://github.com/vercel-labs/fx",
+      "pinned_commit": "b877f4dcc57dfb2c0654d5bb18012215c0fdf1b3",
+      "scores": {
+        "flexibility": 4,
+        "integration": 4,
+        "embeddability": 5,
+        "durability": 4,
+        "safety": 3,
+        "extensibility": 4,
+        "multi_agent": 4,
+        "provider_neutrality": 4,
+        "maturity": 2,
+        "minimalism": 2
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "unknown",
+        "skills": "yes",
+        "hooks": "partial",
+        "plugins": "unknown",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "unknown",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "unknown",
+        "approvals": "yes",
+        "plan_mode": "unknown",
+        "worktrees": "unknown",
+        "otel": "unknown",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "yes"
+      },
+      "features_notes": {
+        "durable_resume": "SDK lease/fencing/log/checkpoint protocol; local workflow queue explicitly is not durable and persisted files alone do not restart wakeups.",
+        "approvals": "Permission gate has an explicit yolo bypass; fallback is read-only/non-irreversible only.",
+        "os_sandbox": "No OS isolation boundary established from inspected SDK/runtime paths.",
+        "hooks": "Host engine/tool adapter seams; not asserted as the same mechanism as a product hook bus.",
+        "subagents": "Runtime supports subagent scheduling; no multi-host crash test performed."
+      },
+      "dims": {
+        "loop": "Zig runtime orchestrates model/tool turns; JavaScript SDK separates engine and session hosting.",
+        "providers": "Model adapters/default gateway setup; native and WASM builds have different host capabilities.",
+        "tools": "Host tools require explicit idempotent declaration; permission and concurrency policies are separate.",
+        "context": "Compaction handles manual/auto/overflow triggers and searchable original records with summarized notes.",
+        "state": "Outer SDK lease, fencing, log and checkpoints; explicit ambiguous-effect recovery and non-durable local queue.",
+        "safety": "Permission decisions including yolo bypass; no general sandbox guarantee inferred from engine implementation.",
+        "extensibility": "Native addon/WASM SDK engine adapters, custom tools, skills and MCP.",
+        "multi_agent": "Parallel eligible tools/subagent scheduling bounded by host capabilities.",
+        "surfaces": "CLI/ACP/headless plus JavaScript SDK over native or WASM engine.",
+        "observability": "Durable logs, checkpoint/effect state and tool accounting; no OTel guarantee established."
+      },
+      "one_liner": "An experimental embeddable engine with unusually explicit durable-host contracts and idempotency requirements.",
+      "builds_on": [
+        "Workflow World local adapter",
+        "AI Gateway (default model path)"
+      ],
+      "used_by": [],
+      "key_insights": [
+        "The JavaScript SDK separates the native/WASM engine from durable-session hosting.",
+        "Tools must explicitly declare idempotency; ambiguous non-idempotent effects are not blindly replayed.",
+        "The local workflow queue is not durable even when session files persist."
+      ],
+      "repo": "vercel-labs/fx"
+    },
+    {
+      "slug": "agentos",
+      "name": "AgentOS",
+      "doc_path": "harnesses/experimental.md",
+      "category": "execution-runtime",
+      "vendor": "Rivet",
+      "language": "TypeScript; Rust",
+      "license": "Apache-2.0",
+      "version": "0.0.1 core manifest",
+      "repo_url": "https://github.com/rivet-dev/agentos",
+      "pinned_commit": "4d48628304c1ddedafc9d55f60752093fcf6f3d2",
+      "scores": {
+        "flexibility": 4,
+        "integration": 3,
+        "embeddability": 5,
+        "durability": 3,
+        "safety": 4,
+        "extensibility": 4,
+        "multi_agent": null,
+        "provider_neutrality": null,
+        "maturity": 2,
+        "minimalism": 2
+      },
+      "features": {
+        "mcp_client": "unknown",
+        "mcp_server": "unknown",
+        "skills": "unknown",
+        "hooks": "unknown",
+        "plugins": "unknown",
+        "subagents": "unknown",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "unknown",
+        "durable_resume": "partial",
+        "compaction": "unknown",
+        "os_sandbox": "partial",
+        "approvals": "unknown",
+        "plan_mode": "unknown",
+        "worktrees": "unknown",
+        "otel": "unknown",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "unknown"
+      },
+      "features_notes": {
+        "durable_resume": "SQLite-backed filesystem can survive dispose/recreate; not model-turn replay or proof all live processes resume.",
+        "os_sandbox": "Execution isolation uses V8/Wasm plus sidecar permission profiles, not an OS microVM; partial marks this distinct boundary.",
+        "approvals": "Permission profiles enforce access; no model-facing human approval product established.",
+        "subagents": "Not applicable to a model-free execution substrate.",
+        "provider_neutrality": "Not scored: no model/provider layer.",
+        "http_server": "Internal sidecar/network support is not a general agent application HTTP service."
+      },
+      "dims": {
+        "loop": "Not applicable: execution runtime receives code/files/process requests, not a model-driven agent loop.",
+        "providers": "Not applicable: host supplies any model layer externally.",
+        "tools": "Embedded filesystem/process/network/host-function interfaces suitable for an external agent tool adapter.",
+        "context": "Not applicable to prompt compaction; runtime manages mounts, packages and filesystem resources.",
+        "state": "Optional SQLite-backed filesystem persistence across runtime recreation; no agent-effect replay supplied.",
+        "safety": "V8/Wasm execution with explicit permission profiles; high-level AgentOS and lower-level secure defaults differ.",
+        "extensibility": "Host functions, mount/package configuration and sidecar integration.",
+        "multi_agent": "Not applicable: external harness must schedule or coordinate agents.",
+        "surfaces": "TypeScript embedding with Rust execution/sidecar components and code-execution examples.",
+        "observability": "Runtime/sidecar infrastructure; advertised benchmarks not reproduced and agent tracing supplied by host."
+      },
+      "one_liner": "An embeddable isolated execution substrate to put beneath a harness, not a competing model-loop framework.",
+      "builds_on": [
+        "V8 / WebAssembly",
+        "Optional SQLite filesystem backend"
+      ],
+      "used_by": [],
+      "key_insights": [
+        "AgentOS supplies an execution environment beneath a harness and contains no model-driven agent loop.",
+        "V8/Wasm and sidecar permission profiles are distinct from an OS microVM boundary.",
+        "Persisted SQLite filesystem state is not a checkpoint of agent turns or all running processes."
+      ],
+      "repo": "rivet-dev/agentos"
+    },
+    {
+      "slug": "openharness",
+      "name": "OpenHarness",
+      "doc_path": "harnesses/experimental.md",
+      "category": "hybrid",
+      "vendor": "HKUDS",
+      "language": "Python; TypeScript",
+      "license": "MIT",
+      "version": "0.1.9",
+      "repo_url": "https://github.com/HKUDS/OpenHarness",
+      "pinned_commit": "9b2efd795c6aa09f88b0c257d269a9e518da6ae7",
+      "scores": {
+        "flexibility": 4,
+        "integration": 4,
+        "embeddability": 3,
+        "durability": 3,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 4,
+        "provider_neutrality": 4,
+        "maturity": 2,
+        "minimalism": 3
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "unknown",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "unknown",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "partial",
+        "otel": "unknown",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "yes"
+      },
+      "features_notes": {
+        "durable_resume": "Atomic JSON file snapshots for sessions; latest/session files and external effects are not a single transaction.",
+        "os_sandbox": "Optional Docker path uses --network none even when domains are listed; local host path remains distinct.",
+        "approvals": "Sensitive-file deny checked first, then tool allow/deny; broad allowed_tools can bypass later path/command checks.",
+        "agents_md": "CLAUDE.md/.claude/rules discovery, not literal AGENTS.md parity.",
+        "worktrees": "Swarm/worktree manager includes validated slugs and metadata; no independent concurrent-Git lifecycle test.",
+        "in_process_sdk": "Python internals are reusable; independent stable SDK contract not established.",
+        "http_server": "No general authenticated HTTP agent service established by this review.",
+        "plugins": "Artifact manifests expose tool/hook/skill/agent/MCP capabilities; not an affiliation with similarly named vendors."
+      },
+      "dims": {
+        "loop": "Query streams model responses, compacts/retries and serially or concurrently executes calls before appending all results.",
+        "providers": "Anthropic/OpenAI-compatible/Copilot/subscription pathways; unsupported voice configuration fails explicitly.",
+        "tools": "Pydantic inputs and async tool execution, per-call read-only classification and Anthropic-shaped schemas.",
+        "context": "Old-result microcompaction then summary compaction; upward instruction and rules discovery.",
+        "state": "Atomic session/latest JSON writes; restart history lacks a transactional external-effect journal.",
+        "safety": "Ordered permission policy plus optional network-disabled Docker executor; broad allow rules alter later checks.",
+        "extensibility": "Plugins package skills, commands, agents, tools, hooks and MCP definitions.",
+        "multi_agent": "Delegation/swarm/worktree surfaces; only static lifecycle review performed.",
+        "surfaces": "Python Query core with CLI/headless and terminal UI; stable SDK and general HTTP service not established.",
+        "observability": "Streaming events, hook events, session records and provider failures; no live telemetry validation."
+      },
+      "one_liner": "A broad open-source coding-agent implementation with explicit permission ordering and optional Docker isolation.",
+      "builds_on": [
+        "Provider SDKs",
+        "Optional Docker executor"
+      ],
+      "used_by": [],
+      "key_insights": [
+        "The coding product combines explicit permission ordering with rich plugin and hook surfaces.",
+        "Broad tool allowances can bypass later path/command checks, while sensitive-path denial runs earlier.",
+        "Atomic session JSON writes do not make external tool effects transactional; Docker execution is optional."
+      ],
+      "repo": "HKUDS/OpenHarness"
+    }
+  ],
+  "verification": {
+    "method": "static-source-review",
+    "checked_at": "2026-10-14",
+    "status": "researcher-checked",
+    "source_executed": false,
+    "independent_adversarial_review": false,
+    "checks": [
+      "FX native/JS package seams and explicit tool idempotency contract inspected",
+      "FX durable lease/fencing and local queueDurable=false limitation inspected",
+      "FX permission bypass/fallback and compaction records inspected",
+      "AgentOS high-level vs low-level profile defaults compared",
+      "AgentOS persistence example distinguished from process checkpoint/replay",
+      "AgentOS model-free category and null model-layer scores used",
+      "OpenHarness parallel tool-result append and session atomic write boundaries inspected",
+      "OpenHarness permission precedence and Docker network configuration inspected",
+      "OpenHarness plugin/hooks/instruction/worktree surfaces inspected"
+    ],
+    "limits": "Static source review only. No cloned source installed, imported or executed; no provider calls, benchmarks, crash-injection, sandbox attacks or UI integration tests."
+  }
+}
