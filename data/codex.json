@@ -1,0 +1,116 @@
+{
+  "records": [
+    {
+      "slug": "codex",
+      "name": "OpenAI Codex CLI (codex-rs)",
+      "vendor": "OpenAI",
+      "repo": "openai/codex",
+      "license": "Apache-2.0",
+      "language": "Rust (TS + Python SDKs)",
+      "version": "workspace 0.0.0 at pin (b7ba02f88095, 2026-10-14); latest stable rust-v0.162.1, 0.163.0-alpha.11",
+      "category": "integrated-product",
+      "one_liner": "Rust coding-agent product with platform sandboxes and policy controls; a JSON-RPC app-server connects the harness to its hosts, while language SDKs drive subprocesses. The model transport speaks the Responses API.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "partial",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "yes",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "partial",
+        "otel": "yes",
+        "web_ui": "partial",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "SQ/EQ: submission_loop dispatches Op; RegularTask→run_turn loops sampling requests, draining steered input and running Stop hooks with continuation. Tool futures start mid-stream (FuturesOrdered). A global RwLock gates non-parallel tools. Retries are unbounded on connection loss, then fall back from WebSocket to HTTPS. Mailbox mail can preempt a response.",
+        "providers": "Responses API only; wire_api=\"chat\" is a hard error. Built-ins: openai, amazon-bedrock (OpenAI models), ollama, lmstudio, plus custom Responses-compatible providers. store:false with encrypted reasoning replay, WebSocket previous_response_id, prompt_cache_key. Server-driven ModelInfo catalog. Token/rate-limit accounting, no cost.",
+        "tools": "ToolSpec Function/Freeform-Lark/hosted. Router rebuilt each step with Direct/Deferred(tool_search)/CodeMode exposure. Built-ins: exec_command+write_stdin (PTY), apply_patch grammar, update_plan, view_image, web_search, MCP resources, agent tools, V8 code-mode exec/wait, client dynamic tools. ToolOrchestrator runs approve→sandbox→escalate-on-denial.",
+        "context": "Base prompt from the model catalog plus 'world state' sections that emit diffs, persisted as RFC 7386 merge patches. AGENTS.override.md/AGENTS.md walked from root to cwd (32 KiB; skipped if untrusted). Compaction: local summary (20k-token user tail), remote V2 compaction_trigger, token-budget reset, async speculative. Two-phase memory pipeline.",
+        "state": "JSONL rollouts ~/.codex/sessions/YYYY/MM/DD with zstd cold compression; SQLite state DB (61 migrations). Pluggable ThreadStore trait with PersistContext durability barriers. Resume, copied/referenced fork, immutable-file revert, paginated history. Daemon turn suspension and RecoverTurn. No file checkpoints.",
+        "safety": "AskForApproval (untrusted/on-request/never/granular) × permission profiles. Starlark prefix_rule execpolicy with validated examples; dangerous-command heuristics. Seatbelt sandbox-exec, bwrap+seccomp (vendored bwrap), Windows restricted token/ACL/WFP/MXC. HTTP/SOCKS5 proxy with MITM limited mode. Guardian LLM auto-reviewer; managed requirements. Env inherits all variables by default.",
+        "extensibility": "12 Claude-compatible hook events (command/mcp_tool/prompt/agent handlers; Bash/Write/Edit/Agent aliases). SKILL.md skills in .agents/skills. Plugins and marketplaces that also read .claude-plugin/.cursor-plugin. rmcp MCP client (stdio, streamable HTTP, OAuth). Dynamic tools via app-server. Compile-time Rust extension-api for 15 ext crates. 176 feature flags.",
+        "multi_agent": "V1 (spawn/send_input/resume/wait/close) and V2 (spawn_agent with fork_turns, send_message, followup_task, wait, interrupt, list). Defaults: 6 threads, depth 1. Mailbox with preemption, agent roles, graph store, message board, goal-driven idle continuation. Worktrees only for exec/TUI, not per subagent.",
+        "surfaces": "TUI and exec are in-process app-server clients (TUI has no codex-core dependency). app-server JSON-RPC over stdio/unix/ws/remote-control: 175 requests, 9 server requests, 86 notifications, exported JSON/TS schema. TS SDK spawns `codex exec --json`; Python SDK spawns app-server. exec-server for remote environments. MCP-server mode removed; no ACP.",
+        "observability": "OTel logs/traces/metrics (OTLP gRPC/HTTP, Statsig default) with GenAI usage span fields, W3C propagation and opt-in prompt/response logging. rollout-trace bundles via CODEX_ROLLOUT_TRACE_ROOT. `codex debug prompt-input/models`. Analytics and feedback crates. ~1M test LOC but no public eval harness."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 4,
+        "safety": 5,
+        "extensibility": 5,
+        "multi_agent": 4,
+        "provider_neutrality": 2,
+        "maturity": 4,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "rmcp (official MCP Rust SDK, git-pinned 3.5.1) for the MCP client",
+        "starlark-rust for the execpolicy language",
+        "bubblewrap (vendored C source in codex-rs/vendor/bubblewrap) + seccompiler for the Linux sandbox",
+        "V8 (=150.4.0, v8_enable_sandbox) for code mode",
+        "ratatui for the TUI; sqlx/SQLite for the state DB; portable-pty for unified exec",
+        "OpenAI Responses API / ChatGPT Codex backend (chatgpt.com/backend-api/codex) as the only wire protocol"
+      ],
+      "used_by": [
+        "OpenAI Agents SDK (Python experimental codex extension builds `exec --experimental-json`; JS codexTool() via @openai/codex-sdk)",
+        "Vercel AI SDK (@ai-sdk/harness-codex bridges HarnessAgent to the Codex app-server)",
+        "Goose (codex provider runs `codex exec --json`; codex-acp provider)",
+        "Hermes Agent (agent/codex_runtime.py drives `codex app-server` turns)",
+        "OpenClaw (official extensions/codex app-server plugin and session supervision)",
+        "Eve (spawns `codex app-server --stdio`, getAuthStatus, to borrow ChatGPT credentials)",
+        "Third-party codex-acp ACP adapter (agentclientprotocol/codex-acp)",
+        "Pi, OpenCode, Kilo, Cline, Mastra Code, Prime Agent reuse ChatGPT/'OpenAI Codex' OAuth and backend, not the harness",
+        "Codex VS Code extension and desktop app (closed source, app-server clients)"
+      ],
+      "key_insights": [
+        "Every first-party surface goes through the JSON-RPC app-server: tui/Cargo.toml has no codex-core dependency and `codex exec` uses InProcessAppServerClient with thread/start + turn/start. The 175-method app-server protocol, not the crate API, is the real embedding contract.",
+        "`codex mcp-server` and its crate were deleted in PR #42993 (2026-09-05), which fits OpenAI's account that exposing Codex as an MCP server was abandoned for the app-server. ACP exists only via the third-party codex-acp adapter.",
+        "Provider neutrality went down over time: WireApi has one variant, Responses, and `wire_api=\"chat\"` raises a hard error. That unlocks store:false encrypted-reasoning replay, WebSocket incremental requests with previous_response_id, Lark-grammar freeform tools (apply_patch, code-mode exec) and remote compaction V2.",
+        "Much harness behavior is server-driven per model through the backend ModelInfo catalog: shell/patch tool type, truncation policy, auto-compact limit (90% default), comp_hash-triggered compaction, tool_mode, prompt and tool description overrides, and Guardian coverage.",
+        "Context is a set of typed 'world state' sections that render diffs against a persisted snapshot, stored as RFC 7386 merge patches in the rollout. Environment or permission changes are appended as deltas rather than rewriting the prompt prefix.",
+        "Compatibility with Claude Code is visible in code: Claude-named hook events with Bash/Write/Edit/Agent matcher aliases, discovery of .claude-plugin/plugin.json and marketplace.json, and an external-agent-migration crate that imports Claude Code and Cursor config, hooks, subagents and sessions.",
+        "Durability is engineered but turn-granular. A ThreadStore trait has explicit PersistContext durability barriers, revert writes a new immutable rollout file plus a SQLite pointer swap, and daemon suspend flushes before cancelling so RecoverTurn can re-run the turn. No tool-level replay or file checkpoints (GhostCommit removed).",
+        "Several focus-note assumptions are stale at this pin: there is no core/src/codex.rs (the loop is in session/turn.rs and tasks/), the legacy `shell` tool is replaced by unified exec_command/write_stdin, Linux filesystem isolation is bubblewrap with Landlock only as a rejected legacy path, and docs/protocol_v1.md references a nonexistent Op::ConfigureSession."
+      ],
+      "doc_path": "harnesses/codex.md",
+      "features_notes": {
+        "in_process_sdk": "Internal Rust route exists; public TypeScript/Python clients wrap a process.",
+        "durable_resume": "Rollouts and bounded turn recovery do not deduplicate tool effects.",
+        "worktrees": "Git/worktree support in product tooling does not automatically isolate each subagent."
+      }
+    }
+  ],
+  "verification": {
+    "method": "Independent targeted static source review plus repository-wide mechanical citation validation; no runtime tests",
+    "checked_claims": [
+      "TUI dependencies route through app-server client",
+      "TypeScript SDK launches exec subprocess; Python SDK launches app-server",
+      "Model provider wire API has Responses only",
+      "Linux helper separates seccomp and bubblewrap",
+      "Daemon recovery restricts recorded turns to a single local environment",
+      "Turn suspension flushes before cancelling and drops process-local waiters"
+    ],
+    "claims_checked": 6,
+    "corrections": [
+      "Fixed daemon recovery citation end range",
+      "Removed unsubstantiated best-in-study safety ranking",
+      "Qualified source line counts because inline tests remain included"
+    ],
+    "unresolved": [
+      "Secondary release chronology, approximate LOC totals and every individual feature were not independently re-derived in this review; source links and the study limitations remain authoritative."
+    ]
+  }
+}

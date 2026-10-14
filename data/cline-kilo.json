@@ -1,0 +1,337 @@
+{
+  "records": [
+    {
+      "slug": "cline-agents",
+      "name": "Cline Agents",
+      "vendor": "Cline",
+      "repo": "https://github.com/cline/cline",
+      "license": "Apache-2.0",
+      "language": "TypeScript",
+      "version": "@cline/agents 0.0.93 (experimental) @ 789f79e46d3b",
+      "category": "harness-library",
+      "one_liner": "Public host-neutral agent loop with supplied models/tools, lifecycle hooks, streaming and in-memory snapshots; coding tools, storage and teams belong to core.",
+      "features": {
+        "mcp_client": "no",
+        "mcp_server": "no",
+        "skills": "no",
+        "hooks": "yes",
+        "plugins": "partial",
+        "subagents": "no",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "no",
+        "durable_resume": "no",
+        "compaction": "no",
+        "os_sandbox": "no",
+        "approvals": "yes",
+        "plan_mode": "no",
+        "worktrees": "no",
+        "otel": "partial",
+        "web_ui": "no",
+        "ide": "no",
+        "agents_md": "no"
+      },
+      "dims": {
+        "loop": "AgentRuntime run/continue/abort/snapshot/restore; sequential tools by default, adjacent explicitly parallel tools may overlap; iteration limit and cancellation.",
+        "providers": "@cline/llms gateway/model abstractions over AI SDK 7 providers, or a host-supplied model.",
+        "tools": "JSON Schema plus execution callback with cancellation/progress; no default coding toolbox. Approval-required calls deny if the host callback is absent.",
+        "context": "Host-controlled request preparation and history snapshots; no built-in full-product compaction/skills policy.",
+        "state": "In-memory conversation snapshots and restoration; no persistent store or crash replay in the bare package.",
+        "safety": "Tool enabled/autoApprove policy and host approval callback; no built-in OS confinement or coding-tool policy.",
+        "extensibility": "Before/after run/model/tool hooks and common events, with host-supplied tools and model configuration.",
+        "multi_agent": "No built-in team orchestration in this package; core adds delegation and team stores.",
+        "surfaces": "Direct public TypeScript import for custom hosts, including host-neutral contexts.",
+        "observability": "Lifecycle/stream events and optional model-layer telemetry; not a complete product tracing service."
+      },
+      "scores": {
+        "flexibility": 5,
+        "integration": 1,
+        "embeddability": 5,
+        "durability": 1,
+        "safety": 2,
+        "extensibility": 4,
+        "multi_agent": 1,
+        "provider_neutrality": 5,
+        "maturity": 2,
+        "minimalism": 4
+      },
+      "builds_on": [
+        "@cline/llms",
+        "AI SDK 7 provider integrations"
+      ],
+      "used_by": [
+        "@cline/core and @cline/sdk",
+        "Cline applications through core"
+      ],
+      "key_insights": [
+        "The experimental public package is genuinely separate from the integrated Cline applications.",
+        "A restored message snapshot is not a durable effect continuation.",
+        "Core, not agents, owns the default coding tools and team orchestration."
+      ],
+      "doc_path": "harnesses/cline-kilo.md",
+      "features_notes": {
+        "plugins": "Runtime hooks/extensions; full plugin distribution and services belong to core.",
+        "otel": "Model-layer integration is optional; callbacks remain the basic observation surface.",
+        "approvals": "Host callback is required when a tool needs approval; absent callback denies."
+      }
+    },
+    {
+      "slug": "cline-sdk",
+      "name": "Cline SDK / Core",
+      "vendor": "Cline",
+      "repo": "https://github.com/cline/cline",
+      "license": "Apache-2.0",
+      "language": "TypeScript",
+      "version": "@cline/sdk and @cline/core 0.0.93 (experimental) @ 789f79e46d3b",
+      "category": "harness-library",
+      "one_liner": "Public coding-agent harness with sessions, default tools, MCP, plugins, teams and hub transports; @cline/sdk directly re-exports @cline/core.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "unknown",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "unknown",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "unknown",
+        "otel": "partial",
+        "web_ui": "no",
+        "ide": "no",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "ClineCore assembles the lower-level AgentRuntime with sessions, request preparation, default tools and local/hub/remote execution modes.",
+        "providers": "@cline/llms and AI SDK 7 adapters, with provider/model configuration supplied through the host.",
+        "tools": "Default coding tools/executors, MCP ingestion, approvals and explicit child tool/policy forwarding.",
+        "context": "Basic/agentic compaction with usage-aware request preparation; project rules, AGENTS.md, skills and workflow discovery.",
+        "state": "SQLite sessions, metadata/artifacts/team stores and file checkpoint transactions. Persistent chat resume, not established arbitrary effect replay.",
+        "safety": "Tool approvals and policy propagation; plugin worker/subprocess isolation is not an OS security sandbox.",
+        "extensibility": "Plugin tools, commands, rules, message builders, hooks and configuration; failure timeouts and thresholds.",
+        "multi_agent": "Spawned agents with forwarded hooks/tool policies plus team mailboxes, task/run state and outcome tracking.",
+        "surfaces": "In-process ClineCore.create/start/dispose and public SDK alias; HTTP/WebSocket hub for remote clients. UI packages/applications are separate.",
+        "observability": "Lifecycle/usage events and optional Langfuse/OTel. Compaction through plugin message builders has an explicitly documented instrumentation gap."
+      },
+      "scores": {
+        "flexibility": 4,
+        "integration": 3,
+        "embeddability": 5,
+        "durability": 3,
+        "safety": 3,
+        "extensibility": 5,
+        "multi_agent": 4,
+        "provider_neutrality": 5,
+        "maturity": 2,
+        "minimalism": 2
+      },
+      "builds_on": [
+        "@cline/agents",
+        "@cline/llms and AI SDK 7",
+        "SQLite and MCP integrations"
+      ],
+      "used_by": [
+        "Cline CLI, desktop and IDE application hosts"
+      ],
+      "key_insights": [
+        "@cline/sdk is a one-line alias for core, not an independent engine.",
+        "Product release maturity should not be assigned to experimental 0.0.93 SDK APIs.",
+        "A plugin sandbox implemented with a worker/process is not evidence of OS confinement."
+      ],
+      "doc_path": "harnesses/cline-kilo.md",
+      "features_notes": {
+        "durable_resume": "SQLite persistence and restore; no per-effect journal/replay verified.",
+        "os_sandbox": "Unknown; plugin process isolation alone is insufficient evidence.",
+        "worktrees": "Checkpoint restore verified, dedicated worktree allocation not established.",
+        "acp": "Not established in this review.",
+        "mcp_server": "Client integration verified; server mode not established."
+      }
+    },
+    {
+      "slug": "cline",
+      "name": "Cline applications",
+      "vendor": "Cline",
+      "repo": "https://github.com/cline/cline",
+      "license": "Apache-2.0; JetBrains host not open-sourced here",
+      "language": "TypeScript",
+      "version": "Product v4.1.24; SDK 0.0.93 @ 789f79e46d3b",
+      "category": "integrated-product",
+      "one_liner": "Coding-agent applications built around the public Cline core/agents packages, with IDE, terminal and desktop clients.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "unknown",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "unknown",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "unknown",
+        "otel": "partial",
+        "web_ui": "partial",
+        "ide": "yes",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "ClineCore assembles the lower-level AgentRuntime with sessions, request preparation, default tools and local/hub/remote execution modes.",
+        "providers": "@cline/llms and AI SDK 7 adapters, with provider/model configuration supplied through the host.",
+        "tools": "Default coding tools/executors, MCP ingestion, approvals and explicit child tool/policy forwarding.",
+        "context": "Basic/agentic compaction with usage-aware request preparation; project rules, AGENTS.md, skills and workflow discovery.",
+        "state": "SQLite sessions, metadata/artifacts/team stores and file checkpoint transactions. Persistent chat resume, not established arbitrary effect replay.",
+        "safety": "Tool approvals and policy propagation; plugin worker/subprocess isolation is not an OS security sandbox.",
+        "extensibility": "Plugin tools, commands, rules, message builders, hooks and configuration; failure timeouts and thresholds.",
+        "multi_agent": "Spawned agents with forwarded hooks/tool policies plus team mailboxes, task/run state and outcome tracking.",
+        "surfaces": "CLI, desktop and IDE clients over shared core; public SDK available separately. JetBrains application implementation is not included in this open repository.",
+        "observability": "Lifecycle/usage events and optional Langfuse/OTel. Compaction through plugin message builders has an explicitly documented instrumentation gap."
+      },
+      "scores": {
+        "flexibility": 4,
+        "integration": 5,
+        "embeddability": 4,
+        "durability": 3,
+        "safety": 3,
+        "extensibility": 5,
+        "multi_agent": 4,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "@cline/sdk / @cline/core",
+        "@cline/agents and @cline/llms",
+        "AI SDK 7"
+      ],
+      "used_by": [
+        "First-party IDE, desktop and CLI experiences"
+      ],
+      "key_insights": [
+        "The current monorepo has public reusable layers and should not be analyzed solely through the old VS Code Task architecture.",
+        "Application release 4.1.24 and SDK 0.0.93 describe different stability contracts."
+      ],
+      "doc_path": "harnesses/cline-kilo.md",
+      "features_notes": {
+        "in_process_sdk": "Available by adopting the separately public core/SDK layer.",
+        "web_ui": "Shared web UI/application components and IDE webviews; no separately deployed browser product established.",
+        "os_sandbox": "Unknown; no actual OS confinement implementation established.",
+        "worktrees": "Dedicated allocation not established."
+      }
+    },
+    {
+      "slug": "kilocode",
+      "name": "Kilo Code",
+      "vendor": "Kilo",
+      "repo": "https://github.com/Kilo-Org/kilocode",
+      "license": "MIT",
+      "language": "TypeScript",
+      "version": "7.8.9 @ 4ee8d1b3b1f8",
+      "category": "integrated-product",
+      "one_liner": "OpenCode-derived coding product with provider/runtime bridges, local server, task/worktree orchestration and optional Linux/macOS confinement; SDK launches/drives a server.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "unknown",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "yes",
+        "otel": "partial",
+        "web_ui": "partial",
+        "ide": "yes",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "OpenCode-derived session processor plus extracted private core runner/coordinator; sessions serialize per key while different sessions overlap. V1 bridging paths remain.",
+        "providers": "Native @opencode-ai/llm support checks plus AI SDK 6 bridge; compatible endpoints and provider-specific usage/reasoning behavior.",
+        "tools": "Coding tools, resumable foreground/background task tool and MCP client with stdio/SSE/HTTP; file snapshots captured before streaming tool execution can begin.",
+        "context": "Token-pressure compaction and protected-recent-window result pruning; AGENTS.md/CLAUDE.md discovery, SKILL.md and built-in plan policy.",
+        "state": "SQLite/Drizzle session, parent/workspace, permission, usage and revert metadata; coordinator drains recorded work. Full deterministic effect replay not established.",
+        "safety": "Permission rules and optional @kilocode/sandbox: Bubblewrap on Linux, Seatbelt on macOS; Windows unavailable. Unsupported requested profiles fail rather than silently weakening.",
+        "extensibility": "OpenCode-derived plugin hooks with Kilo adapters, skills, MCP and model/provider integration; current private core is not a supported public harness distribution.",
+        "multi_agent": "Resumable/background tasks, child sessions and managed Git worktree operations; no general workflow engine established.",
+        "surfaces": "CLI/TUI, IDE and web/application clients, ACP and local server. @kilocode/sdk createKilo starts kilo serve and returns a client. Private @opencode-ai/sdk-next instead embeds server routes behind in-memory fetch; it is unpublished.",
+        "observability": "Persisted token/cost/billing metadata plus optional OTLP logger/exporter and batch trace processor; absent endpoint gives an empty tracing layer."
+      },
+      "scores": {
+        "flexibility": 4,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 3,
+        "safety": 4,
+        "extensibility": 4,
+        "multi_agent": 4,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "Declared fork of OpenCode",
+        "Private @opencode-ai/core and @opencode-ai/llm",
+        "AI SDK 6 bridge",
+        "@kilocode/sandbox and MCP/ACP SDKs"
+      ],
+      "used_by": [
+        "Kilo CLI, VS Code and other first-party clients",
+        "@kilocode/sdk clients through server process"
+      ],
+      "key_insights": [
+        "Current implementation explicitly declares OpenCode lineage; historical Cline/Roo association must not substitute for current source.",
+        "Public SDK is a server/process wrapper; a real in-process prototype exists in private @opencode-ai/sdk-next, so these are separate stability/distribution boundaries.",
+        "Optional confinement is real but platform-dependent and does not apply when no sandbox profile is selected."
+      ],
+      "doc_path": "harnesses/cline-kilo.md",
+      "features_notes": {
+        "os_sandbox": "Optional Linux Bubblewrap/macOS Seatbelt; Windows backend unavailable.",
+        "in_process_sdk": "Published @kilocode/sdk starts/drives a server; private @opencode-ai/sdk-next contains an in-process embedding prototype.",
+        "durable_resume": "Persistent session continuation; arbitrary effect replay not established.",
+        "otel": "Optional endpoint-configured export.",
+        "mcp_server": "Client verified; server exposure not established.",
+        "web_ui": "Web UI components/IDE webviews and advertised cloud product; hosted deployment not inspected."
+      }
+    }
+  ],
+  "verification": {
+    "method": "source review",
+    "reviewed_at": "2026-10-14",
+    "source_pins": {
+      "cline/cline": "789f79e46d3ba579717e8dc8be35fe28af935b06",
+      "Kilo-Org/kilocode": "4ee8d1b3b1f8cadefa925c9959dcbda7f87100da"
+    },
+    "checked_claims": [
+      "Public agents/core/SDK package boundaries and alias",
+      "Sequential/parallel tool scheduler and approval callback behavior",
+      "SQLite persistence and file checkpoint transactions",
+      "Kilo OpenCode fork declaration and subprocess SDK",
+      "Platform sandbox selection and explicit OTLP setup",
+      "Kilo private SDK-next in-process embedded route handler contrasted with published subprocess SDK"
+    ],
+    "limitations": [
+      "Static source review; no application, sandbox or recovery tests.",
+      "No inference from historical Kilo/Cline lineage; current source is authoritative.",
+      "Unverified surfaces are unknown, not assumed absent.",
+      "Cline experimental SDK maturity is separate from product maturity."
+    ]
+  }
+}

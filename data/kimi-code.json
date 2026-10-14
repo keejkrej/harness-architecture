@@ -1,0 +1,192 @@
+{
+  "records": [
+    {
+      "slug": "kimi-code",
+      "name": "Kimi Code CLI",
+      "vendor": "Moonshot AI",
+      "repo": "MoonshotAI/kimi-code",
+      "license": "MIT",
+      "language": "TypeScript",
+      "version": "2.2.0 (engine @moonshot-ai/agent-core-v2 0.5.0, private)",
+      "category": "integrated-product",
+      "one_liner": "Moonshot's TypeScript terminal coding agent: a 141k-LOC DI x Scope engine with an xstate turn loop (agent-core-v2), served through a pi-tui TUI, kimi -p stream-json, ACP, a Fastify REST/WS server, a VS Code extension and a remote-control relay; Kimi-first but neutral across four wire protocols.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "yes",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "no",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "partial",
+        "otel": "no",
+        "web_ui": "yes",
+        "ide": "yes",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "An xstate turn machine (gating, thinking, retrying, acting, draining) inside an agent machine, wrapped by IAgentLoopService. Remote errors go through a recovery-proposal chain (credential refresh, media degradation) before Retry-After backoff. Queued prompts can be steered into the running turn. Hooks: onWillBeginStep, onDidFinishStep and ordered LoopErrorHandlers. Limit: max_steps_per_turn.",
+        "providers": "src/human/llm offers four protocol bases (openai, openai_responses, anthropic/anthropic_beta, google-genai incl. Vertex) with per-protocol typed traits, an MLIR-style message rewriter, and the rule 'no silent fallback'. Kimi is traits over the same bases plus an OAuth catalog. Supports models.dev import and Anthropic cache_control/OpenAI prompt_cache_key. Token usage is tracked; USD cost is not.",
+        "tools": "resolveExecution returns typed accesses, display and approvalRule before execution. A ToolScheduler runs non-conflicting file accesses in parallel; Bash and MCP tools default to 'all' and serialise. The pipeline is preflight, onBeforeExecuteTool (veto/waitUntil), schedule, onDidExecuteTool, then a 50k-char truncation with spill-to-disk output_path. About 30 built-ins.",
+        "context": "An 82-line system.md template. AGENTS.md is loaded from ~/.kimi-code, ~/.agents and every directory from git root to cwd, with path-triggered lazy injection; CLAUDE.md is not read. Compaction triggers at 0.85 or within 50k reserved and keeps 2k+20k user tokens plus the summary. A recovery footer points the model at its own wire.jsonl to grep old history.",
+        "state": "~/.kimi-code/sessions/<workDirKey>/<id>/agents/<agentId>/wire.jsonl: append-only, versioned (protocol 1.5) with on-read migrations, branch edges via agent.switched records, fork, context.undo, ZIP export, corrupted-tail repair to .bak, and per-turn file-history blobs. In-flight turns are not replayed after a crash.",
+        "safety": "Modes manual, yolo, auto plus plan. A 13-policy first-match chain with tree-sitter-bash dangerous-command analysis, sensitive-file and .git guards, scoped allow/ask/deny rules, and git-cwd auto-approval of edits. Workspace trust gates project MCP. No OS sandbox and no network policy. Print mode forces auto. ACP mode labels invert the auto/yolo semantics.",
+        "extensibility": "Declarative plugins (kimi.plugin.json: skills, agents, mcpServers, hooks, commands) from a marketplace with official/curated tiers or from GitHub. 20 hook events using the Claude-Code-style exit-2/permissionDecision protocol. Skills in .kimi-code and .agents roots. CC/OpenCode-compatible agent files. MCP client over stdio/HTTP/SSE with OAuth. DI overrides require a fork.",
+        "multi_agent": "Agent tool: same-process subagents with their own wire, foreground or background, resume, context fork and per-call model; built-ins coder/explore/plan. AgentSwarm fans out to 128 subagents with a queue and concurrency cap. Goals and cron. Experimental Tower mode adds git-worktree missions, reviewer agents, rebase and a merge gate.",
+        "surfaces": "pi-tui TUI; kimi -p with text or stream-json; kimi acp (fork, list, resume, editor fs/terminal via scope shadowing); kimi web on kap-server (REST /api/v1 and v2, WS, OpenAPI/AsyncAPI, experimental); a prebuilt web UI; VS Code extension; desktop launcher; kimi rc cloud relay; a private in-process node-sdk; single native binary.",
+        "observability": "First-party telemetry (typed track2 events, redaction, KIMI_DISABLE_TELEMETRY). No OpenTelemetry. A per-request LLMRequestTrace is persisted in wire.jsonl. xstate inspection collector, vis session replay, and kimi-inspect over the /api/v1/debug DI reflection RPC. 183k LOC of engine tests; no eval harness in-tree."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 4,
+        "embeddability": 3,
+        "durability": 3,
+        "safety": 3,
+        "extensibility": 4,
+        "multi_agent": 4,
+        "provider_neutrality": 4,
+        "maturity": 3,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "pi: packages/pi-tui is a vendored fork of earendil-works/pi packages/tui, pinned at upstream 53816d7 (v0.85.1+), with 19 intent cards in UPSTREAM.md; also uses @mariozechner/clipboard",
+        "kimi-cli-legacy: Python predecessor; packages/migration-legacy imports its ~/.kimi config, MCP and sessions",
+        "claude-code: compatible hook event names and exit-2/permissionDecision protocol, project .mcp.json, CC-style agent files, and an import-from-cc-codex skill",
+        "opencode: OpenCode-style agent files load",
+        "xstate v5 (turn/agent/tool machines)",
+        "@agentclientprotocol/sdk (ACP server)",
+        "@modelcontextprotocol/sdk (MCP client)",
+        "models.dev catalog (provider import)"
+      ],
+      "used_by": [
+        "Zed and JetBrains IDEs via kimi acp",
+        "Kimi Code VS Code extension (apps/vscode, in-process via createKimiHarness)",
+        "Kimi Code desktop app and code-app web UI (via kap-server REST/WS)",
+        "Kimi Remote Control web client (code-rc.kimi.com relay)"
+      ],
+      "key_insights": [
+        "Parallel tool calls are ordered by declared ToolAccesses (file read/write/search with recursive prefixes) in a small conflict scheduler. Tools without declarations (Bash, MCP) default to 'all' and act as global barriers.",
+        "After compaction the model gets a footer with the absolute path and schema of its own append-only wire.jsonl plus grep/jq recipes. History is lossy in context but lossless on disk, which gives retrieval memory with no vector store.",
+        "Three harness generations are visible: Python kimi-cli, then a deleted TS 'v1' KimiCore engine, then agent-core-v2. Migration debris remains: a v1-shaped SDK facade, two provider registries, an unused maxRalphIterations key, and kosong surviving only as a name ('the kosong kernel is deleted' per the import linter).",
+        "Every engine/SDK package is private:true. The only published artifact is the CLI, so reuse means ACP, stream-json or the experimental HTTP API, or forking 280k LOC. Inside a fork, DI makes swapping any service a one-line overrideScopedService.",
+        "Headless kimi -p forbids --yolo/--auto but then forces 'auto' and bootstraps nonInteractive, which drops the dangerous-command policy. Only user deny rules and path guards remain, so CI needs external isolation.",
+        "In default manual mode, Write/Edit inside a git work tree is auto-approved on POSIX (git-cwd-write-approve), while sensitive files and .git paths still ask even in yolo. Git is treated as the undo mechanism.",
+        "ACP mode descriptions contradict the engine: ACP calls 'auto' 'safe operations' and 'yolo' 'everything', but auto approves everything while yolo still asks. ACP 'plan' claims no tool execution, yet Bash still runs under normal permissions.",
+        "Tower (experimental, flag-gated) is a deterministic multi-agent protocol: git-worktree missions, WIP snapshot commits, independent reviewer agents and a merge gate. Legacy KAOS's SSH remote backend and D-Mail checkpoint rewind did not survive the port."
+      ],
+      "doc_path": "harnesses/kimi-code.md",
+      "features_notes": {
+        "in_process_sdk": "Private workspace SDK; vendoring required for direct engine reuse.",
+        "worktrees": "Tower orchestration is experimental and off by default.",
+        "durable_resume": "Transcript repair/resume, not tool-step replay."
+      }
+    },
+    {
+      "slug": "kimi-cli-legacy",
+      "name": "Kimi CLI (legacy Python, archived)",
+      "vendor": "Moonshot AI",
+      "repo": "MoonshotAI/kimi-cli",
+      "license": "Apache-2.0",
+      "language": "Python",
+      "version": "1.52.0 (final; archived 2026-09-22)",
+      "category": "integrated-product",
+      "one_liner": "Moonshot's original Python terminal agent (Oct 2025 to Sep 2026): an imperative KimiSoul step loop over the kosong LLM layer and the PyKAOS local/SSH OS abstraction, with YAML agent specs, D-Mail checkpoint rewind, ACP, a --wire JSON-RPC mode and a FastAPI web UI. Superseded by Kimi Code CLI.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "yes",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "no",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "no",
+        "otel": "no",
+        "web_ui": "yes",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "KimiSoul._agent_loop is an imperative per-step sequence: max-steps guard, then auto-compaction, then a context checkpoint, then _step() (kosong.step). A BackToTheFuture exception from D-Mail reverts to a checkpoint. Steers are consumed between steps. A 'Ralph' extra-iteration mode was configured by max_ralph_iterations.",
+        "providers": "Python kosong ChatProvider with kimi, openai_legacy, openai_responses, anthropic, google_genai/gemini and vertexai, plus _echo/_chaos test providers. kosong.step starts tool execution as each tool call streams in, overlapping tools with generation.",
+        "tools": "Toolsets loaded by Python import path from YAML agent specs (e.g. kimi_cli.tools.shell:Shell). Built-ins: Shell, ReadFile, WriteFile, StrReplaceFile, Glob, Grep, SearchWeb, FetchURL, SetTodoList, Task*, Agent, AskUserQuestion, plan tools, and optional SendDMail and Think. MCP via fastmcp. Tools run as asyncio tasks.",
+        "context": "system.md template args KIMI_AGENTS_MD, KIMI_SKILLS and KIMI_WORK_DIR_LS. AGENTS.md is merged from project root to work_dir. SimpleCompaction preserves the last 2 messages around an LLM summary. Dynamic injections. D-Mail lets the model fold context back to a CHECKPOINT n.",
+        "state": "~/.kimi/sessions/<workdir>/<id>/context.jsonl (messages plus _checkpoint/_usage/_system_prompt lines) and wire.jsonl. Subagents are persisted under the session. Resume, fork (session_fork.py) and checkpoint revert are context-only; there is no file rewind.",
+        "safety": "ApprovalRuntime with approve, approve_for_session or reject; yolo and afk flags (afk implied by --print); per-session auto_approve_actions. No command analysis, no OS sandbox, no network policy.",
+        "extensibility": "13 hook events (PreToolUse … Notification), plugin.json plugins in ~/.kimi/plugins, standard skills (/skill:) and flow skills (/flow:), MCP client management CLI, and YAML agent specs with extend and subagents.",
+        "multi_agent": "LaborMarket registers built-in subagent types coder/explore/plan. The Agent tool creates or resumes subagent instances persisted with their own wire/context. No swarm, worktrees or workflow engine.",
+        "surfaces": "prompt-toolkit/rich shell TUI; --print with text or stream-json; --acp and kimi acp (agent-client-protocol 0.8.0, ACPKaos routes IO to the editor); a --wire JSON-RPC stdio server; FastAPI web UI and vis; KimiCLI.create/run programmatic API; kosong, pykaos and kimi-sdk on PyPI.",
+        "observability": "Custom telemetry (track events, crash handlers), loguru logs, vis replay tool, tests_ai suite. No OpenTelemetry."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 4,
+        "embeddability": 3,
+        "durability": 3,
+        "safety": 3,
+        "extensibility": 4,
+        "multi_agent": 3,
+        "provider_neutrality": 4,
+        "maturity": 3,
+        "minimalism": 3
+      },
+      "builds_on": [
+        "codex: NOTICE credits Apache-2.0 OpenAI Codex code (skill-creator skill)",
+        "fastmcp (MCP client)",
+        "agent-client-protocol 0.8.0 (ACP)",
+        "kosong and pykaos (own workspace packages)"
+      ],
+      "used_by": [
+        "kimi-code: successor; packages/migration-legacy migrates its config, MCP, skills, plans, input history and sessions",
+        "Zed and JetBrains via ACP (historically)"
+      ],
+      "key_insights": [
+        "D-Mail (SendDMail plus the DenwaRenji checkpoint registry) let the model rewind its own context to an earlier CHECKPOINT and leave a note for its past self. It was context-only (no filesystem rewind), opt-in via the 'okabe' agent spec, and was not ported to the TS rewrite.",
+        "kosong.step began executing each tool as soon as its call finished streaming, overlapping tools with generation. The TS successor waits for llm.done and then schedules by access conflicts.",
+        "PyKAOS abstracted file and process operations behind a Kaos protocol with local and SSH backends, plus an ACPKaos that routed IO through the editor. The TS port kept the editor routing (acp-fs/acp-terminal) but dropped SSH.",
+        "The final commit short-circuits every entry point into an installer redirect to Kimi Code, and the repo is archived. The 'kimi-code' PyPI name is reserved as an empty archived stub."
+      ],
+      "doc_path": "harnesses/kimi-code.md",
+      "features_notes": {}
+    }
+  ],
+  "verification": {
+    "method": "Independent targeted static source review plus repository-wide mechanical citation validation; no runtime tests",
+    "checked_claims": [
+      "Policy evaluation stops at the first matching rule",
+      "Noninteractive mode omits the dangerous-command policy",
+      "Auto approval precedes sensitive-file ask policies",
+      "Provider source range ends at line 44"
+    ],
+    "claims_checked": 4,
+    "corrections": [
+      "Fixed two provider line ranges",
+      "Qualified absence and experimental worktree claims"
+    ],
+    "unresolved": [
+      "Secondary release chronology, approximate LOC totals and every individual feature were not independently re-derived in this review; source links and the study limitations remain authoritative."
+    ],
+    "independent_final_review": {
+      "date": "2026-10-14",
+      "scope": "Targeted source and cross-document consistency review, not exhaustive",
+      "corrections": [
+        "Corrected default path guard: relative escapes denied, absolute outside-workspace paths allowed; sensitive-file checks vary by tool."
+      ]
+    }
+  }
+}

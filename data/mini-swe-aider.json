@@ -1,0 +1,170 @@
+{
+  "records": [
+    {
+      "slug": "mini-swe-agent",
+      "name": "mini-SWE-agent",
+      "doc_path": "harnesses/mini-swe-aider.md",
+      "category": "harness-library",
+      "vendor": "SWE-agent maintainers",
+      "language": "Python",
+      "license": "MIT",
+      "version": "2.4.6",
+      "repo_url": "https://github.com/SWE-agent/mini-swe-agent",
+      "pinned_commit": "04d809ceab9df28f9adaed044884180159172930",
+      "scores": {
+        "flexibility": 5,
+        "integration": 2,
+        "embeddability": 5,
+        "durability": 2,
+        "safety": 3,
+        "extensibility": 2,
+        "multi_agent": 1,
+        "provider_neutrality": 5,
+        "maturity": 3,
+        "minimalism": 5
+      },
+      "features": {
+        "mcp_client": "unknown",
+        "mcp_server": "unknown",
+        "skills": "unknown",
+        "hooks": "unknown",
+        "plugins": "unknown",
+        "subagents": "no",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "unknown",
+        "durable_resume": "partial",
+        "compaction": "no",
+        "os_sandbox": "partial",
+        "approvals": "partial",
+        "plan_mode": "unknown",
+        "worktrees": "unknown",
+        "otel": "unknown",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "unknown"
+      },
+      "features_notes": {
+        "durable_resume": "Per-step JSON trajectories; no transactional scheduler or effect replay established.",
+        "os_sandbox": "Optional Docker environment; local environment executes on host and Docker defaults do not disable networking.",
+        "approvals": "Interactive subclass confirms actions; default agent does not.",
+        "compaction": "Absent from the inspected default loop.",
+        "subagents": "Absent from the inspected default loop."
+      },
+      "dims": {
+        "loop": "Small query/action/environment loop; sequential actions, pre-request limits, exit-role termination.",
+        "providers": "Model protocol with LiteLLM and text/native action normalization.",
+        "tools": "Environment executes normalized action dictionaries; model adapter renders observations.",
+        "context": "Explicit message list and prompt templates; no default summarization.",
+        "state": "Finally-save trajectory JSON after steps; saved history is not effect replay.",
+        "safety": "Optional container relocation and interactive confirmation are separate choices.",
+        "extensibility": "Replace model/environment protocols or subclass the small agent.",
+        "multi_agent": "Default loop has no delegation or workflow scheduler.",
+        "surfaces": "Python library, interactive CLI and benchmark/headless runners.",
+        "observability": "Cost/call counts, serialized trajectories, rich/logging output."
+      },
+      "one_liner": "A small inspectable loop whose environment seam makes it useful for experiments and benchmark runners.",
+      "builds_on": [
+        "LiteLLM (optional model adapter)"
+      ],
+      "used_by": [],
+      "key_insights": [
+        "A small model/environment protocol boundary keeps the default sequential loop easy to replace.",
+        "Per-step trajectory saves preserve history without providing transactional effect replay.",
+        "Interactive confirmation and Docker execution are optional, independent policies."
+      ],
+      "repo": "SWE-agent/mini-swe-agent"
+    },
+    {
+      "slug": "aider",
+      "name": "Aider",
+      "doc_path": "harnesses/mini-swe-aider.md",
+      "category": "integrated-product",
+      "vendor": "Aider maintainers",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "version": "0.86.3.dev source fallback; generated build version may override",
+      "repo_url": "https://github.com/Aider-AI/aider",
+      "pinned_commit": "5dc9490bb35f9729ef2c95d00a19ccd30c26339c",
+      "scores": {
+        "flexibility": 3,
+        "integration": 4,
+        "embeddability": 3,
+        "durability": 2,
+        "safety": 2,
+        "extensibility": 2,
+        "multi_agent": 2,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 3
+      },
+      "features": {
+        "mcp_client": "unknown",
+        "mcp_server": "unknown",
+        "skills": "unknown",
+        "hooks": "unknown",
+        "plugins": "unknown",
+        "subagents": "partial",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "unknown",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "no",
+        "approvals": "yes",
+        "plan_mode": "unknown",
+        "worktrees": "unknown",
+        "otel": "unknown",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "unknown"
+      },
+      "features_notes": {
+        "in_process_sdk": "Importable Coder internals, not an independently stabilized generic harness API.",
+        "durable_resume": "Chat-history restoration and Git edits/commits; no inspected transactional replay engine.",
+        "os_sandbox": "Inspected editor and shell paths execute in the host environment.",
+        "subagents": "Architect-to-editor handoff is sequential; not a general supervisor.",
+        "approvals": "Edit and shell confirmation policies are configurable."
+      },
+      "dims": {
+        "loop": "Coder loop applies edit-format responses and reflects parse/lint/test failures into subsequent requests.",
+        "providers": "LiteLLM model policy includes weak/editor models, edit format and token budget.",
+        "tools": "Repository editing, shell and Git operations sit inside coder subclasses.",
+        "context": "Weighted PageRank repository map plus file content and recursive history summarization.",
+        "state": "Chat history and Git track work; recovery does not provide durable side-effect replay.",
+        "safety": "Confirmation gates before edits/commands; no inspected OS isolation.",
+        "extensibility": "Subclass edit formats and configure models/context/I/O.",
+        "multi_agent": "Architect plans then a separate editor coder applies; history transfer is controlled.",
+        "surfaces": "Interactive CLI and importable Python internals.",
+        "observability": "Usage/cost output, chat histories, Git commits and diagnostic reflection."
+      },
+      "one_liner": "A repository editing product with strong code-context selection and repair loops, but limited generic runtime separation.",
+      "builds_on": [
+        "LiteLLM"
+      ],
+      "used_by": [],
+      "key_insights": [
+        "Repository-map ranking and edit-format reflection are central to its coding workflow.",
+        "Importable coder internals are tightly coupled to repository, Git and interactive product policies.",
+        "Chat restoration and Git commits do not provide a durable workflow scheduler."
+      ],
+      "repo": "Aider-AI/aider"
+    }
+  ],
+  "verification": {
+    "method": "static-source-review",
+    "checked_at": "2026-10-14",
+    "status": "researcher-checked",
+    "source_executed": false,
+    "independent_adversarial_review": false,
+    "checks": [
+      "Mini version module and trajectory schema distinguished",
+      "Mini sequential actions, finally-save and pre-call cost boundary inspected",
+      "Docker configuration and interactive approval defaults checked separately",
+      "Aider repository-map graph, edit reflection, summarization and Git/approval paths inspected"
+    ],
+    "limits": "Pinned files and cited line ranges reviewed; no provider calls, package installs, runtime tests, security penetration tests or crash-injection experiments were performed."
+  }
+}

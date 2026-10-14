@@ -1,0 +1,195 @@
+{
+  "records": [
+    {
+      "slug": "gemini-cli",
+      "name": "Gemini CLI",
+      "vendor": "Google",
+      "repo": "google-gemini/gemini-cli",
+      "license": "Apache-2.0",
+      "language": "TypeScript (Node >=20; React/Ink TUI; C# helper for Windows sandbox)",
+      "version": "0.66.0-nightly.20261013 at pin (latest stable v0.64.0, 2026-10-13)",
+      "category": "integrated-product",
+      "one_liner": "Google's Gemini-only terminal agent with a reusable core library (@google/gemini-cli-core), a tiered TOML policy engine, per-command OS sandboxes on macOS/Linux/Windows, and ACP/A2A/headless surfaces. Consumer-tier serving moved to Antigravity CLI on 2026-06-18, but the repo still ships weekly releases.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "partial",
+        "otel": "yes",
+        "web_ui": "no",
+        "ide": "yes",
+        "agents_md": "partial"
+      },
+      "dims": {
+        "loop": "Turn.run streams one Gemini call. GeminiClient.processTurn adds compression, overflow check, loop detection, sticky routing, next-speaker continuation and Before/AfterAgent hooks (MAX_TURNS 100). Hosts run the tool cycle through Scheduler, and there are eight separate host loops (TUI, headless, ACP, A2A, SDK, LegacyAgentSession, subagents), which causes drift: the ACP path bypasses Scheduler.",
+        "providers": "Gemini-only. @google/genai Content is the internal representation. ContentGenerator backends: Gemini API, Vertex, Code Assist OAuth/ADC, and a Gemini-protocol gateway. A composite router covers fallback, override, approval mode and classifiers, including local Gemma via LiteRT. Thought signatures are repaired synthetically. Caching is implicit and accounting is token-only.",
+        "tools": "DeclarativeTool builds a ToolInvocation, with raw JSON Schema validated by ajv, a Kind enum and model-family-specific declarations. Built-ins cover shell (PTY and background), grep/glob, edit/write, web fetch/search, plan, todos and invoke_agent. The event-driven Scheduler adds a wait_for_previous parameter to every tool for parallelism, runs Before/AfterTool hooks and spills large outputs to disk. MCP client supports stdio, SSE and streamable HTTP with OAuth.",
+        "context": "The system prompt comes from model-specific snippets or a GEMINI_SYSTEM_MD override. GEMINI.md files load hierarchically (global, extension, project upward to the git root) with JIT subdirectory loading. Compression triggers at 50% of the window, keeps the newest 30%, and runs a summary pass plus a verification probe into a state_snapshot. Old tool outputs are masked FIFO and spilled to disk.",
+        "state": "Append-only JSONL sessions in ~/.gemini/tmp/<project>/chats with $patch and $rewindTo records. Resume via --resume, /rewind, ACP loadSession and SDK resumeSession. Shadow-git checkpoints are opt-in and triggered only from the UI layer, with /restore. The A2A server can store task metadata and a workspace tarball in GCS. No durable execution replay.",
+        "safety": "Tiered TOML PolicyEngine (default < extension < workspace < user < admin) with shell sub-command parsing, redirection downgrade, headless default-deny, taint and build-file protection, and optional Conseca LLM policies. Whole-process sandbox (Seatbelt profiles, Docker, Podman, gVisor, LXC) plus per-command Seatbelt/bwrap/Windows job-object controls; Windows network-disabled mode attempts throttling and continues if setup fails. Env sanitization and folder trust.",
+        "extensibility": "gemini-extension.json bundles MCP servers, TOML commands, hooks/hooks.json, skills, agents, policies and themes. Installed from git or GitHub releases with consent, plus a registry. 11 hook events (command or runtime), passing CLAUDE_PROJECT_DIR for compatibility. SKILL.md skills include .agents/skills. MCP client only.",
+        "multi_agent": "invoke_agent runs local subagents defined in Markdown with YAML frontmatter (isolated registries, scoped MCP, subagent-scoped policy, no recursion, complete_task with a grace period) or remote A2A agents. Multiple subagents in one turn run in parallel via Scheduler. Built-ins include an investigator, generalist and browser agent. Worktrees exist only at session level (--worktree). No teams or workflows.",
+        "surfaces": "Ink TUI; headless -p with text, json or stream-json output; ACP over stdio (Zed reference agent; VS Code Code Assist inferred); experimental A2A Express server; in-repo SDK that is not published to npm; @google/gemini-cli-core on npm; VS Code companion MCP server for diffs; GitHub Action; npm, Homebrew and a SEA binary.",
+        "observability": "OpenTelemetry NodeSDK with OTLP gRPC/HTTP, direct GCP and file exporters, gen_ai.* attributes and extensive metrics. Clearcut usage stats are on by default. Token reporting via /stats and --session-summary. About 40 behavioral evals with an LLM judge and an Eval Development Kit, integration tests across sandbox modes, and record/replay content generators."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 3,
+        "safety": 5,
+        "extensibility": 5,
+        "multi_agent": 3,
+        "provider_neutrality": 1,
+        "maturity": 4,
+        "minimalism": 2
+      },
+      "builds_on": [
+        "@google/genai (Google Gen AI SDK): wire format and internal message model",
+        "@modelcontextprotocol/sdk: MCP client, and the server inside the VS Code companion",
+        "@agentclientprotocol/sdk: ACP agent side (Gemini CLI was Zed's launch reference agent)",
+        "@a2a-js/sdk: A2A server package and remote subagents",
+        "Ink (fork npm:@jrichman/ink) + React 19: TUI",
+        "OpenTelemetry Node SDK: traces, logs and metrics",
+        "bubblewrap / macOS Seatbelt / Docker / Podman / gVisor / LXC: sandbox backends"
+      ],
+      "used_by": [
+        "Qwen Code: hard fork of v0.8.2 (2025-10); independent since Qwen v0.1.0",
+        "Zed: ACP external agent, launch reference implementation (Zed blog 2025-08-27)",
+        "Gemini Code Assist for VS Code: drives Gemini CLI over ACP (inferred from the 'acp-vscode' client user-agent branch)",
+        "google-github-actions/run-gemini-cli: GitHub Action over headless mode"
+      ],
+      "key_insights": [
+        "The core provides only one model turn plus per-request preflight. The tool cycle is re-implemented in eight hosts, and they have drifted: the ACP session calls invocation.execute directly (acpSession.ts L838), skipping Scheduler/ToolExecutor, so it gets no Before/AfterTool hooks, no wait_for_previous parallelism, no taint downgrade and no output spill. AgentProtocol/LegacyAgentSession, the consolidation attempt, is still behind experimental.adk flags.",
+        "Parallelism is decided by the model: every tool schema gets an injected wait_for_previous boolean (tools.ts L543-L574), and edit tools are always sequential. Qwen Code went the other way and partitions by tool Kind, as Claude Code does.",
+        "The safety stack is broad and layered. It has a TOML policy engine with five tiers (admin highest, effective priority = tier + priority/1000), shell sub-command parsing with redirection downgrade, headless default-DENY, taint and build-file escalation, subagent-scoped rules, and per-command sandboxes on all three OSes (Seatbelt SBPL, bwrap with --unshare-all, a C# Windows job-object/integrity helper) with platform-specific network controls; Windows attempts MaxBandwidth=1 throttling and continues if setup fails.",
+        "The @google/genai Content type is the internal representation. The client repairs missing thought signatures with the synthetic value 'skip_thought_signature_validator' and switches tool declarations by model family. This makes provider neutrality structurally impossible without forking the ContentGenerator layer, which is what Qwen did.",
+        "Default compression spends two LLM calls: a summary into <state_snapshot>, then a verification 'probe' that critiques and re-emits it. It triggers at 50% of the model window and keeps the newest 30%. Combined with the next-speaker check, the LLM loop judge and classifier routing, several LLM calls per session go to control flow rather than the task.",
+        "The retirement claim is only partly true. Google's official post (2026-05-19) ends serving for AI Pro/Ultra and free Code Assist users on 2026-06-18; paid API keys and Code Assist Standard/Enterprise remain. The repo is not frozen: 232 commits and continued weekly releases since then, with v0.64.0 on 2026-10-13. The code ships an antigravity-support built-in skill and an Antigravity banner exempt from the 5-impression cap, and Google's own PR automation in the repo runs on the Antigravity SDK.",
+        "Checkpointing (a shadow git repo with GIT_DIR/GIT_WORK_TREE and restore plus clean -fd) is triggered from a React useEffect in the TUI and duplicated in the A2A task. Headless, SDK and ACP callers therefore get no checkpoints.",
+        "For embedding, @google/gemini-cli-core on npm (800 versions) is the real unit. The in-repo SDK is not published and constructs Config with policy defaultDecision ALLOW (marked TODO)."
+      ],
+      "doc_path": "harnesses/gemini-cli.md",
+      "features_notes": {
+        "os_sandbox": "Optional runtime/backend configuration; available isolation is not the default for every host or platform.",
+        "in_process_sdk": "Published core exists; dedicated SDK is unpublished and has host-specific omissions/defaults."
+      }
+    },
+    {
+      "slug": "qwen-code",
+      "name": "Qwen Code",
+      "vendor": "Alibaba (Qwen team, QwenLM)",
+      "repo": "QwenLM/qwen-code",
+      "license": "Apache-2.0",
+      "language": "TypeScript (Node >=22; Ink TUI; Java and Python SDKs)",
+      "version": "0.25.1",
+      "category": "integrated-product",
+      "one_liner": "A multi-provider fork of Gemini CLI v0.8.2, now about 1.1M non-test LOC in core and cli, re-shaped toward Claude Code semantics. Adds agent teams, journaled workflows, a serve daemon, web/desktop/chat surfaces and SDKs in three languages.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "yes",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "yes",
+        "otel": "yes",
+        "web_ui": "yes",
+        "ide": "yes",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "Inherits the Gemini topology (Turn, then LlmChat (renamed GeminiChat), then ContentGenerator) with a host-driven tool cycle, but much heavier: client.ts is 6K LOC. Keeps CoreToolScheduler (8K LOC), which batches consecutive concurrency-safe calls (Read/Search/Fetch) and runs others alone. Interactive and headless runners share the same partition predicate.",
+        "providers": "Keeps the upstream ContentGenerator seam and @google/genai Content as the internal representation, with adapters for OpenAI Chat, OpenAI Responses, Anthropic, Qwen OAuth/DashScope and Gemini/Vertex. About ten provider-specific adapters for OpenAI-compatible endpoints (DeepSeek, OpenRouter, Cerebras, Fireworks, MiniMax, Mistral, ModelScope, Z.ai, MiMo) plus provider presets.",
+        "tools": "Upstream built-ins extended with Code Mode (QuickJS scripting), an LSP service, and agent, team and workflow tools. Permission rules accept Claude-Code-compatible tool aliases (Bash/Read/Write). Concurrency is decided by tool Kind. The MCP client uses the v2 client packages.",
+        "context": "QWEN.md and AGENTS.md load by default, plus QWEN.local.md. Compaction uses window-relative buffers (13K auto, 20K warn, 3K hard) that in-code comments say match Claude Code's autoCompact constants. Auto-memory and auto-skills.",
+        "state": "JSONL transcripts linked by uuid/parentUuid form a tree that supports branching and rewind. Session writer leases. Workflow JSONL journals resume by reusing the longest unchanged prefix of agent calls, and checkpoint.json files detect crashed runs. Background agents can resume. Managed sessions run via the qwen serve daemon.",
+        "safety": "A PermissionManager with Claude-style rule syntax, dangerous/destructive command rules, and an AUTO-mode classifier that strips assistant text and tool results (the code says it mirrors Claude Code's yoloClassifier). bwrap execution sandbox and macOS Seatbelt profiles. No tiered TOML admin policy engine at the pin.",
+        "extensibility": "22 hook events with Claude Code names (PreToolUse through InstructionsLoaded), extensions with an extension store, skills, mods running in QuickJS workers, MCP client, chat-channel plugins and custom commands. The SDK can create MCP servers.",
+        "multi_agent": "Subagents; agent teams via TeamManager with mailbox, board tasks and tmux/iTerm/in-process backends; arena runs that compare agents; a workflow orchestrator with budgets and journaled resume; forked agents; worktree pinning per agent.",
+        "surfaces": "TUI; headless stream-json; qwen serve HTTP daemon with A2A routes; acp-bridge shared by IDE, channels and TUI; VS Code and Zed extensions; web-shell React UI; desktop app; chat channels (Telegram, WeChat, DingTalk, Feishu, QQ, email, GitHub/GitLab); SDKs in TypeScript (subprocess), Python and Java; an MCP server that bridges the daemon.",
+        "observability": "OpenTelemetry exporters (OTLP gRPC/HTTP, undici instrumentation), session and agent statistics, and workflow budget ledgers. Very large test suites (about 1.66M test LOC in core and cli) plus live and integration tests."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 5,
+        "provider_neutrality": 4,
+        "maturity": 3,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "Gemini CLI v0.8.2: forked; synced until Qwen v0.1.0 (2025-10-27); 645 of 2,455 non-test core and cli files still carry Google LLC headers",
+        "@google/genai: kept as the internal message model (genai-compat.ts)",
+        "openai 5.11.0 and @anthropic-ai/sdk: provider adapters",
+        "Claude Code: behaviours ported according to in-code comments (hook names, permission rules and classifier, compaction constants, a workflow subagent prompt 'verbatim from claude-code 2.1.160 binary')",
+        "@agentclientprotocol/sdk, @a2a-js/sdk, @modelcontextprotocol/sdk: protocol layers",
+        "QuickJS: Code Mode and mod workers"
+      ],
+      "used_by": [
+        "Gemini CLI Desktop (Piebald-AI): README lists it as a desktop/web/mobile UI for Qwen Code",
+        "@qwen-code/sdk (TypeScript), Python and Java SDKs: wrap the CLI subprocess or daemon",
+        "Zed and VS Code: through Qwen's ACP-based extensions"
+      ],
+      "key_insights": [
+        "The fork proves that Gemini CLI's ContentGenerator interface is a workable provider seam. Qwen kept GenerateContentParameters/GenerateContentResponse as the contract and put OpenAI Chat, OpenAI Responses, Anthropic and Qwen adapters behind it (the OpenAI converter alone is 2.6K LOC), so the Gemini wire format became a de facto multi-provider internal representation.",
+        "Its divergence is mostly convergence on Claude Code, documented in its own comments. Hook events use Claude names (22 events), permission rules alias Bash/Read/Write, the auto-mode classifier 'mirrors ClaudeCode's buildTranscriptEntries (yoloClassifier.ts)', compaction buffers 'match claude-code's AUTOCOMPACT_BUFFER_TOKENS (autoCompact.ts:62)', and the workflow subagent prompt is labelled 'Verbatim from claude-code 2.1.160 binary'. This is a provenance flag for an Apache-2.0 repository.",
+        "It kept the older CoreToolScheduler (8,130 LOC) after upstream moved to the event-driven Scheduler. Parallelism is decided by tool Kind (Read/Search/Fetch) instead of upstream's model-declared wait_for_previous, and there is no upstream-style tiered TOML policy engine.",
+        "Multi-agent support goes well beyond upstream: TeamManager teams with mailbox and board on tmux/iTerm/in-process backends, arenas, and workflows whose JSONL journal reuses cached results for the longest unchanged prefix of agent() calls on resume, plus checkpoint.json files that detect crashed runs.",
+        "Scale has exploded: core is 454K and cli 642K non-test LOC (about 3.3x and 5.3x upstream), with single files of 13K to 18K lines (acp-integration Session.ts 18,270). This makes Qwen the least minimal harness in the study despite its shared skeleton with Gemini CLI.",
+        "Surface breadth is the main product bet: a qwen serve HTTP daemon with A2A routes, an ACP bridge shared by IDE, channels and TUI, web-shell, desktop, chat apps in Chinese and Western markets, and SDKs in TypeScript (stream-json subprocess), Python and Java."
+      ],
+      "doc_path": "harnesses/gemini-cli.md",
+      "features_notes": {
+        "os_sandbox": "Optional runtime/backend configuration; available isolation is not the default for every host or platform."
+      }
+    }
+  ],
+  "verification": {
+    "method": "Independent targeted static source review plus repository-wide mechanical citation validation; no runtime tests",
+    "checked_claims": [
+      "In-repo SDK policy defaults to ALLOW",
+      "Per-tool sandbox setting is separately configurable",
+      "Windows helper contains integrity-level and job-object network controls"
+    ],
+    "claims_checked": 3,
+    "corrections": [
+      "Clarified optional sandbox and host-specific policy differences in comparison data"
+    ],
+    "unresolved": [
+      "Secondary release chronology, approximate LOC totals and every individual feature were not independently re-derived in this review; source links and the study limitations remain authoritative."
+    ],
+    "independent_final_review": {
+      "date": "2026-10-14",
+      "scope": "Targeted source and cross-document consistency review, not exhaustive",
+      "corrections": [
+        "Corrected Windows network-disabled mode to attempted throttling with warning-only setup failure; removed unsupported safety superlatives."
+      ]
+    }
+  }
+}

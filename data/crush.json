@@ -1,0 +1,101 @@
+{
+  "records": [
+    {
+      "slug": "crush",
+      "name": "Crush",
+      "vendor": "Charmbracelet",
+      "repo": "https://github.com/charmbracelet/crush",
+      "license": "FSL-1.1-MIT (source available; future MIT conversion)",
+      "language": "Go",
+      "version": "Source snapshot after v0.98.1 @ a48dabea1a35",
+      "category": "integrated-product",
+      "one_liner": "Go terminal coding product built on Fantasy, with SQLite sessions, MCP/tools/hooks, parallel delegates and a local HTTP server; harness implementation is internal.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "unknown",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "partial",
+        "subagents": "yes",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "no",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "unknown",
+        "approvals": "yes",
+        "plan_mode": "unknown",
+        "worktrees": "unknown",
+        "otel": "unknown",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "Product coordinator constructs Fantasy agents and streams runs; callbacks handle tool state, steering/cancellation, persistence and continuation after compaction.",
+        "providers": "Fantasy adapters for Anthropic, Azure, Bedrock, Google, OpenAI, compatible endpoints, OpenRouter and Vercel; Catwalk supplies model metadata.",
+        "tools": "Coding/shell/process/fetch/search/LSP/question/todo tools and MCP; command output truncates with a spill file, while custom tool registration remains internal.",
+        "context": "AGENTS.md and skills roots, tool-result budgets and model-based session summarization; active context starts from the current summary pointer plus tail.",
+        "state": "SQLite WAL sessions and streaming message/usage saves support reopening and continuing work. No per-effect deterministic crash-replay contract established.",
+        "safety": "Permission allowlists, skip mode, session approvals and pre-tool hooks. No actual OS confinement implementation established by this review.",
+        "extensibility": "MCP, skills and PreToolUse hooks; hook responses can allow/deny/halt or rewrite input. No general public in-process harness plugin SDK established.",
+        "multi_agent": "Parallel Fantasy agent tool with parent-session/message/call linkage; no general workflow DAG or automatic child worktree allocation established.",
+        "surfaces": "TUI, headless run/continue and HTTP v1 service over local platform transports; Go internal package boundary prevents ordinary external imports of the product harness.",
+        "observability": "Session usage/cost, persistence and PostHog product events. OpenTelemetry export not established."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 4,
+        "embeddability": 2,
+        "durability": 3,
+        "safety": 3,
+        "extensibility": 4,
+        "multi_agent": 3,
+        "provider_neutrality": 5,
+        "maturity": 3,
+        "minimalism": 3
+      },
+      "builds_on": [
+        "charmbracelet/fantasy v0.45.1",
+        "charmbracelet/catwalk model catalogue",
+        "Bubble Tea TUI, SQLite and MCP SDK"
+      ],
+      "used_by": [
+        "First-party Crush TUI and headless/server clients"
+      ],
+      "key_insights": [
+        "Fantasy is the lower-level reuse candidate; Crush itself adds product policy and keeps implementation in Go internal packages.",
+        "The license at this pin is FSL-1.1-MIT, not current MIT.",
+        "PreToolUse hooks and MCP provide useful extension without proving a general embedding SDK."
+      ],
+      "doc_path": "harnesses/crush.md",
+      "features_notes": {
+        "plugins": "Skills, MCP and hooks are verified; a general in-process plugin API is not.",
+        "durable_resume": "Saved session continuation; in-flight effect replay not established.",
+        "os_sandbox": "Unknown; approvals alone do not demonstrate confinement.",
+        "worktrees": "Existing-worktree recognition is not proof of child worktree creation.",
+        "otel": "Unknown; PostHog is a separate telemetry mechanism."
+      }
+    }
+  ],
+  "verification": {
+    "method": "source review",
+    "reviewed_at": "2026-10-14",
+    "source_pins": {
+      "charmbracelet/crush": "a48dabea1a3562b24c39cc7f0dec10e867f8499b"
+    },
+    "checked_claims": [
+      "Fantasy dependency and product coordinator ownership",
+      "Go internal package embedding boundary",
+      "HTTP v1 server and run/continue clients",
+      "SQLite persistence, compaction and permission callbacks",
+      "FSL-1.1-MIT license text"
+    ],
+    "limitations": [
+      "Static source review; no build or runtime execution.",
+      "Unknown flags mean no implementation established, not a claim the entire repository lacks the feature.",
+      "Fantasy is inspected at the Crush consumer boundary, not independently audited as a complete runtime."
+    ]
+  }
+}

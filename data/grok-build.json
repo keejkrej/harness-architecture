@@ -1,0 +1,108 @@
+{
+  "records": [
+    {
+      "slug": "grok-build",
+      "name": "Grok Build (xAI)",
+      "vendor": "xAI / SpaceXAI",
+      "repo": "github.com/xai-org/grok-build",
+      "license": "Apache-2.0 (first-party; ported Codex Apache-2.0 and OpenCode MIT tools; vendored Mermaid crates under own licenses)",
+      "language": "Rust (+ Rhai workflow scripts, MiniJinja prompt templates)",
+      "version": "1.0.45 @ 2bdd1d6a6369 (monorepo SOURCE_REV 559751fdcec0)",
+      "category": "integrated-product",
+      "one_liner": "Rust fullscreen TUI coding agent whose every surface (TUI, grok -p, IDE stdio, WS serve, multi-client leader) is an ACP client of one MvpAgent. Ships production loop guards, two-layer OS sandboxing, Claude/Cursor-compatible extensibility and a journaled Rhai subagent workflow engine.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "partial",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "yes",
+        "otel": "yes",
+        "web_ui": "no",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "About 1,250-line loop in SessionActor::process_conversation_turn_inner on a single-threaded LocalSet. Guards: identical-tool-call stationarity nudge/stop (4/8, 8/12), server doom-loop abort+retry, length salvage, TodoGate, auth/transient retries. Parallel tools via FuturesUnordered with per-path write mutexes; interjections/steers merged at safe points; max-turns.",
+        "providers": "ConversationItem model over three wire backends: ChatCompletions, Responses (sole prompt_cache_key forwarder), Anthropic Messages. Custom [model.*] and [model_providers.*] with base_url, headers and credential-helper auth_provider. Defaults are xAI (grok-4.6, 500K, Responses); server cost_usd_ticks and cached-token accounting.",
+        "tools": "Streaming Tool trait (schemars Args, Progress*/Terminal) with 36-kind taxonomy. Renameable/randomizable names via MiniJinja descriptions. Presets: grok-build, codex (ported Codex tools + prompt), opencode ports, concise, hashline, explore/plan. MCP via lazy search_tool/use_tool; bash 120s/300s with background tasks.",
+        "context": "XOR-obfuscated prompt templates (plaintext in repo). AGENTS.md/CLAUDE.md/.cursor rules injected as user-turn <\\system-reminder> with tag neutralization. Full-replace summarization compaction (85%/80% threshold, preflight overflow, model-switch) with opt-in two-pass prefire. Experimental FTS5/vector memory with 'dream' consolidation.",
+        "state": "~/.grok/sessions/<cwd>/<id>/ with summary.json, updates.jsonl (ACP stream), chat_history.jsonl, atomic fsync writes. Load/resume/fork, per-prompt rewind checkpoints (files+hunks+git). Interrupted-turn markers; leader/serve survive client disconnects. Rhai workflow journal with request-hash deterministic replay.",
+        "safety": "Six Claude-style permission modes, glob rules (Claude syntax), remembered grants, LLM auto-review classifier with strict JSON schema, folder trust, signed/MDM managed policy. Whole-process Landlock/Seatbelt (nono), seccomp child-network block, per-command Seatbelt with expiring grants, egress proxy. Sandbox off by default; plan mode doesn't gate bash.",
+        "extensibility": "16 hook events (command/http) accepting Claude and Cursor aliases. SKILL.md skills incl. ~/.claude/skills; plugins via plugin.json or .claude-plugin with git marketplaces. rmcp MCP client with OAuth; agent definitions (Markdown+YAML), roles/personas, LSP, Rhai workflows; out-of-tree toolset preset registry.",
+        "multi_agent": "spawn_subagent: background by default, 32 concurrent per session (queue/fail), depth 1 by default (configurable), opt-in worktree isolation via CoW/BTRFS xai-fast-worktree with apply-back. steer/queue/interject messaging; resume_from; Rhai parallel()/agent() workflows (budget 128); goal orchestrator.",
+        "surfaces": "Ratatui fullscreen mouse TUI with dashboard and --minimal. grok -p with plain/json/streaming-json/streaming-messages-json (Anthropic format), --json-schema. ACP stdio (agent-client-protocol 0.10.4 + 84 x.ai/* ext literals). axum WS serve :2419; Unix-socket leader; grok.com relay; Computer Hub tool-server fabric for cloud sandboxes.",
+        "observability": "tracing spans exported via OTLP (service grok-cli), repointable. Double-opt-in redacted customer OTel. Product events/Mixpanel with no baked defaults in public builds, Sentry, debug firehose. usage.json cost; PTY harness with mock inference, scenario YAML and frame-timing baselines; hashline offline benchmark; no public agentic eval suite."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 5,
+        "provider_neutrality": 3,
+        "maturity": 4,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "openai/codex: ports apply_patch/read_file/list_dir/grep_files tools (Apache-2.0) and ships the Codex prompt template as the 'codex' agent_type",
+        "sst/opencode: ports bash/edit/glob/grep/read/skill/todowrite/write tools (MIT)",
+        "agent-client-protocol crate 0.10.4 (Zed ACP, unstable feature): agent-side protocol for all surfaces",
+        "rmcp 2.1: MCP client, quarantined in xai-grok-mcp",
+        "nono 0.53: Landlock/Seatbelt process sandbox",
+        "Claude Code: deep config compatibility (CLAUDE.md, .claude skills/agents/plugins/hooks/settings, permission modes, Bash(cmd:*) rules, Anthropic Messages stream output, foreign-session listing)",
+        "Cursor: .cursor/rules, Cursor hook-name aliases, internal 'cursor' harness flavor",
+        "OpenAI Codex sessions: read-only foreign-session listing (xai-grok-foreign-sessions)",
+        "warpdotdev/mermaid-to-svg + dagre/graphlib: vendored in third_party/"
+      ],
+      "used_by": [
+        "happyfeetw/grok-cli: community fork adding system-proxy support, merges upstream",
+        "qingchencloud/grok-app: unofficial egui desktop client over ACP",
+        "ACP clients listed in README: Zed, Neovim CodeCompanion/avante.nvim, Emacs agent-shell, marimo"
+      ],
+      "key_insights": [
+        "ACP is the internal bus, not just an integration option: the TUI and headless spawn MvpAgent in-process over acp_channels; stdio, axum WS serve and the Unix-socket leader reuse it. The real product API is ~65 exact x.ai/* extension methods plus 19 namespaces on top of standard ACP.",
+        "Model-server co-design: the Responses stream handles a server-emitted 'response.doom_loop_check' SSE event that aborts mid-stream and retries with capped replay and a looping reminder. The client adds canonicalized identical-tool-call stationarity detection (nudge 4/8, stop 8/12), TodoGate, length salvage and uncharged-401 resubmits.",
+        "Third-party claim of 'up to eight parallel subagents, each in its own Git worktree' conflicts with code. Default concurrency is 32 per session (queue on overflow), isolation defaults to 'none' (worktree is opt-in), and nesting depth defaults to 1.",
+        "The only replay-based durable execution is the Rhai workflow engine: host calls are journaled with seq/req_hash, re-executed scripts replay recorded results, and edits mid-run raise Divergence. The interactive turn itself is not replayed after a crash; it is marked 'interrupted'.",
+        "One harness with multiple flavors: Codex-ported tools and prompt, OpenCode ports, concise and hashline toolsets, randomizable tool and param names, and internal out-of-tree presets (a 'cursor' flavor is referenced). This suggests (inference) the client doubles as xAI's training/eval harness, which would explain the thorough Claude, Codex and Cursor compatibility.",
+        "Code is shared with other xAI products: xai-grok-compaction (with Grok chat's intra/inter compaction), xai-interjection-core (for a server-side agent loop), and prod/mc cli-chat-proxy types. Grok Build's own compaction is full-replace summarization with an opt-in two-pass speculative prefire.",
+        "Two-layer OS sandbox: an irreversible whole-process Landlock/Seatbelt via nono plus seccomp child-network blocking, and a newer per-command Seatbelt wrapper with grantable violations. Both are off by default, macOS network blocking is a no-op, Windows is unsandboxed, and plan mode gates edit tools but not bash.",
+        "The public tree is a partial monorepo export: cursor-worker is a stub, grove nfsserve/fuser are listed but absent, prompts are XOR-obfuscated in the binary though plaintext in the repo, and external PRs are refused. Production code is about 808K lines in 107 crates, alongside about 1.17M lines of tests."
+      ],
+      "doc_path": "harnesses/grok-build.md",
+      "features_notes": {
+        "os_sandbox": "Optional runtime/backend configuration; available isolation is not the default for every host or platform.",
+        "durable_resume": "Interactive JSONL resume and separate journaled workflow replay have different semantics."
+      }
+    }
+  ],
+  "verification": {
+    "method": "Independent targeted static source review plus repository-wide mechanical citation validation; no runtime tests",
+    "checked_claims": [
+      "Workflow journal records sequence, request hash and result",
+      "Replay divergence is detected and journal size is bounded",
+      "Interactive turn interruption is recorded separately from workflow replay",
+      "Messages-shaped output maps permission modes and event fields; full control compatibility is not established"
+    ],
+    "claims_checked": 4,
+    "corrections": [
+      "Removed unverified drop-in control-protocol compatibility claim"
+    ],
+    "unresolved": [
+      "Secondary release chronology, approximate LOC totals and every individual feature were not independently re-derived in this review; source links and the study limitations remain authoritative."
+    ]
+  }
+}

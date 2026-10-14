@@ -1,0 +1,109 @@
+{
+  "records": [
+    {
+      "slug": "pi-durable",
+      "name": "Pi Durable",
+      "category": "harness-library",
+      "vendor": "Earendil Works",
+      "language": "TypeScript",
+      "license": "MIT",
+      "version": "1.2.0 (experimental API)",
+      "one_liner": "A separate experimental task/checkpoint runtime over pi-ai, with explicit safe-versus-unsafe tool recovery.",
+      "builds_on": [
+        "pi-ai",
+        "Chord",
+        "pi-codemode"
+      ],
+      "used_by": [
+        "pi-env integrates with its ExecutionEnv contract"
+      ],
+      "repo_url": "https://github.com/earendil-works/pi",
+      "pinned_commit": "b45e0ebcc5ae2fc42a6f2f23104d10e656e6bedb",
+      "doc_path": "harnesses/pi-durable.md",
+      "scores": {
+        "flexibility": 4,
+        "integration": 3,
+        "embeddability": 4,
+        "durability": 5,
+        "safety": 2,
+        "extensibility": 3,
+        "multi_agent": 4,
+        "provider_neutrality": 5,
+        "maturity": 2,
+        "minimalism": 3
+      },
+      "features": {
+        "mcp_client": "no",
+        "mcp_server": "no",
+        "skills": "no",
+        "hooks": "yes",
+        "plugins": "no",
+        "subagents": "partial",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "no",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "no",
+        "approvals": "partial",
+        "plan_mode": "no",
+        "worktrees": "no",
+        "otel": "no",
+        "web_ui": "no",
+        "ide": "no",
+        "agents_md": "no"
+      },
+      "features_notes": {
+        "subagents": "Custom durable conversation/task orchestration; subagent examples rather than a shipped task tool.",
+        "approvals": "beforeTool host gate, no approval modes/UI.",
+        "durable_resume": "Native checkpoints; unsafe tool intents settle interrupted, safe tools can rerun; host must wake/resume workers."
+      },
+      "dims": {
+        "loop": "Each generation/tool/compaction is a durable task; it does not wrap pi-agent-core.",
+        "providers": "pi-ai Models directly, including deferred provider responses.",
+        "tools": "Built-in coding tools, custom tasks, codemode and deferred tool search.",
+        "context": "Transcript prompt diffs, context cache and durable compaction tasks.",
+        "state": "Single-writer transactional checkpoint store; unsafe effects are not automatically rerun, safe effects can repeat.",
+        "safety": "Tool filters and hooks; host ExecutionEnv owns isolation and permissions.",
+        "extensibility": "Tools, sections, wrappers, registry reload and versioned custom durable tasks.",
+        "multi_agent": "Ownership trees, joins, cancellation and background task boundaries; host builds agent-facing delegation.",
+        "surfaces": "In-process SDK; SQLite/JSONL/memory and Cloudflare storage adapter, no product UI/server.",
+        "observability": "Committed-state observation, task graph, inspect and usage ledger; no integrated OTel pipeline."
+      },
+      "key_insights": [
+        "A separate experimental task/checkpoint runtime over pi-ai, with explicit safe-versus-unsafe tool recovery.",
+        "Single-writer transactional checkpoint store; unsafe effects are not automatically rerun, safe effects can repeat.",
+        "Tool filters and hooks; host ExecutionEnv owns isolation and permissions."
+      ],
+      "repo": "earendil-works/pi"
+    }
+  ],
+  "verification": {
+    "claims_checked": 9,
+    "checked_claims": [
+      "Package version/license/dependencies",
+      "README experimental stability warning",
+      "Durable does not depend on agent-core",
+      "Unsafe replay policy is default",
+      "Safe recovery requires persisted and current safe flags",
+      "Unsafe recovery settles interrupted rather than rerunning",
+      "abandonOnRestart handling in scheduler",
+      "Tool memo and nested-call recovery setup",
+      "No alarm/setAlarm implementation in durable src"
+    ],
+    "corrections": [
+      "Removed strongest-durability superlatives",
+      "Qualified every-task-resumes claim for unsafe and abandon-on-restart paths",
+      "Separated admission deduplication from external exactly-once effects",
+      "Rephrased at-most-once as a runtime dispatch policy rather than a remote-effects guarantee"
+    ],
+    "unresolved": [
+      "No crash-injection tests run; correctness beyond sampled static paths remains unproven.",
+      "Cloudflare wake-up must be arranged by the host."
+    ],
+    "method": "source spot-check",
+    "review_date": "2026-10-14",
+    "scope": "Static inspection of selected high-impact claims. Not an exhaustive claim audit; no cloned code executed. Manifest/loop/recovery/safety boundaries prioritized."
+  }
+}

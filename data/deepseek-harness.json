@@ -1,0 +1,101 @@
+{
+  "records": [
+    {
+      "slug": "deepseek-harness",
+      "name": "DeepSeek Harness",
+      "category": "hybrid",
+      "vendor": "DeepSeek",
+      "language": "TypeScript; Python client",
+      "license": "MIT",
+      "version": "0.2.1-alpha.3",
+      "one_liner": "A complete agent platform whose loop, providers, persistence and UI are composable Cordis plugins.",
+      "builds_on": [
+        "Vendored Cordis plugin framework",
+        "pi-ai adapter (optional provider path)"
+      ],
+      "used_by": [],
+      "repo_url": "https://github.com/deepseek-ai/deepseek-harness",
+      "pinned_commit": "571902028a75c64c1d767f4ae5fd099485f0ddf0",
+      "doc_path": "harnesses/deepseek-harness.md",
+      "scores": {
+        "flexibility": 5,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 5,
+        "provider_neutrality": 4,
+        "maturity": 2,
+        "minimalism": 1
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "yes",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "yes",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "partial",
+        "otel": "yes",
+        "web_ui": "yes",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "features_notes": {
+        "in_process_sdk": "Published Cordis modules can be mounted, but supported SDK launches dsh subprocess.",
+        "durable_resume": "Write-ahead log and synthetic crash repair; no automatic replay of incomplete external effects.",
+        "worktrees": "Experimental team/worktree facilities.",
+        "os_sandbox": "Write confinement, platform-dependent; shell network and reads remain available.",
+        "ide": "ACP enables IDE integration; product is not an IDE extension."
+      },
+      "dims": {
+        "loop": "Replaceable ReactLoopAgent plugin; durable inbox and log-derived model requests.",
+        "providers": "DeepSeek-native path plus pi-ai adapter; vendor-specific cache/log extensions.",
+        "tools": "Registry and middleware; concurrency-safe calls overlap, exclusive tools form barriers.",
+        "context": "Logged prompt/tool changes, request projection, compaction, skills and instruction files.",
+        "state": "Append-only versioned log, write-ahead checkpoints and synthetic unknown-outcome repair; no durable work replay.",
+        "safety": "OS write confinement and approvals; read/network access remain broad; sdk-minimal uses full access.",
+        "extensibility": "Cordis lifecycle/events, YAML composition, bundles, MCP and npm plugins.",
+        "multi_agent": "Spawn/fork/continue delegates, workflows and experimental teams/worktrees.",
+        "surfaces": "Web/Electron product, headless CLI, subprocess TS/Python SDK and ACP.",
+        "observability": "OTel and replayable session projections; telemetry/log upload policy needs configuration."
+      },
+      "key_insights": [
+        "A complete agent platform whose loop, providers, persistence and UI are composable Cordis plugins.",
+        "Append-only versioned log, write-ahead checkpoints and synthetic unknown-outcome repair; no durable work replay.",
+        "OS write confinement and approvals; read/network access remain broad; sdk-minimal uses full access."
+      ],
+      "repo": "deepseek-ai/deepseek-harness"
+    }
+  ],
+  "verification": {
+    "claims_checked": 7,
+    "checked_claims": [
+      "Root manifest version and MIT license",
+      "Architecture states loop and core services are replaceable Cordis plugins",
+      "Supported TS/Python SDKs launch dsh profiles",
+      "Model and top-level tool checkpoint gates fail before side effects",
+      "Crash repair distinguishes unstarted and unknown-outcome tools",
+      "bwrap profile leaves network shared and root readable",
+      "Seatbelt profile restricts writes with allow-default baseline"
+    ],
+    "corrections": [],
+    "unresolved": [
+      "No security audit or runtime sandbox testing performed.",
+      "Dynamic adoption/release counts were not independently checked."
+    ],
+    "method": "source spot-check",
+    "review_date": "2026-10-14",
+    "scope": "Static inspection of selected high-impact claims. Not an exhaustive claim audit; no cloned code executed. Manifest/loop/recovery/safety boundaries prioritized."
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "records": [
+    {
+      "slug": "deepagents",
+      "name": "Deep Agents SDK",
+      "category": "harness-library",
+      "vendor": "LangChain",
+      "language": "Python; TypeScript port",
+      "license": "MIT",
+      "version": "Python 0.7.25; JS 1.15.0",
+      "one_liner": "Middleware, tools and backends assembled onto LangChain/LangGraph, with checkpoint durability configured through the underlying runtime.",
+      "builds_on": [
+        "LangChain create_agent",
+        "LangGraph runtime/checkpointers"
+      ],
+      "used_by": [
+        "Deep Agents Code (dcode)",
+        "Open SWE",
+        "AI SDK Deep Agents harness adapter"
+      ],
+      "repo_url": "https://github.com/langchain-ai/deepagents",
+      "pinned_commit": "e6d4fbf5260b3611ea6a9a5276cdb8655d31213c",
+      "doc_path": "harnesses/deepagents.md",
+      "scores": {
+        "flexibility": 5,
+        "integration": 3,
+        "embeddability": 4,
+        "durability": 5,
+        "safety": 3,
+        "extensibility": 4,
+        "multi_agent": 4,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 2
+      },
+      "features": {
+        "mcp_client": "no",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "partial",
+        "subagents": "yes",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "no",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "no",
+        "worktrees": "no",
+        "otel": "partial",
+        "web_ui": "no",
+        "ide": "no",
+        "agents_md": "yes"
+      },
+      "features_notes": {
+        "plugins": "Programmatic middleware/profile entry points; product plugin loader is in dcode.",
+        "durable_resume": "Configured LangGraph checkpointer plus external host re-invocation; default checkpointer=None.",
+        "os_sandbox": "Partner remote/container backends, not SDK-enforced host isolation.",
+        "otel": "LangSmith/inherited callbacks; OTel availability depends on integration.",
+        "agents_md": "Memory/instruction middleware; product discovery differs from SDK configuration."
+      },
+      "dims": {
+        "loop": "create_deep_agent returns LangChain create_agent graph; Deep Agents does not own a separate runtime.",
+        "providers": "LangChain chat-model integrations and model-specific harness profiles.",
+        "tools": "Filesystem/planning/task tools, offloading and execution-capable backend contracts.",
+        "context": "Summarization middleware, skills, memory files and tool-output offloading.",
+        "state": "LangGraph checkpointing when configured; default None has no cross-invocation persistence and no worker scheduler.",
+        "safety": "Path permissions/HITL; command execution is not governed by those file rules, isolation is backend-owned.",
+        "extensibility": "Composable middleware, profiles, backend protocols and skills; dcode plugin system is separate.",
+        "multi_agent": "Task subgraphs, parallel delegates, forked and remote async subagents.",
+        "surfaces": "First-class SDK graph; dcode TUI/ACP and Open SWE server are separate products.",
+        "observability": "LangSmith callbacks and framework state/debug streams; dedicated eval code also exists."
+      },
+      "key_insights": [
+        "Middleware, tools and backends assembled onto LangChain/LangGraph, with checkpoint durability configured through the underlying runtime.",
+        "LangGraph checkpointing when configured; default None has no cross-invocation persistence and no worker scheduler.",
+        "Path permissions/HITL; command execution is not governed by those file rules, isolation is backend-owned."
+      ],
+      "repo": "langchain-ai/deepagents"
+    }
+  ],
+  "verification": {
+    "claims_checked": 7,
+    "checked_claims": [
+      "Python manifest version/license and Beta classifier",
+      "LangChain/model package dependencies",
+      "Architecture explicitly assigns loop to LangChain/runtime to LangGraph",
+      "create_deep_agent calls create_agent and returns configured graph",
+      "checkpointer defaults None and is passed through",
+      "No SDK persistence scheduler added at assembly boundary",
+      "Execution backend permissions check includes CompositeBackend exception"
+    ],
+    "corrections": [
+      "Clarified default None does not provide persistent sessions",
+      "Made persistent checkpointer and host re-invocation prerequisites explicit",
+      "Qualified permissions/execute incompatibility for routed composite rules",
+      "Removed unsupported comparative superlatives"
+    ],
+    "unresolved": [
+      "LangGraph checkpoint guarantees are inherited; its runtime source is not included in these clones.",
+      "JS port and product-shell behavior were not comprehensively reverified."
+    ],
+    "method": "source spot-check",
+    "review_date": "2026-10-14",
+    "scope": "Static inspection of selected high-impact claims. Not an exhaustive claim audit; no cloned code executed. Manifest/loop/recovery/safety boundaries prioritized."
+  }
+}

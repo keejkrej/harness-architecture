@@ -1,0 +1,171 @@
+{
+  "records": [
+    {
+      "slug": "google-adk-python",
+      "name": "Google ADK (Python)",
+      "doc_path": "harnesses/google-adk.md",
+      "category": "agent-framework",
+      "vendor": "Google",
+      "language": "Python",
+      "license": "Apache-2.0",
+      "version": "2.12.0",
+      "repo_url": "https://github.com/google/adk-python",
+      "pinned_commit": "69c0b00fc60a35f0a20882f8cddea052e43ba66a",
+      "scores": {
+        "flexibility": 5,
+        "integration": 4,
+        "embeddability": 5,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 4,
+        "multi_agent": 5,
+        "provider_neutrality": 4,
+        "maturity": 4,
+        "minimalism": 2
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "unknown",
+        "skills": "partial",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "yes",
+        "durable_resume": "partial",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "unknown",
+        "worktrees": "unknown",
+        "otel": "yes",
+        "web_ui": "partial",
+        "ide": "unknown",
+        "agents_md": "unknown"
+      },
+      "features_notes": {
+        "durable_resume": "Invocation/node-path replay, persistent sessions and outstanding-call checks; external effects remain outside atomic event persistence.",
+        "os_sandbox": "ContainerCodeExecutor hardens its own execution path; arbitrary FunctionTools remain host-controlled.",
+        "skills": "Skill toolset/package surface exists; not treated as equal to complete coding-agent policy.",
+        "web_ui": "Development/API tooling, separate from the in-process agent core.",
+        "approvals": "FunctionTool confirmation and resumability are configurable."
+      },
+      "dims": {
+        "loop": "Event-producing LLM flow with preprocess/model/postprocess stages, resume decisions and Workflow node execution.",
+        "providers": "BaseLlm adapters; static/dynamic instructions and cache configuration remain separate policies.",
+        "tools": "Typed FunctionTools, MCP toolsets, code executors and validation/confirmation hooks.",
+        "context": "Optional event compaction using token/invocation windows; stale compactions discarded.",
+        "state": "Session services, invocation replay and rewind; rewind cannot undo external side effects.",
+        "safety": "Tool confirmation plus optional hardened container code executor; host functions require host policy.",
+        "extensibility": "Global plugins, agent callbacks, request/response processors and service substitution.",
+        "multi_agent": "LLM delegation, parallel TaskGroup execution and new Workflow graph APIs with migration caveats.",
+        "surfaces": "Python API, Runner/services, development web/API tooling and headless execution.",
+        "observability": "OpenTelemetry dependencies, event traces and evaluator infrastructure; no live evaluation performed."
+      },
+      "one_liner": "A broad event-driven agent and workflow framework with concrete resume machinery and pluggable persistence.",
+      "builds_on": [
+        "Google model integrations",
+        "SQLAlchemy (optional database sessions)"
+      ],
+      "used_by": [],
+      "key_insights": [
+        "Runner services and event flows separate agent logic from session, artifact and deployment infrastructure.",
+        "Invocation/node-path replay and rewind do not atomically reverse or deduplicate external tool effects.",
+        "ContainerCodeExecutor hardening applies to that executor, not arbitrary host FunctionTools."
+      ],
+      "repo": "google/adk-python"
+    },
+    {
+      "slug": "google-adk-js",
+      "name": "Google ADK (TypeScript)",
+      "doc_path": "harnesses/google-adk.md",
+      "category": "agent-framework",
+      "vendor": "Google",
+      "language": "TypeScript",
+      "license": "Apache-2.0",
+      "version": "2.3.0",
+      "repo_url": "https://github.com/google/adk-js",
+      "pinned_commit": "120c28252e57d0bc1ba32c2daabbc0964a4dd50e",
+      "scores": {
+        "flexibility": 4,
+        "integration": 4,
+        "embeddability": 5,
+        "durability": 3,
+        "safety": 3,
+        "extensibility": 4,
+        "multi_agent": 4,
+        "provider_neutrality": 3,
+        "maturity": 3,
+        "minimalism": 3
+      },
+      "features": {
+        "mcp_client": "partial",
+        "mcp_server": "unknown",
+        "skills": "unknown",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "unknown",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "unknown",
+        "durable_resume": "partial",
+        "compaction": "partial",
+        "os_sandbox": "unknown",
+        "approvals": "partial",
+        "plan_mode": "unknown",
+        "worktrees": "unknown",
+        "otel": "unknown",
+        "web_ui": "unknown",
+        "ide": "unknown",
+        "agents_md": "unknown"
+      },
+      "features_notes": {
+        "durable_resume": "Documented implementation supports a static-graph rehydration subset; TS invocation IDs advance per turn. Do not assume Python parity.",
+        "compaction": "Runner configuration/surface reviewed; Python compaction internals do not prove equivalent TS semantics.",
+        "os_sandbox": "Python container hardening must not be attributed to this SDK.",
+        "mcp_client": "Toolset surface present; no interoperability test performed.",
+        "approvals": "Confirmation/resume surface present; no cross-language parity assertion."
+      },
+      "dims": {
+        "loop": "Independent TypeScript Runner/agent implementation; graph rehydration explicitly scopes supported structures.",
+        "providers": "TypeScript BaseLlm contract; provider breadth independently narrower than an assumed Python mirror.",
+        "tools": "TypeScript tool abstractions and toolset integrations.",
+        "context": "Session/request context services; compaction parity not established.",
+        "state": "Static-graph deterministic rehydration with distinct invocation semantics and dynamic/parallel barriers.",
+        "safety": "Tool permission/confirmation surfaces; Python container guarantees not inherited.",
+        "extensibility": "Plugins, callbacks and injectable runner services.",
+        "multi_agent": "Workflow and subagent APIs; current rehydration limitations matter for dynamic graphs.",
+        "surfaces": "Node/browser package exports and in-process SDK.",
+        "observability": "Events/services inspected; full telemetry implementation not audited."
+      },
+      "one_liner": "A separate embeddable ADK implementation whose replay coverage must be assessed independently from Python.",
+      "builds_on": [
+        "TypeScript model/tool integrations"
+      ],
+      "used_by": [],
+      "key_insights": [
+        "The TypeScript SDK is an independent implementation with Node and browser exports.",
+        "Static-graph rehydration has narrower coverage and different invocation semantics than the reviewed Python runtime."
+      ],
+      "repo": "google/adk-js"
+    }
+  ],
+  "verification": {
+    "method": "static-source-review",
+    "checked_at": "2026-10-14",
+    "status": "researcher-checked",
+    "source_executed": false,
+    "independent_adversarial_review": false,
+    "checks": [
+      "Python App/Runner/LLM flow and node-path replay inspected",
+      "Resume client-call trust boundary and rewind limits inspected",
+      "FunctionTool validation/confirmation and container defaults inspected",
+      "Python parallel execution and compactor stale-result handling inspected",
+      "TypeScript manifest, Runner and explicitly scoped rehydration semantics inspected"
+    ],
+    "limits": "Pinned files and cited line ranges reviewed; no provider calls, package installs, runtime tests, security penetration tests or crash-injection experiments were performed."
+  }
+}

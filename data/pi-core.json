@@ -1,0 +1,110 @@
+{
+  "records": [
+    {
+      "slug": "pi-core",
+      "name": "Pi core (pi-ai + pi-agent-core)",
+      "category": "llm-library",
+      "vendor": "Earendil Works",
+      "language": "TypeScript",
+      "license": "MIT",
+      "version": "1.2.0",
+      "one_liner": "Provider layer plus a small in-memory loop; Pi v1 moved the experimental durable harness to a separate package.",
+      "builds_on": [
+        "pi-agent-core uses pi-ai and TypeBox"
+      ],
+      "used_by": [
+        "Flue (pi-ai + pi-agent-core)",
+        "DeepSeek Harness (pi-ai adapter)",
+        "Pi coding agent",
+        "Pi Durable (pi-ai only)",
+        "OpenClaw (historical Pi derivation, not current core dependency)"
+      ],
+      "repo_url": "https://github.com/earendil-works/pi",
+      "pinned_commit": "b45e0ebcc5ae2fc42a6f2f23104d10e656e6bedb",
+      "doc_path": "harnesses/pi-core.md",
+      "scores": {
+        "flexibility": 5,
+        "integration": 2,
+        "embeddability": 5,
+        "durability": 1,
+        "safety": 2,
+        "extensibility": 3,
+        "multi_agent": 1,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 4
+      },
+      "features": {
+        "mcp_client": "partial",
+        "mcp_server": "no",
+        "skills": "no",
+        "hooks": "yes",
+        "plugins": "no",
+        "subagents": "no",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "no",
+        "durable_resume": "no",
+        "compaction": "no",
+        "os_sandbox": "no",
+        "approvals": "partial",
+        "plan_mode": "no",
+        "worktrees": "no",
+        "otel": "no",
+        "web_ui": "no",
+        "ide": "no",
+        "agents_md": "no"
+      },
+      "features_notes": {
+        "mcp_client": "Optional pi-mcp sibling, not an agent-core dependency.",
+        "approvals": "beforeToolCall can gate execution; host implements approval UI and policy."
+      },
+      "dims": {
+        "loop": "Agent owns a replaceable-stream turn loop, steering/follow-up queues and lifecycle hooks.",
+        "providers": "pi-ai declares 10 chat wire APIs and 42 known provider IDs; custom providers remain possible.",
+        "tools": "Custom TypeBox tools; no built-in coding tools in agent-core.",
+        "context": "Transcript transformations and hook seams; host owns compaction and instruction loading.",
+        "state": "In-memory state only; v1 removed experimental sessions and durable runtime.",
+        "safety": "Tool gating hooks; no permissions UI or OS sandbox. QuickJS belongs to optional pi-codemode.",
+        "extensibility": "Custom models, tools, message types and loop callbacks; optional standalone MCP package.",
+        "multi_agent": "Host builds orchestration; no shipped subagent scheduler.",
+        "surfaces": "In-process ESM library and stream proxy; no application server.",
+        "observability": "Events and cost/usage data; telemetry contracts do not imply a tracing exporter."
+      },
+      "key_insights": [
+        "Provider layer plus a small in-memory loop; Pi v1 moved the experimental durable harness to a separate package.",
+        "In-memory state only; v1 removed experimental sessions and durable runtime.",
+        "Tool gating hooks; no permissions UI or OS sandbox. QuickJS belongs to optional pi-codemode."
+      ],
+      "repo": "earendil-works/pi"
+    }
+  ],
+  "verification": {
+    "claims_checked": 8,
+    "checked_claims": [
+      "Agent manifest version/license and runtime dependencies",
+      "v1.0 changelog removal of experimental harness",
+      "Ten KnownApi chat variants",
+      "42 KnownProvider IDs",
+      "Agent hook extension points",
+      "pi-ai root entrypoint composition",
+      "Durable manifest excludes agent-core",
+      "OpenClaw explicit Pi attribution and only direct pi-tui dependency"
+    ],
+    "corrections": [
+      "Qualified core vs optional sibling package scope",
+      "Removed unsupported widest-provider and reuse superlatives",
+      "Corrected all-packages author assertion",
+      "Equal file sizes no longer asserted to prove byte-identical code",
+      "Removed unsupported acquisition/founder narrative",
+      "OpenClaw attribution now cites explicit historical derivation"
+    ],
+    "unresolved": [
+      "Historical tag diff and release statistics were not independently reproduced in this review."
+    ],
+    "method": "source spot-check",
+    "review_date": "2026-10-14",
+    "scope": "Static inspection of selected high-impact claims. Not an exhaustive claim audit; no cloned code executed. Manifest/loop/recovery/safety boundaries prioritized."
+  }
+}

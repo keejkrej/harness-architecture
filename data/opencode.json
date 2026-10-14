@@ -1,0 +1,111 @@
+{
+  "records": [
+    {
+      "slug": "opencode",
+      "name": "OpenCode (V2)",
+      "vendor": "Anomaly (anomalyco; formerly SST)",
+      "repo": "https://github.com/anomalyco/opencode",
+      "license": "MIT",
+      "language": "TypeScript (Effect 4.0.1); Bun-compiled and Node SEA CLI builds; SolidJS/OpenTUI TUI; Electron desktop",
+      "version": "2.0.29 (V2 Effect rewrite) @ 8ffbcc2c81d1",
+      "category": "hybrid",
+      "one_liner": "Multi-client coding-agent service. One background server per user runs event-sourced SQLite sessions with crash-recoverable execution, and every surface is a client of its Effect HttpApi: TUI, Electron, web, ACP, and an in-process SDK for Node and Cloudflare workerd. Almost every feature is a plugin, and model access goes through its own multi-protocol LLM library.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "yes",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "no",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "yes",
+        "otel": "yes",
+        "web_ui": "yes",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "Process-local drain per session (SessionRunner.drain → runStep → SessionStep.attempt) that reloads history from SQLite on every attempt. Steer/queue inbox. Tools start in parallel fibers mid-stream as soon as each call is published. Six-way outcome: retry, continue after partial output, output-limit auto-continue, overflow compaction, full rebuild. Step limit forces toolChoice none. Write-ahead claims.",
+        "providers": "Own Effect library @opencode/ai (49 wire protocols, 66 provider modules) replaced V1's AI SDK streamText loop. models.dev catalog of 226 providers, bundled snapshot plus 5-minute refresh. AI SDK v6 LanguageModelV3 bridge with runtime npm install. Auto prompt-cache breakpoints, reasoning variants, context-tiered cost, WebSocket transports, provider-native compaction.",
+        "tools": "Tool.make with Effect or Standard Schema returns an output/content/metadata triple; registrations are scoped. Direct built-ins: read, write/edit or patch (chosen per model), glob, grep, shell, webfetch, websearch, question, skill, subagent. MCP and opencode.* admin tools are reachable only through the Code Mode `execute` interpreter. Output truncated head-only at 2000 lines/50 KiB and spilled to disk. Permission asserts happen inside tools. No LSP or todo tools.",
+        "context": "Base prompt plus model-specific prompt plugins. Instructions are SHA-256 content-addressed deltas rendered chronologically: global and ancestor AGENTS.md, nested AGENTS.md injected lazily on read, date/env, skills, MCP, references. Structured rolling-checkpoint compaction at window−max(10%,16k), keeping 15k recent tokens. Overflow recovery and provider-native compaction. No built-in memory.",
+        "state": "Event-sourced SQLite with transactional projections, bounded restart recovery and git-tree snapshots. Recovery may repeat external effects; event replay is not tool replay. Embedded SDK defaults to an in-memory database unless configured otherwise.",
+        "safety": "Last-match wildcard allow/ask/deny rules from agent plus session; saved per-project 'always' approvals; deny checked before saved approvals; declines tunnelled as defects. Tree-sitter shell command resources and external_directory gating. Deny-only policies from repo, user, Console and MDM. Permissive default Build agent; auto-accept is client-side. No OS sandbox, no network policy, in-process plugins. Remote Workspace drivers are the isolation seam.",
+        "extensibility": "Effect and Promise plugin APIs: transforms over 11 catalogs and 18 runtime hooks (session context/compaction/title/retry/model.request/http/ws, tool execute.before/after, permission.evaluate, shell create.before, aisdk sdk/language). npm and local distribution with digest-based hot reload. ~35 internal plugins use the same API. Markdown agents and commands, SKILL.md (incl. .claude/.agents), MCP client with OAuth, TUI plugins, GUI extensions.",
+        "multi_agent": "subagent tool spawns durable child sessions (parentID), foreground or background. Background completion arrives as a synthetic notification. Children are resumable by sessionID, support model override, have a depth limit (default 1) and crash-recovered jobs. Built-in general and explore subagents; parallel tool fan-out. Worktree tools and session_move via Code Mode. No handoffs, workflow engine or automatic worktree isolation.",
+        "surfaces": "One elected background service shared by TUI (OpenTUI/Solid), Electron desktop, web UI with OpenTunnel pairing, and scripts. Effect HttpApi with 142 ops, OpenAPI, and SSE with per-connection bounded queues. Generated @opencode/client. In-process @opencode/sdk for Node and Cloudflare workerd. ACP agent; `run --format json`. Thin VS Code extension; GitHub Action still V1. Share and LSP removed in V2.",
+        "observability": "Named Effect.fn spans (SessionRunner.drain, Permission.assert, …) exported over OTLP when OTEL_EXPORTER_OTLP_ENDPOINT is set; file logs otherwise. Per-step tokens and USD persisted and aggregated (stats endpoint, `opencode stats`). Sentry only in the web/desktop app. Experimental LLM-judge evaluation API, HTTP/WS cassette recorder, simulation backends. No benchmark harness."
+      },
+      "scores": {
+        "flexibility": 4,
+        "integration": 5,
+        "embeddability": 4,
+        "durability": 4,
+        "safety": 3,
+        "extensibility": 5,
+        "multi_agent": 4,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "Effect 4 (effect-ts): runtime, Schema, HttpApi server and generated clients, OTLP exporter for every layer",
+        "Vercel AI SDK: V1 loop used `streamText` (seen in the Kilo fork); V2 keeps only a bridge for AI SDK v6 LanguageModelV3 provider packages (core/src/aisdk.ts, runtime npm install pinned to the ai-v6 tag)",
+        "models.dev (served as models.opencode.ai): provider/model catalog with AI SDK npm package names remapped to native @opencode/ai routes",
+        "@modelcontextprotocol/client 2.0 (MCP client, stdio + Streamable HTTP + OAuth)",
+        "@agentclientprotocol/sdk 1.6 (`opencode acp` agent)",
+        "Drizzle ORM over bun:sqlite / node SQLite / Cloudflare Durable Object SQLite",
+        "OpenTUI + SolidJS (TUI); Electron 44 (desktop)",
+        "tree-sitter bash/PowerShell WASM (shell permission parsing)",
+        "Cloudflare 'Code Mode' concept (re-implemented as its own interpreter in @opencode/codemode)"
+      ],
+      "used_by": [
+        "Kilo Code CLI (Kilo-Org/kilocode): declared fork of OpenCode (README L161); still ships the V1-style packages/opencode loop on AI SDK streamText",
+        "Mastra: @mastra/opencode observational-memory plugin, peer-dependent on the V1 @opencode-ai/plugin API, which per the V2 migration guide does not run on V2",
+        "First-party opencode GitHub Action (github/): installs the latest GitHub release (V1) and drives `opencode serve` via @opencode-ai/sdk 1.18.5",
+        "ACP clients such as Zed, via `opencode acp`"
+      ],
+      "key_insights": [
+        "The pin is OpenCode V2 (2.0.29), a ground-up Effect rewrite. The V1 architecture the focus notes describe (packages/opencode/src/session, AI SDK streamText loop, message→part tables, LSP diagnostics, share links, V1 plugins) is gone. LSP is a config key with TODOs in edit.ts and file-mutation.ts, `/share` calls unavailable(), and the GitHub Action still installs the V1 release. The in-repo lsp.mdx docs still claim diagnostics; the official migration guide and the code both say otherwise.",
+        "Sessions are event-sourced. Bus.publish appends each durable event, runs its projectors, and bumps the aggregate sequence inside one SQLite IMMEDIATE transaction, with replay divergence and owner checks. The execution claim is committed in the same transaction as session.execution.started. Crash recovery is a property of the database: boot sweeps unreleased claims, fails orphaned running tools instead of replaying them, injects a 'server restarted' synthetic message, and caps resumes at 10 per turn. Semantics are at-least-once by design.",
+        "Local tool calls begin executing as soon as each call is durably published, while the provider stream is still running, each in its own fiber, with a start snapshot captured concurrently with the request. User declines are tunnelled as Effect defects so no tool can turn a 'no' into model-visible output. Only a reject-with-feedback becomes a recoverable ToolFailure.",
+        "Almost the whole product is built on its own public plugin API. ~35 internal plugins provide every built-in tool, the agents, provider quirks, model-specific prompts, config features and policy enforcement. Plan mode is ~100 lines: a permission transform, a tool.execute.after rewrite, a session.context reminder hook, and an event subscription. This makes the plugin surface unusually expressive (raw HTTP/WS frame rewriting, compaction substitution, retry vetoes). Behavior depends on pre/user/post plugin ordering.",
+        "Code Mode is the default exposure path. Tools not flagged codemode:false, including all MCP tools and the opencode.* worktree/session admin tools, are hidden behind one `execute` tool run by a custom restricted JS interpreter. Remote MCP servers get ?codemode=false so the two code modes never nest.",
+        "The context pipeline is built around prompt-cache hit rate. Instruction changes (date, AGENTS.md edits) are appended as chronological System deltas instead of rewriting the system prompt. The max-steps final turn keeps tool definitions with toolChoice none. Plan reminders are inserted near the tail. The compaction summary deliberately omits AGENTS.md and environment detail. Cache breakpoints are placed per protocol, with gateway-specific policies.",
+        "The in-process @opencode/sdk embeds the full harness by running the server's HttpApi router behind an owned in-memory fetch, with no socket. It works in Node and inside Cloudflare Durable Objects (workerd SQLite), selects plugin instances per session, and accepts remote WorkspaceDriver environments. Embedding is easy, but you inherit the entire ~136k-LOC core graph.",
+        "Spec/code drift exists in the V2 design docs. specs/v2/session.md promises at most four scheduled retries, but runner/retry.ts uses Schedule.recurs(10). specs/v2/tools.md promises a head-plus-tail truncation cut, but tool-output.ts keeps the head only. Safety defaults are permissive: the default agent allows everything except .env reads, and --auto/--yolo is implemented client-side by the TUI replying 'once'."
+      ],
+      "doc_path": "harnesses/opencode.md",
+      "features_notes": {
+        "durable_resume": "Persistent storage and exclusive ownership are required; at-least-once turn recovery, not exactly-once tools."
+      }
+    }
+  ],
+  "verification": {
+    "method": "Independent targeted static source review plus repository-wide mechanical citation validation; no runtime tests",
+    "checked_claims": [
+      "Published SDK and AI manifests identify V2 packages",
+      "Embedded host routes requests in memory and defaults database to :memory:",
+      "Recovery claims are bounded by a durable attempt counter",
+      "Restart code explicitly allows repeated external effects",
+      "Interrupted background shell is reported cancelled rather than transparently replayed",
+      "SDK invokes restart sweep at creation"
+    ],
+    "claims_checked": 6,
+    "corrections": [
+      "Durability score 5 to 4: event replay is not tool execution checkpoint replay",
+      "Documented in-memory default of embedded host"
+    ],
+    "unresolved": [
+      "Secondary release chronology, approximate LOC totals and every individual feature were not independently re-derived in this review; source links and the study limitations remain authoritative."
+    ]
+  }
+}

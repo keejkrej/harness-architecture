@@ -1,0 +1,270 @@
+{
+  "records": [
+    {
+      "slug": "claude-code",
+      "name": "Claude Code (March source snapshot)",
+      "vendor": "Anthropic",
+      "repo": "keejkrej/claude-code (fork of public mirror of leaked src/) @ 3a854557e01e",
+      "license": "Proprietary (exposed via npm source map; not licensed for reuse)",
+      "language": "TypeScript on Bun (React 19 + forked Ink TUI)",
+      "version": "Historical March 2026 snapshot; reconstructed 2.1.88 build",
+      "category": "integrated-product",
+      "one_liner": "Anthropic's terminal coding agent: a ~515 kLOC single-binary product whose small async-generator loop (src/query.ts) is wrapped by a layered permission engine, cache-optimized context ladder, hooks/skills/plugins/MCP, subagents and a stream-json control protocol shared by SDK, IDE, bridge and cloud surfaces.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "yes",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "no",
+        "http_server": "partial",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "yes",
+        "otel": "yes",
+        "web_ui": "partial",
+        "ide": "yes",
+        "agents_md": "partial"
+      },
+      "dims": {
+        "loop": "Async-generator queryLoop in src/query.ts rebuilds one State record per continue, tagged with typed Terminal(10)/Continue(8) transitions; tools start while the model streams; prompt-too-long/max-output errors are withheld until collapse-drain, reactive compact, token escalation or resume nudges fail; mid-turn steering via a global queue; fallback model after repeated 529s.",
+        "providers": "Anthropic Messages API only via @anthropic-ai/sdk, routed to first-party, Bedrock, Vertex or Foundry by CLAUDE_CODE_USE_* env; heavy use of Anthropic-only features (adaptive thinking signatures, cache_edits, 1h/global cache scope, task_budget, deferred tools, advisor); per-model USD from static tier tables.",
+        "tools": "~40 built-ins as Zod Tool objects via buildTool fail-closed defaults; consecutive concurrency-safe calls batched (cap 10), Bash-only sibling abort; pipeline zod→validateInput→PreToolUse hooks→permission→call→spill >50k-char results to files with 2kB preview→PostToolUse; ToolSearch defers MCP tools beyond 10% of context.",
+        "context": "System prompt split at a dynamic cache boundary with memoized sections; CLAUDE.md hierarchy (managed/user/project/local, @include depth 5) prepended as a user message, git status appended; ladder: tool-result budget→microcompact (incl. cache_edits)→autocompact via cache-sharing forked summarizer with file/skill rehydration; MEMORY.md auto-memory with side-query relevance.",
+        "state": "Append-only JSONL per session under ~/.claude/projects/<cwd>/ with parentUuid chains, per-subagent sidechain files and spilled tool-results; continue/resume/fork/resume-at; interrupted-turn detection appends a continue message; file-history snapshots (max 100) back /rewind; user message persisted before each API call.",
+        "safety": "Modes default/acceptEdits/plan/bypassPermissions/dontAsk plus auto (LLM classifier) and bubble; rules from 8 sources incl. managed policy; ordered pipeline with bypass-immune .git/.claude paths; ~7 kLOC Bash static analysis; opt-in sandbox-runtime (Seatbelt/bubblewrap) for shell with domain allowlist; CanUseToolFn seam for dialog, SDK callback or MCP tool.",
+        "extensibility": "27 hook events with command/prompt/http/agent hook types; SKILL.md skills (inline or forked) unified with slash commands in one Command type; plugin.json bundles commands/agents/skills/hooks/MCP/LSP/output styles distributed via marketplaces; MCP client with 7 transports, OAuth, elicitation, channels; `claude mcp serve`.",
+        "multi_agent": "Agent tool runs the same query() in-process with cloned context, no-prompt permissions, sidechain transcripts and optional git-worktree isolation; background agents report via task-notifications drained mid-turn; experimental agent teams with file mailboxes and tmux/iTerm/in-process teammates; coordinator, fork and workflow modes gated or absent.",
+        "surfaces": "Ink TUI; -p headless with text/json/stream-json; bidirectional stream-json + 21-subtype control_request protocol reused by Agent SDKs, IDE extensions, Remote Control bridge (child CLI with --sdk-url) and cloud sessions; MCP server; Chrome MCP; direct-connect HTTP server gated out; ACP only via Zed's external adapter.",
+        "observability": "Opt-in OpenTelemetry metrics/logs (OTLP, Prometheus) and beta traces with interaction/llm_request/tool spans; first-party and Datadog analytics with 900+ tengu_* names and GrowthBook gates; cost tracker restored on resume; loop checkpoints and startup profiler; VCR record/replay fixtures and ablation baseline for evals."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 5,
+        "embeddability": 3,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 4,
+        "provider_neutrality": 2,
+        "maturity": 4,
+        "minimalism": 1
+      },
+      "builds_on": [
+        "@anthropic-ai/sdk (model calls; Bedrock/Vertex/Foundry variants)",
+        "@modelcontextprotocol/sdk (MCP client and server)",
+        "@anthropic-ai/sandbox-runtime (Seatbelt/bubblewrap OS sandbox)",
+        "Ink (forked into src/ink) + React 19 with React Compiler; pure-TS Yoga port",
+        "Bun bundler feature() compile-time flags",
+        "GrowthBook (runtime gates)",
+        "OpenTelemetry JS SDK"
+      ],
+      "used_by": [
+        "Claude Agent SDK Python/TS (spawns the CLI binary over stream-json)",
+        "Vercel AI SDK @ai-sdk/harness-claude-code (via Agent SDK 0.3.290)",
+        "DeepSeek Harness @deepseek-ai/dsh-subagent-claude-code (via Agent SDK 0.3.263)",
+        "Mastra agent-sdks/claude (via Agent SDK)",
+        "Microsoft Agent Framework python/packages/claude (via claude-agent-sdk)",
+        "OpenClaw extensions/acpx (Agent SDK native binaries)",
+        "Goose claude_code provider (spawns claude with stream-json directly, no SDK)",
+        "Cline ClaudeCodeProvider and Claude Code JSONL session import",
+        "Zed claude-agent-acp (third-party ACP adapter over the Agent SDK)",
+        "claw-code (Rust re-implementation guided by the leaked file inventory)"
+      ],
+      "key_insights": [
+        "The leak is a source-map reconstruction of the external build: 89 bun:bundle feature() flags dead-code-eliminate whole modules (reactive compact, context collapse, REPL/Workflow tools, `claude server`), so call sites are visible but implementations absent; .tsx files are React Compiler output with USER_TYPE constant-folded to \"external\".",
+        "Prompt-cache preservation shapes the architecture: CLAUDE.md and date go into a prepended user message rather than the system prompt; the system prompt is split at a dynamic boundary with memoized sections; built-in tools are sorted as a cache prefix ahead of MCP tools; and compaction/summary forks reuse the parent's exact CacheSafeParams.",
+        "The loop is a typed state machine: each continue rebuilds one State record tagged with a transition reason, and recoverable API errors are withheld from SDK streams until collapse drain, reactive compact, max-token escalation and up to three resume nudges have failed. Code comments document production retry spirals that this structure prevents.",
+        "Tools start executing while the model is still streaming (StreamingToolExecutor), with batching of consecutive concurrency-safe calls (cap 10); only Bash failures abort sibling tools.",
+        "One stream-json + control_request protocol (21 control subtypes, defined as Zod schemas inside the CLI) serves both SDKs, IDE extensions, Remote Control bridge children (--sdk-url) and cloud sessions; in-SDK MCP tools ride the same channel as mcp_message requests.",
+        "Permission is a single CanUseToolFn seam with three implementations (React dialog; SDK can_use_tool raced against PermissionRequest hooks; MCP permission-prompt tool) on top of an ordered rule pipeline with bypass-immune paths and an LLM auto-mode classifier. The OS sandbox is opt-in and covers shell commands only.",
+        "Large tool outputs are spilled to per-session files with a 2 kB preview instead of being truncated, and replacement records are persisted so that resume replays byte-identical context."
+      ],
+      "doc_path": "harnesses/claude-code.md",
+      "features_notes": {
+        "in_process_sdk": "Custom tool callbacks run in-process; the full harness runs in the CLI child.",
+        "os_sandbox": "Optional shell sandbox; historical CLI snapshot and current SDK configuration are distinct evidence scopes."
+      }
+    },
+    {
+      "slug": "claude-agent-sdk",
+      "name": "Claude Agent SDK (Python + TypeScript)",
+      "vendor": "Anthropic",
+      "repo": "anthropics/claude-agent-sdk-python @ 65a6676344ca; anthropics/claude-agent-sdk-typescript @ 273b4c87f832",
+      "license": "Python: MIT; TypeScript: Anthropic Commercial Terms of Service",
+      "language": "Python (anyio); TypeScript (published npm bundle only, no source in repo)",
+      "version": "Python 0.2.166 (bundles CLI 2.1.299); TS 0.3.299 (parity with CLI 2.1.299; npm latest 0.3.300)",
+      "category": "integrated-product",
+      "one_liner": "Thin Python/TS clients that spawn the Claude Code native binary and drive it over stream-json stdio with a bidirectional control protocol, exposing permission callbacks, hook callbacks and in-process MCP custom tools.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "partial",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "no",
+        "http_server": "no",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "partial",
+        "otel": "yes",
+        "web_ui": "partial",
+        "ide": "no",
+        "agents_md": "partial"
+      },
+      "dims": {
+        "loop": "No loop of its own: query() and ClaudeSDKClient stream SDKMessages from the child CLI's QueryEngine loop. Turns are steered with user messages and control requests (interrupt, set_model, set_permission_mode, stop_task, rewind_files); each run ends with a typed result (success, error_max_turns, budget or structured-output errors).",
+        "providers": "Inherits Claude Code's Anthropic-only model layer (first-party, Bedrock, Vertex, Foundry via env). Options for model, fallback_model, thinking (adaptive/enabled/disabled), effort and betas are translated into CLI flags.",
+        "tools": "Built-in Claude Code tools are selected via tools/allowed_tools/disallowed_tools. Custom tools use @tool + create_sdk_mcp_server: a real mcp.server.Server in the host process, bridged to the CLI's mcp_message control requests by SdkMcpBridge. External MCP servers pass through --mcp-config.",
+        "context": "System prompt can be replaced, appended, preset or loaded from a file. Since TS 0.1.0, no default system prompt or filesystem settings are loaded unless setting_sources asks for them. Compaction, CLAUDE.md and memory remain the CLI's. get_context_usage reports token usage.",
+        "state": "The CLI writes JSONL locally; the SDK adds resume/continue/fork_session/resume_session_at and list/read/rename/tag/delete helpers over that JSONL. A SessionStore protocol (append/load required) mirrors transcripts to S3/Redis/Postgres after the local write. File checkpointing is enabled by env flag, with rewind_files.",
+        "safety": "The async can_use_tool callback receives tool, input, suggestions and blocked_path, and returns allow (with updated input or permissions) or deny (optionally interrupting). Also permission_mode and sandbox settings merged into --settings. PermissionRequest hooks race the callback inside the CLI. Flag values use the --flag=value form to block argv injection.",
+        "extensibility": "Hook callbacks are registered as opaque IDs in initialize (10 typed events in Python) and invoked via hook_callback. Also programmatic agents, skills selection, local plugin dirs, setting sources, and extra_args passthrough for new CLI flags.",
+        "multi_agent": "Inherits CLI subagents: AgentDefinition dicts are sent in initialize, task_started/progress/notification events are tracked, and stop_task control is available. Worktree isolation and agent teams come only through CLI features and flags.",
+        "surfaces": "Python and Node libraries spawning a bundled or PATH native binary over stdio. TS adds a browser SDK (WebSocket/SSE to remote CLIs), bridge/core subpaths and prewarm() process pools. Consumed by AI SDK, Mastra, MS Agent Framework, DeepSeek Harness, OpenClaw and Zed's ACP adapter.",
+        "observability": "Injects the active OpenTelemetry traceparent into the CLI environment so CLI spans join the host trace. Result messages carry usage, total_cost_usd, per-model usage, duration and permission_denials. Optional stderr callback; CLI OTel exporters are configured via env."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 4,
+        "embeddability": 3,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 4,
+        "multi_agent": 4,
+        "provider_neutrality": 2,
+        "maturity": 3,
+        "minimalism": 2
+      },
+      "builds_on": [
+        "Claude Code CLI native binary (Python wheel bundles CLI 2.1.299; TS uses per-platform optional-dependency binaries) driven over stdio stream-json",
+        "mcp Python SDK / @modelcontextprotocol/sdk (in-process SDK MCP servers)",
+        "anyio (Python async runtime)",
+        "@anthropic-ai/sdk and zod (TS peer dependencies)"
+      ],
+      "used_by": [
+        "Vercel AI SDK @ai-sdk/harness-claude-code (pins @anthropic-ai/claude-agent-sdk 0.3.290)",
+        "DeepSeek Harness @deepseek-ai/dsh-subagent-claude-code (pins 0.3.263)",
+        "Mastra agent-sdks/claude (^0.3.220)",
+        "Microsoft Agent Framework python/packages/claude (claude-agent-sdk>=0.1.46,<0.3)",
+        "OpenClaw extensions/acpx (SDK per-platform native binaries)",
+        "Zed claude-agent-acp ACP adapter (third-party, Apache-2.0)"
+      ],
+      "key_insights": [
+        "Not a library port: both SDKs spawn the CLI (bundled native binary first, PATH fallback) with --input-format/--output-format stream-json and speak the CLI's own control protocol. The TS GitHub repo contains no SDK source, only a changelog and SessionStore examples.",
+        "Custom tools run in the host process as real MCP servers, but the CLI child calls them through mcp_message control requests. The loop, prompts and permission engine stay in the child process.",
+        "Python exposes only 10 of the CLI's 27 hook events as typed callbacks. Hooks are registered as opaque callback IDs in the initialize request and dispatched through hook_callback.",
+        "Since TS 0.1.0, SDK sessions start without Claude Code's system prompt or filesystem settings unless a preset or setting_sources opts in. This is a deliberate isolation choice that differs from the CLI's defaults.",
+        "SessionStore extends durability beyond local disk: transcript entries are mirrored to external stores after the local write succeeds, and adapters are checked by a 13-contract conformance suite.",
+        "Versioning is in lockstep with the CLI (SDK 0.3.N matches CLI 2.1.N). The embeddable API is still 0.x and has removed APIs (unstable_v2_*), so it is less stable than the product it wraps."
+      ],
+      "doc_path": "harnesses/claude-code.md",
+      "features_notes": {
+        "in_process_sdk": "Custom tool callbacks run in-process; the full harness runs in the CLI child.",
+        "os_sandbox": "Optional shell sandbox; historical CLI snapshot and current SDK configuration are distinct evidence scopes.",
+        "acp": "Third-party adapters exist; ACP is not a native SDK protocol."
+      }
+    },
+    {
+      "slug": "claw-code",
+      "name": "claw-code",
+      "vendor": "UltraWorkers (community)",
+      "repo": "ultraworkers/claw-code @ 6d7412d958eb",
+      "license": "MIT",
+      "language": "Rust (plus a Python reference/porting workspace)",
+      "version": "0.1.6 (Cargo workspace, publish = false)",
+      "category": "integrated-product",
+      "one_liner": "A community Rust re-implementation of a Claude-Code-shaped CLI agent, created the day of the leak and structurally guided by the leaked file inventory. It adds multi-provider support but has a simplified loop, compaction and permission model.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "yes",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "partial",
+        "http_server": "no",
+        "durable_resume": "yes",
+        "compaction": "partial",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "partial",
+        "worktrees": "no",
+        "otel": "no",
+        "web_ui": "no",
+        "ide": "no",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "Synchronous ConversationRuntime::run_turn loop. ApiClient::stream returns a collected Vec of events per request; tool_use blocks run sequentially with Pre/Post hooks and permission checks. Supports a steer queue, interrupts and max_iterations; auto-compaction is checked every iteration.",
+        "providers": "ProviderKind covers Anthropic, xAI and OpenAI (OpenAI-compatible chat completions, including local models), with model alias tables and per-provider feature diagnostics. Prompt-cache events are tracked for Anthropic.",
+        "tools": "About 60 tool specs mirroring Claude Code names (bash, file tools, glob/grep, WebFetch, TodoWrite, Skill, Agent, Task*, Team*, Cron*, LSP, MCP) plus Worker* and Git* tools, dispatched by string match in an 11 kLOC tools crate.",
+        "context": "System prompt is assembled from CLAUDE.md, .claw/ files, CLAW.md and AGENTS.md. Compaction is heuristic: it keeps the last 4 messages and replaces older ones with a summary of counts and tool names, with no LLM call.",
+        "state": "Sessions persist as JSONL (snapshot plus append), including compaction records, with resume and session-control commands. No rewind or file checkpointing was found.",
+        "safety": "Codex-like PermissionMode values ReadOnly/WorkspaceWrite/DangerFullAccess/Prompt/Allow, a permission enforcer, a policy engine and a Bash validation module. The sandbox uses Linux-only unshare user namespaces, with an optional network namespace.",
+        "extensibility": "A plugins crate with plugin hooks and lifecycle, an MCP stdio client and tool bridge, SKILL.md skills, 3 hook events (PreToolUse, PostToolUse, PostToolUseFailure) and a slash-command crate.",
+        "multi_agent": "The Agent tool spawns an OS thread that runs a fresh ConversationRuntime with restricted tools and persists a terminal-state manifest. Team, cron and task registries plus worker boot/observe tools exist. No worktree isolation.",
+        "surfaces": "An interactive claw REPL and one-shot prompt with JSON output; an MCP server mode exposing its tools; ACP is status-only. The sdk crate speaks the separate gajae-code broker protocol, not Claude's.",
+        "observability": "Runtime emits turn and iteration events and tracks usage and cost. The telemetry crate only builds client identity and request profiles. A mock Anthropic service and a 12-scenario mock parity harness provide behavioural tests. No OpenTelemetry."
+      },
+      "scores": {
+        "flexibility": 3,
+        "integration": 3,
+        "embeddability": 2,
+        "durability": 3,
+        "safety": 3,
+        "extensibility": 3,
+        "multi_agent": 3,
+        "provider_neutrality": 3,
+        "maturity": 2,
+        "minimalism": 2
+      },
+      "builds_on": [
+        "Claude Code leaked source (file-inventory snapshots in src/reference_data and leak-named Python stubs guided the port)",
+        "tokio / tokio-tungstenite"
+      ],
+      "used_by": [
+        "Gajae-Code / LazyCodex agent harnesses (the README says they maintain the repo; the sdk crate implements the gajae-code broker wire protocol)"
+      ],
+      "key_insights": [
+        "Created on 2026-03-31, the day of the leak. Its Python reference_data inventories of the original archive (module counts per subsystem) give an independent baseline. That baseline exposes additions in leak mirrors: for example, services has 130 modules in the inventory versus 136 in the keejkrej fork, the difference being an x402 payment module.",
+        "Fidelity is shallow on the hard parts: tool execution is sequential, streaming is collected rather than incremental, and compaction is a non-LLM heuristic. Claude Code instead overlaps tool execution with streaming and summarizes with a cache-sharing forked agent.",
+        "It diverges from Claude Code on purpose: it supports Anthropic, xAI and OpenAI-compatible providers and natively loads AGENTS.md and CLAW.md alongside CLAUDE.md.",
+        "The permission vocabulary (ReadOnly/WorkspaceWrite/DangerFullAccess) and the Linux unshare sandbox resemble Codex more than Claude Code's rule-based modes and sandbox-runtime.",
+        "The README describes it as an agent-maintained 'museum exhibit'. Parity is tracked with a deterministic mock Anthropic service and 12 scripted scenarios. It has no stream-json control protocol, so it is not a drop-in target for Agent SDK consumers."
+      ],
+      "doc_path": "harnesses/claude-code.md",
+      "features_notes": {}
+    }
+  ],
+  "verification": {
+    "method": "Independent targeted static source review plus repository-wide mechanical citation validation; no runtime tests",
+    "checked_claims": [
+      "Python wrapper uses anyio.open_process",
+      "Wrapper explicitly selects stream-json input and output",
+      "Mirror lacks an open-source license for the proprietary loop",
+      "Historical March snapshot is separate from October SDK package pins"
+    ],
+    "claims_checked": 4,
+    "corrections": [
+      "Marked mirror as historical proprietary-source exception; no reuse recommendation"
+    ],
+    "unresolved": [
+      "Secondary release chronology, approximate LOC totals and every individual feature were not independently re-derived in this review; source links and the study limitations remain authoritative."
+    ]
+  }
+}

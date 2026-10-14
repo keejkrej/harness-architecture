@@ -1,0 +1,125 @@
+{
+  "records": [
+    {
+      "slug": "openhands",
+      "name": "OpenHands (V1 software-agent-sdk + Agent Canvas app)",
+      "vendor": "OpenHands (All Hands AI)",
+      "repo": "OpenHands/software-agent-sdk @ 95cb37b7f04f; OpenHands/OpenHands @ 71427af5b426",
+      "license": "MIT",
+      "language": "Python (SDK, tools, workspace, agent-server); TypeScript/React/Electron (Agent Canvas, TS client)",
+      "version": "openhands-sdk/tools/workspace/agent-server 1.54.0; Agent Canvas 1.27.1",
+      "category": "hybrid",
+      "one_liner": "Event-sourced Python agent SDK (Agent.step over a parent-linked, file-per-event log) with tools, sandboxed workspaces, a FastAPI REST/WS agent-server and an ACP bridge that hosts Claude Code/Codex/Gemini/Pi/OpenCode, consumed over HTTP by the Agent Canvas web/desktop UI.",
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "yes",
+        "subagents": "yes",
+        "acp": "partial",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "yes",
+        "plan_mode": "yes",
+        "worktrees": "yes",
+        "otel": "yes",
+        "web_ui": "yes",
+        "ide": "partial",
+        "agents_md": "yes"
+      },
+      "dims": {
+        "loop": "Two nested loops: LocalConversation._run/_arun state machine (IDLE/RUNNING/PAUSED/WAITING_FOR_CONFIRMATION/FINISHED/ERROR/STUCK, Stop hooks, stuck detector, 500-iteration and USD budget caps) around Agent.step: one LLM call, ActionEvent batch, analyzer+policy, resource-locked parallel executor (default concurrency 1). interrupt() cancels the asyncio task and back-fills orphaned tool results.",
+        "providers": "Single Pydantic LLM over LiteLLM (pinned 1.93.0): Chat Completions or Responses API, ModelFeatures capability registry, prompt-mocked tool calling for non-FC models, two-block system prompt caching, thinking/encrypted-reasoning passthrough, tenacity retries, profile-based FallbackStrategy, RouterLLM, model self-switching tools, ChatGPT subscription OAuth, per-usage_id cost metrics.",
+        "tools": "ToolDefinition[Action,Observation] Pydantic schemas resolved from serializable Tool(name, params) specs via a global registry; every schema auto-gains summary and (non-read-only) security_risk fields; MCP-style annotations; DeclaredResources locking. openhands-tools: tmux terminal, editors, apply_patch, Gemini-style file tools, browser-use, glob/grep, task/delegate/workflow. 30k-char head/tail truncation spills full output to disk.",
+        "context": "Section-registry system prompt with static (cross-conversation cacheable) and dynamic tiers; AGENTS.md/CLAUDE.md/GEMINI.md/.cursorrules loaded as skills, nested AGENTS.md as path rules; keyword/path/AgentSkills triggers; two-tier MEMORY.md. Compaction = Condensation tombstone events; LLMSummarizingCondenser with event/token/request triggers, soft/hard requirements, hard reset, tool-call atomicity.",
+        "state": "File-per-event parent-linked log, base-state autosave, fork/navigation and server leases. Restart marks the run failed and records the first orphan error; later SDK continuation can execute unmatched actions. No exactly-once guarantee.",
+        "safety": "SecurityAnalyzer (LLM self-reported risk, tree-sitter-bash policy rails, patterns, GraySwan, ToolShield, fail-closed ensemble) + ConfirmationPolicy (default NeverConfirm). PreToolUse hooks block. Sandbox = agent-server in Docker/Apptainer/k8s/cloud; per-conversation containers cap-drop ALL, no-new-privileges, 4g/2cpu/512 pids; no egress policy; ACP turns auto-approved; workflow scripts run in-process.",
+        "extensibility": "Custom and JSON client tools; MCP client (FastMCP, OAuth, live tool reconciliation; no MCP server); six hook events with command/prompt/agent hook types (exit code 2 blocks, Claude-compatible); skills from project/user/public OpenHands/extensions registry; Claude-Code-format plugins with marketplace and runtime load_plugin; markdown sub-agents; kind-discriminated replaceable components.",
+        "multi_agent": "Sub-agent registry (programmatic, plugin, markdown files, built-ins). TaskToolSet runs blocking, resumable child LocalConversations sharing workspace and prompt-cache key with scoped tools and inherited MCP/permissions; DelegateTool runs parallel threads; WorkflowTool runs LLM-written async Python map/reduce/pipeline; ACPAgent hosts external harnesses; per-conversation git worktrees; Canvas plan/code dual conversations.",
+        "surfaces": "In-process Python SDK; RemoteConversation; FastAPI agent-server (REST, WebSocket with resend, OpenAI-compatible /v1 chat and responses gateway, PyInstaller binaries, Docker images); alpha browser TS client; Agent Canvas web/Electron/npm/Docker UI consuming it over HTTP; openvscode-server; ACP client for Claude Code, Codex, Gemini CLI, Kimi, Pi, OpenCode; GitHub Actions examples.",
+        "observability": "Laminar @observe spans on conversation.run, agent.step, tools, condensation and delegation, exported via LMNR key or standard OTEL_EXPORTER_OTLP_* endpoints; raw completion logs; per-LLM Metrics with cache-read/reasoning tokens and USD; optional PostHog exporter. Evals: LLM integration suites (API compliance, behavior, condenser, tasks), stress tests, external OpenHands/benchmarks."
+      },
+      "scores": {
+        "flexibility": 4,
+        "integration": 5,
+        "embeddability": 4,
+        "durability": 4,
+        "safety": 4,
+        "extensibility": 5,
+        "multi_agent": 4,
+        "provider_neutrality": 5,
+        "maturity": 4,
+        "minimalism": 2
+      },
+      "builds_on": [
+        "LiteLLM (provider transport for every LLM call; workspace-pinned litellm==1.93.0)",
+        "FastMCP (MCP client, used only at the boundary in mcp/utils.py)",
+        "agent-client-protocol Python SDK (ACPAgent client side)",
+        "Laminar lmnr (tracing; OTLP export)",
+        "browser-use (BrowserToolSet)",
+        "libtmux (terminal tool)",
+        "tree-sitter-bash (PolicyRailSecurityAnalyzer)",
+        "tom-swe (theory-of-mind consult tool)",
+        "Claude Code (hosted as ACP subprocess via @agentclientprotocol/claude-agent-acp 0.63.0; its plugin layout, hooks exit-code semantics and CLAUDE.md are emulated)",
+        "Codex (hosted via codex-acp 1.10.0; apply_patch tool preset for GPT-5 mirrors Codex)",
+        "Gemini CLI (hosted via @google/gemini-cli 0.46.0 --acp; Gemini-style read_file/write_file/edit preset)",
+        "Kimi Code (hosted via @moonshot-ai/kimi-code 0.38.0 acp)",
+        "Pi coding agent (hosted via pi-acp 0.0.33 + @earendil-works/pi-coding-agent 0.83.0)",
+        "OpenCode (hosted via opencode-ai 1.18.23 acp)"
+      ],
+      "used_by": [
+        "Agent Canvas (OpenHands/OpenHands @71427af): pins agent-server 1.54.0, launches it via uvx, talks to it only over HTTP/WS via @openhands/typescript-client 1.54.0",
+        "OpenHands-CLI (declared client of the SDK in CONTRIBUTING.md; separate repo since app 1.0.0)",
+        "OpenHands Cloud/Enterprise and OpenHands/automation (dispatch conversations that this repo's agent-server executes, per AGENTS.md)",
+        "OpenHands/benchmarks (evaluation harness for OpenHands V1)",
+        "Cisco DefenseClaw (documented sidecar/LLM-proxy integration with Agent Canvas and agent-server; built around OpenClaw)"
+      ],
+      "key_insights": [
+        "At the pin, OpenHands/OpenHands contains no Python: it is Agent Canvas, a React/Electron front end that launches `uvx openhands-agent-server==1.54.0` and drives it purely over REST/WS via @openhands/typescript-client. The SDK repo's agent-server is the canonical backend, and agents travel as kind-discriminated JSON specs (e.g. {kind: 'Agent', tools: [{name: 'glob'}]}).",
+        "Approvals and hook blocks are data in the event log: WAITING_FOR_CONFIRMATION means unmatched ActionEvents, calling run() again executes them, and rejection writes UserRejectObservation. This survives restarts. Crash semantics then depend on host: the agent-server marks RUNNING conversations ERROR and back-fills an error for the first orphan rather than automatically resuming, while bare SDK continuation can execute unmatched actions. Neither proves a general end-to-end execution guarantee.",
+        "Conversation history is a parent-linked event tree (Event.parent_id, ConversationState.leaf_event_id as HEAD) stored as one atomically written JSON file per frozen event. navigate_to/fork(from_event_id) are cheap. Because events are written immediately but base_state.json (holding HEAD) is flushed at lock exit, recovery code explicitly handles a lagging HEAD.",
+        "Security risk is self-reported: every non-read-only tool schema gets an injected security_risk enum (and every tool a summary field), and LLMSecurityAnalyzer just echoes it. Deterministic tree-sitter-bash policy rails and a fail-closed ensemble are the counterweight, but the default ConversationState policy is NeverConfirm with no analyzer.",
+        "OpenHands is also a meta-harness: ACPAgent (4.7k LOC, the largest SDK module) runs Claude Code, Codex, Gemini CLI, Kimi Code, Pi and OpenCode as pinned ACP subprocesses, one step per remote turn. It auto-approves every ACP permission request and defaults to bypassPermissions/agent-full-access, so OpenHands confirmation policies and condensers do not govern those turns.",
+        "Sandboxing is achieved by relocating the same agent-server: Docker/Apptainer/k8s/cloud workspaces all run the server image and are driven via RemoteWorkspace/RemoteConversation, and the server can spawn hardened per-conversation containers (cap-drop ALL, no-new-privileges, 4g/2cpu/512 pids). There is no egress policy, and the local default runs on the host.",
+        "Ecosystem imitation: Claude Code plugin layout (.claude-plugin/plugin.json, hooks/hooks.json, .mcp.json), hook exit code 2, AGENTS.md/CLAUDE.md/GEMINI.md/.cursorrules as skills, AgentSkills progressive disclosure, plus model-specific tool presets mimicking Codex apply_patch and Gemini CLI file tools. Hooks run sequentially rather than in parallel, a documented divergence.",
+        "V0's condenser zoo collapsed to one production strategy: LLMSummarizingCondenser forgets a prefix (keep_first, after the system prompt) via Condensation tombstones and inserts a summary. Token/request triggers are HARD, event-count triggers SOFT, and a hard context reset retries while shrinking event strings by 0.8x; view properties guarantee tool_use/tool_result pairs are never split."
+      ],
+      "doc_path": "harnesses/openhands.md",
+      "features_notes": {
+        "os_sandbox": "Optional runtime/backend configuration; available isolation is not the default for every host or platform.",
+        "acp": "Client that hosts external agents, not an ACP server.",
+        "durable_resume": "Configure persistence; server and in-process recovery differ.",
+        "worktrees": "Conversation-level worktrees do not automatically isolate all child agents."
+      }
+    }
+  ],
+  "verification": {
+    "method": "Independent targeted static source review plus repository-wide mechanical citation validation; no runtime tests",
+    "checked_claims": [
+      "Default conversation confirmation policy is NeverConfirm",
+      "Persistent and in-memory FileStore selection is explicit",
+      "Restored RUNNING conversations are marked ERROR",
+      "Recovery appends an error to the first orphaned action",
+      "Agent.step executes unmatched actions on later continuation"
+    ],
+    "claims_checked": 5,
+    "corrections": [
+      "Removed end-to-end at-most-once claim; recovery handles first orphan and continuation can rerun actions"
+    ],
+    "unresolved": [
+      "Secondary release chronology, approximate LOC totals and every individual feature were not independently re-derived in this review; source links and the study limitations remain authoritative."
+    ],
+    "independent_final_review": {
+      "date": "2026-10-14",
+      "scope": "Targeted source and cross-document consistency review, not exhaustive",
+      "corrections": [
+        "Removed residual at-most-once claims in insights and separated durable execution from exactly-once external effects."
+      ]
+    }
+  }
+}

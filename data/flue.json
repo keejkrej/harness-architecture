@@ -1,0 +1,106 @@
+{
+  "records": [
+    {
+      "slug": "flue",
+      "name": "Flue",
+      "category": "harness-library",
+      "vendor": "Astro team",
+      "language": "TypeScript",
+      "license": "Apache-2.0",
+      "version": "2.3.0",
+      "one_liner": "Function-and-hook authoring over Pi, adding a durable conversation log and Node/Cloudflare deployment runtime.",
+      "builds_on": [
+        "pi-agent-core",
+        "pi-ai",
+        "Hono",
+        "Vite",
+        "Cloudflare Agents (target integration)"
+      ],
+      "used_by": [],
+      "repo_url": "https://github.com/withastro/flue",
+      "pinned_commit": "deee93b40d275ecc9a50c50af2158f20089d54bc",
+      "doc_path": "harnesses/flue.md",
+      "scores": {
+        "flexibility": 4,
+        "integration": 4,
+        "embeddability": 4,
+        "durability": 5,
+        "safety": 3,
+        "extensibility": 4,
+        "multi_agent": 3,
+        "provider_neutrality": 5,
+        "maturity": 3,
+        "minimalism": 2
+      },
+      "features": {
+        "mcp_client": "yes",
+        "mcp_server": "no",
+        "skills": "yes",
+        "hooks": "yes",
+        "plugins": "no",
+        "subagents": "yes",
+        "acp": "no",
+        "headless": "yes",
+        "in_process_sdk": "yes",
+        "http_server": "yes",
+        "durable_resume": "yes",
+        "compaction": "yes",
+        "os_sandbox": "partial",
+        "approvals": "no",
+        "plan_mode": "no",
+        "worktrees": "no",
+        "otel": "yes",
+        "web_ui": "partial",
+        "ide": "no",
+        "agents_md": "yes"
+      },
+      "features_notes": {
+        "mcp_client": "Remote HTTP MCP; no stdio MCP client.",
+        "os_sandbox": "Cloudflare/remote adapter isolation; local() runs on host and just-bash is an emulator.",
+        "web_ui": "React integration and demo, no finished product UI.",
+        "durable_resume": "Requires persistent adapter; start() defaults to memory. step.do does not guarantee external effects exactly once."
+      },
+      "dims": {
+        "loop": "Instantiates Pi Agent with parallel tools; rerenders agent function at turn boundaries.",
+        "providers": "pi-ai provider layer plus Workers AI/AI Gateway integration.",
+        "tools": "Hook-defined tools, sandbox tools, remote MCP and durable step.do tools.",
+        "context": "AGENTS.md/skills discovery, per-turn resource narration and compaction.",
+        "state": "Canonical log and submission ledger; ordinary interrupted tools get unknown outcomes, opt-in durable steps replay recorded results.",
+        "safety": "No approval engine; local is unsandboxed and isolation comes from selected adapters.",
+        "extensibility": "Authoring hooks, interceptors, adapters and blueprints; no runtime plugin marketplace.",
+        "multi_agent": "Declared task delegates share sandbox, durable child conversations and bounded nesting.",
+        "surfaces": "In-process runtime, HTTP/SDK/React clients, CLI and Node/Cloudflare targets.",
+        "observability": "Lifecycle events and OpenTelemetry package."
+      },
+      "key_insights": [
+        "Function-and-hook authoring over Pi, adding a durable conversation log and Node/Cloudflare deployment runtime.",
+        "Canonical log and submission ledger; ordinary interrupted tools get unknown outcomes, opt-in durable steps replay recorded results.",
+        "No approval engine; local is unsandboxed and isolation comes from selected adapters."
+      ],
+      "repo": "withastro/flue"
+    }
+  ],
+  "verification": {
+    "claims_checked": 7,
+    "checked_claims": [
+      "Runtime manifest version/license",
+      "Explicit pi-ai and pi-agent-core dependencies",
+      "Session constructs Pi Agent with parallel tools and rerender hook",
+      "Ordinary interrupted tool repair is non-reexecuting",
+      "Durable tool recovery uses step.do memo records",
+      "step.do reads prior record before invoking body",
+      "Effect runs before record append, leaving a duplication crash window"
+    ],
+    "corrections": [
+      "Added explicit effect-before-record crash window and idempotency requirement",
+      "Removed unsupported reference-implementation superlative"
+    ],
+    "unresolved": [
+      "Node multi-replica ownership requires routing; this review did not stress-test fencing.",
+      "No runtime crash testing performed."
+    ],
+    "method": "source spot-check",
+    "review_date": "2026-10-14",
+    "scope": "Static inspection of selected high-impact claims. Not an exhaustive claim audit; no cloned code executed. Manifest/loop/recovery/safety boundaries prioritized."
+  }
+}
